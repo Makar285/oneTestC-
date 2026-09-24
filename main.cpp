@@ -1,19 +1,20 @@
-// Test https://docs.google.com/document/d/1yzHwap5xYbqxq3509M7aAE5waWRgmNDE5ixxzlQf-Jw/edit?clckid=01128af8&tab=t.0
-
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cmath>
 #include <format>
 
-// Функция для n = 33
-std::vector<short> pushNumbers() {
-    std::vector<short> localRes = {};
+// Функции для n = 33
+// Добавление элементов в вектор и возвращение этого заполеного вектора
+std::vector<double> pushNumbers() {
+    std::vector<double> localRes = {};
+
+    // Инициализация переменной для вывода номера заполняемой ячейки
     short i = 0;
     while (true) {
         std::cout << "[+] Инициализация | ячейка " << i << ": ";
         std::string localLocalNString;
-        short localLocalN;
+        double localLocalN;
         std::cin >> localLocalNString;
         std::cout << "\n";
         try {
@@ -37,7 +38,86 @@ std::vector<short> pushNumbers() {
     return localRes;
 };
 
+// Вывод каждого элемента вектора разделяя его табуляцией
+void printVector(std::vector<double> res) {
+    for(short i=0; i<res.size(); i++) {
+        std::cout << res[i];
+
+        // Проверка на то что это любая другая итерация цикла кроме последней и добавление табуляции если это так
+        if(i != res.size()) {
+            std::cout << "\t";
+        };
+    };
+};
+
+// Сортировка вектора по возростанию
+void sortPlus(std::vector<double> output) {
+    // Отсортированный массив
+    std::vector<double> result = {};
+
+    // N итерацияи для вектора длинной n значений
+    for(short _ = 0; _ < output.size(); _++) {
+        // Взять первое значений значением по умолчанию и дальше проверять его на то самое ли большое это значение в массиве от _ до конца массива, в случае это есть число больше перезаписывать min и индекс этого первого элемента, это нужно что бы если первое число это и есть минимальное число что бы можно было его удалить и добавить в вектор вывода
+        double min = output[0];
+        int minIndex = 0;
+        
+        // Нельзя использовать output.size() в for
+        int lengthVector = output.size();
+
+        // Для прохода по вектору и нахождения минимального числа для текущего вектора
+        for(short i = 0; i < output.size(); i++) {
+            // Если число с текущий индексом i вектора output меньше чем минимальное число(min), то записать в min это число
+            if(output[i] < min) {
+                min = output[i];
+                minIndex = i;
+            };
+            
+            std::cout << "START\n";
+            std::cout << *(output.begin() + i) << "\n";
+            printVector(output);
+            std::cout << "\n";
+            printVector(result);
+            
+            std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
+            std::cout << "END\n\n\n\n";
+        };
+
+        output.erase(output.begin() + minIndex);
+        result.push_back(min);
+    };
+
+    printVector(result);
+};
+
+// Сортировка вектора по убыванию
+std::vector<double> sortMinus(std::vector<double> output) {};
+
+// Умножение каждого элемента вектора на некоторое число
+std::vector<double> multiplicationVector(std::vector<double> output) {};
+
+// Добавление некоторого числа к каждому элементу вектора
+std::vector<double> additionVector(std::vector<double> output) {};
+
+
+// Деление каждого элемента вектора на некоторое число
+std::vector<double> divisionVector(std::vector<double> output) {};
+
+// Все ячейки вектора принимают значение 0
+std::vector<double> resettingToZero(std::vector<double> output) {};
+
+// Инициализация вектора по новой
+std::vector<double> initializationAgain() {};
+
+
 int main() {
+    
+    std::cout << "\n\n\n";
+
+	std::vector<double> a = {123, 781253, 18275, -1247, 832.4, -3284.4};
+	sortPlus(a);
+
+
+
     std::cout << "\t\n\n\n\n\n";
 
     
@@ -268,6 +348,7 @@ int main() {
         std::cout << "[0] Закрыть программу\n";
         std::cout << "[1] Внести числа\n";
 
+        // Числа 0 или 1 для закрытия программы и вноски чисел коответственно
         std::string localNString;
         short localN;
         std::cin >> localNString;
@@ -282,7 +363,8 @@ int main() {
             return 0;
         };
 
-        std::vector<short> res = {};
+        // Инициализация массва в котором будут числа который ввел пользователь
+        std::vector<double> res = {};
 
         if(localN == 0) {
             system("clear");
@@ -292,12 +374,12 @@ int main() {
             std::cout << "[#] Заполнение вектора\n\n";
             short i = 0;
             res = pushNumbers();
-            for(short i=0; i<res.size();i++) {
-                std::cout << res[i] << "12121212 \n\n";
-            };
+
+            // TEST
+            printVector(res);
             
             if(res.size() == 0) {
-                std::cout << "Произошла ошибка или вы не ввели ниодного числа.";
+                std::cout << "Произошла ошибка или вы не ввели ни одного числа.";
                 return 0;
             };
 
@@ -326,26 +408,38 @@ int main() {
                 return 0;
             };
 
+            std::cout << "Результат:\n";
+
             if(localLocalN == 1) {
                 // Сортировка по возрастанию. Выводит значения вектора от самого маленького до самого большого значения;
+                sortPlus(res);
             } else if(localLocalN == 2) {
                 // Сортировка по убыванию. Выводит значения вектора от большого до самого маленького значения;
+                sortMinus(res);
             } else if(localLocalN == 3) {
                 // Перемножение вектора. Пользователь вводит любое целочисленное значение на которое будет умножаться каждая ячейка вектора;
+                multiplicationVector(res);
             } else if(localLocalN == 4) {
                 // Сложение вектора. Пользователь вводит любое целочисленное значение, каждая ячейка вектора складывается с введенным числом;
+                additionVector(res);
             } else if(localLocalN == 5) {
                 // Деление вектора. Пользователь вводит любое целочисленное значение на которое будет делиться каждая ячейка вектора;
+                divisionVector(res);
             } else if(localLocalN == 6) {
                 // Обнуление вектора. Все ячейки вектора принимают значение 0;
+                resettingToZero(res);
             } else if(localLocalN == 0) {
                 // Дает пользователю проинициализировать вектор заново.
+                initializationAgain();
             }
         } else {
             std::cout << "Неизвестное число\n";
             return 0;
         };
 
+    } else {
+        std::vector<double> a = {123, 781253, 18275, -1247, 832.4, -3284.4};
+        sortPlus(a);
     };
 
     return 0;
