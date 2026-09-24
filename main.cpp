@@ -1,3 +1,5 @@
+// Задания с https://docs.google.com/document/d/1yzHwap5xYbqxq3509M7aAE5waWRgmNDE5ixxzlQf-Jw/edit?clckid=01128af8&tab=t.0
+
 #include <iostream>
 #include <string>
 #include <vector>
