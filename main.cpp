@@ -63,7 +63,7 @@ void sortPlus(std::vector<double> output) {
         double min = output[0];
         int minIndex = 0;
         
-        // Нельзя использовать output.size() в for
+        // Нельзя использовать output.size() в for потому что в процессе добавления элементов в вектор result и удаления элементов из вектора output длина output будет изменяться и итераций будет не длина вектора output а меньше
         int lengthVector = output.size();
 
         // Для прохода по вектору и нахождения минимального числа для текущего вектора
