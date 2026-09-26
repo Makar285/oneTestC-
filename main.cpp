@@ -7,6 +7,8 @@
 #include <format>
 #include <cstdlib>
 
+
+
 // Функции для n = 33
 // Добавление элементов в вектор и возвращение этого заполеного вектора
 std::vector<double> pushNumbers() {
@@ -83,14 +85,13 @@ void sortPlus(std::vector<double> output) {
             i++;
             
             // Выаод в консоль для того что бы посмотреть как работает сортировка
-            /* std::cout << "START\n";
-            std::cout << " текущее index    " << i << "\n";
-            printVector(output);
-            std::cout << "\n";
-            printVector(result);
-            std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
-            std::cout << "END\n\n\n\n";
-            */
+            // std::cout << "START\n";
+            // std::cout << " текущее index    " << i << "\n";
+            // printVector(output);
+            // std::cout << "\n";
+            // printVector(result);
+            // std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
+            // std::cout << "END\n\n\n\n";
         };
         
         output.erase(output.begin() + minIndex);
@@ -128,14 +129,13 @@ void sortMinus(std::vector<double> output) {
             i++;
             
             // Выаод в консоль для того что бы посмотреть как работает сортировка
-            /* std::cout << "START\n";
-            std::cout << " текущее index    " << i << "\n";
-            printVector(output);
-            std::cout << "\n";
-            printVector(result);
-            std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
-            std::cout << "END\n\n\n\n";
-            */
+            // std::cout << "START\n";
+            // std::cout << " текущее index    " << i << "\n";
+            // printVector(output);
+            // std::cout << "\n";
+            // printVector(result);
+            // std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
+            // std::cout << "END\n\n\n\n";
         };
         
         output.erase(output.begin() + maxIndex);
@@ -439,7 +439,60 @@ int main() {
             // Так как было проверкас isIn в начале не нужно еще раз проверять на %, если это не +, не -, не * и не / значит это %
             std::cout << localN1 << " % " << localN2 << " = " << localN1 % localN2 << "\n";
         };
-    } else if(n == 33) {
+    } else if(n == 6) {
+        std::string localNString;
+        short localN;
+        std::cin >> localNString;
+        try {
+            localN = std::stoi(localNString);
+        } catch(const std::invalid_argument& e) {
+            std::cout << "Вы ввели не число.\n";
+            std::exit(0);
+        } catch(const std::out_of_range& e) {
+            std::cout << "Вы ввели слишком большое число.\n";
+        };
+        
+        switch(localN) {
+            case 1:
+                std::cout << "Февраль.\n";
+                break;
+            case 2:
+                std::cout << "Январь.\n";
+                break;
+            case 3:
+                std::cout << "Март.\n";
+                break;
+            case 4:
+                std::cout << "Апрель.\n";
+                break;
+            case 5:
+                std::cout << "Май.\n";
+                break;
+            case 6:
+                std::cout << "Июнь.\n";
+                break;
+            case 7:
+                std::cout << "Июль.\n";
+                break;
+            case 8:
+                std::cout << "Август.\n";
+                break;
+            case 9:
+                std::cout << "Сентябрь.\n";
+                break;
+            case 10:
+                std::cout << "Октябрь.\n";
+                break;
+            case 11:
+                std::cout << "Ноябрь.\n";
+                break;
+            case 12:
+                std::cout << "Декабрь.\n";
+                break;
+            default:
+                std::cout << "UNKNOWN NUMBER";
+                };
+        } else if(n == 33) {
         std::cout << "Введите число\n";
         std::cout << "[0] Закрыть программу\n";
         std::cout << "[1] Внести числа\n";
@@ -549,4 +602,67 @@ int main() {
     };
 
     return 0;
-}
+};
+
+/* 
+int main() {
+    class Animals {
+        private:
+        short age;
+        
+        public:
+        Animals(short a) {
+            age = a;
+        };
+        
+        void getAnimals() {
+            std::cout << "AGE: " << age << "\n\n";
+        };
+        
+        short getAge() {
+            return age;
+        };
+    };
+    
+    class Cat : public Animals {
+        private:
+        std::string name;
+        
+        public:
+        Cat(std::string n) {
+            name = n;
+        };
+        
+        void getCat() {
+            std::cout << "AGE: " << Animals::getAge() << ", NAME: " << name << "\n\n";
+        };
+    };
+    
+    Cat I(19);
+    I.getAnimals();
+    return 0;
+};
+
+*/
+
+
+/*
+int main() {
+    short number;
+    std::cin >> number;
+    
+    switch(number) {
+        case -1:
+            std::cout << "NEGATIVE";
+            break;
+        case 0:
+            std::cout << "ZERO";
+            break;
+        case 1:
+            std::cout << "POSITIVe;";
+            break;
+        default:
+            std::cout << "{{}{}";
+    };
+};
+*/
