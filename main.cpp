@@ -436,8 +436,8 @@ int main() {
         }  else if(ope == "/") {
             std::cout << localN1 << " / " << localN2 << " = " << localN1 / localN2 << "\n";
         }  else {
-            // Так как было проверкас isIn в начале не нужно еще раз проверять на %, если это не +, не -, не * и не / значит это %
-            std::cout << localN1 << " % " << localN2 << " = " << localN1 % localN2 << "\n";
+            // Так как было проверка c isIn в начале не нужно еще раз проверять на %, если это не +, не -, не * и не / значит это %
+            std::cout << (int) localN1 << " % " << (int) localN2 << " = " << (int) localN1 % (int) localN2 << "\n";
         };
     } else if(n == 6) {
         std::string localNString;
