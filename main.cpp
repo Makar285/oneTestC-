@@ -461,8 +461,6 @@ int main() {
 
         // Инициализация массва в котором будут числа который ввел пользователь
         std::vector<double> res = {};
-        
-        std::cout << "\n\nINPUT " << localN << "\n\n";
 
         if(localN == 0) {
             system("clear");
@@ -543,9 +541,6 @@ int main() {
             return 0;
         };
 
-    } else {
-        std::vector<double> a = {123, 781253, 18275, -1247, 832.4, -3284.4};
-        sortPlus(a);
     };
 
     return 0;
