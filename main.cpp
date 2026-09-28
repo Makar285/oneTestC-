@@ -7,8 +7,6 @@
 #include <format>
 #include <cstdlib>
 
-
-
 // Функции для n = 33
 // Добавление элементов в вектор и возвращение этого заполеного вектора
 std::vector<double> pushNumbers() {
@@ -85,13 +83,14 @@ void sortPlus(std::vector<double> output) {
             i++;
             
             // Выаод в консоль для того что бы посмотреть как работает сортировка
-            // std::cout << "START\n";
-            // std::cout << " текущее index    " << i << "\n";
-            // printVector(output);
-            // std::cout << "\n";
-            // printVector(result);
-            // std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
-            // std::cout << "END\n\n\n\n";
+            /* std::cout << "START\n";
+            std::cout << " текущее index    " << i << "\n";
+            printVector(output);
+            std::cout << "\n";
+            printVector(result);
+            std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
+            std::cout << "END\n\n\n\n";
+            */
         };
         
         output.erase(output.begin() + minIndex);
@@ -129,13 +128,14 @@ void sortMinus(std::vector<double> output) {
             i++;
             
             // Выаод в консоль для того что бы посмотреть как работает сортировка
-            // std::cout << "START\n";
-            // std::cout << " текущее index    " << i << "\n";
-            // printVector(output);
-            // std::cout << "\n";
-            // printVector(result);
-            // std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
-            // std::cout << "END\n\n\n\n";
+            /* std::cout << "START\n";
+            std::cout << " текущее index    " << i << "\n";
+            printVector(output);
+            std::cout << "\n";
+            printVector(result);
+            std::cout << "\n00000  " << _ << "   "  << output[i] << "   " << min << "   00000\n";
+            std::cout << "END\n\n\n\n";
+            */
         };
         
         output.erase(output.begin() + maxIndex);
@@ -436,8 +436,8 @@ int main() {
         }  else if(ope == "/") {
             std::cout << localN1 << " / " << localN2 << " = " << localN1 / localN2 << "\n";
         }  else {
-            // Так как было проверка c isIn в начале не нужно еще раз проверять на %, если это не +, не -, не * и не / значит это %
-            std::cout << (int) localN1 << " % " << (int) localN2 << " = " << (int) localN1 % (int) localN2 << "\n";
+            // Так как было проверкас isIn в начале не нужно еще раз проверять на %, если это не +, не -, не * и не / значит это %
+            std::cout << localN1 << " % " << localN2 << " = " << localN1 % localN2 << "\n";
         };
     } else if(n == 6) {
         std::string localNString;
@@ -491,13 +491,156 @@ int main() {
                 break;
             default:
                 std::cout << "UNKNOWN NUMBER";
-                };
+        };
+        } else if(n == 7) {
+            std::cout << "Введите номер месяца.";
+            std::string numberMounthString;
+            short numberMounth;
+            std::cin >> numberMounthString;
+            try {
+                numberMounth = std::stoi(numberMounthString);
+            } catch(const std::invalid_argument& e) {
+                std::cout << "Вы ввели не число.\n";
+                std::exit(0);
+            } catch(const std::out_of_range& e) {
+                std::cout << "Вы ввели слишком большое число.\n";
+                std::exit(0);
+            };
+
+            std::cout << "Введите номер месяца: ";
+            std::string numberDayString;
+            short numberDay;
+            std::cin >> numberDayString;
+            try {
+                numberDay = std::stoi(numberDayString);
+            } catch(const std::invalid_argument& e) {
+                std::cout << "Вы ввели не число.\n";
+                std::exit(0);
+            } catch(const std::out_of_range& e) {
+                std::cout << "Вы ввели слишком большое число.\n";
+                std::exit(0);
+            };
+
+            if((numberMounth < 0) || (numberMounth > 12) || (numberDay < 0) || (numberDay > 31)) {
+                std::cout << "Вы ввели не корректное число.\n";
+                std::exit(0);
+            };
+
+            switch(numberMounth) {
+                case 1:
+                    std::cout << numberDay << " февраля.\n";
+                    break;
+                case 2:
+                    std::cout << numberDay << " января.\n";
+                    break;
+                case 3:
+                    std::cout << numberDay << " марта.\n";
+                    break;
+                case 4:
+                    std::cout << numberDay << " апреля.\n";
+                    break;
+                case 5:
+                    std::cout << numberDay << " майя.\n";
+                    break;
+                case 6:
+                    std::cout << numberDay << " июня.\n";
+                    break;
+                case 7:
+                    std::cout << numberDay << " июля.\n";
+                    break;
+                case 8:
+                    std::cout << numberDay << " августа.\n";
+                    break;
+                case 9:
+                    std::cout << numberDay << " cентября.\n";
+                    break;
+                case 10:
+                    std::cout << numberDay << " октября.\n";
+                    break;
+                case 11:
+                    std::cout << numberDay << " ноября.\n";
+                    break;
+                case 12:
+                    std::cout << numberDay << " декабря.\n";
+                    break;
+                default:
+                    std::cout << "UNKNOWN NUMBER";
+            };
+        } else if(n == 8) {
+            const std::vector<std::string> russianWord = {"один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять", "десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятьнадцать"};
+            const std::vector<std::string> englishWord = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "pyatnadtsat"};
+            std::cout << "[1] Русские слова.\n";
+            std::cout << "[2] Английские слова.\n\n";
+            std::cout << "[3] Выйти.\n";
+            
+            // Выбор русского или английского
+            std::string localNString1;
+            short localN1;
+            std::cin >> localNString1;
+            try {
+                localN1 = std::stoi(localNString1);
+            } catch(const std::invalid_argument& e) {
+                std::cout << "Вы ввели не число.\n";
+                std::exit(0);
+            } catch(const std::out_of_range& e) {
+                std::cout << "Вы ввели слишком большое или слишком маленькое число.\n";
+                std::exit(0);
+            };
+            
+            switch(localN1) {
+                case 1:
+                    // Пользователь выбрал русские слова, 16 это длина russinWord, что бы не было обращения к переменной и очень микро оптимизация
+                    for(short i=0; i<15; i++) {
+                        std::cout << "[" << i+1 << "]" << " " << russianWord[i] << "\n";
+                    };
+                    break;
+                case 2:
+                    // Пользователь выбрал английские слова, 16 это длина englishWord, что бы не было обращения к переменной и очень микро оптимизация
+                    for(short i=0; i<15; i++) {
+                        std::cout << "[" << i+1 << "]" << " " << englishWord[i] << "\n";
+                    };
+                    break;
+                case 3:
+                    std::cout << "Вы вышли.\n";
+                    std::exit(0);
+                    break;
+                 default:
+                    std::cout << "Вы ввели не корректное число.\n";
+                    exit(0);
+                    break;
+            };
+            
+            //  Выбор номера слова
+            std::string localNString2;
+            short localN2;
+            std::cin >> localNString2;
+            try {
+                localN2 = std::stoi(localNString2);
+            } catch(const std::invalid_argument& e) {
+                std::cout << "Вы ввели не число.\n";
+                std::exit(0);
+            } catch(const std::out_of_range& e) {
+                std::cout << "Вы ввели слишком большое или слишком маленькое число.\n";
+                std::exit(0);
+            };
+        
+        std::cout << localN2;
+            
+            std::cout << "Перевод: ";
+            switch(localN1) {
+                case 1:
+                    std::cout << englishWord[localN2];
+                    break;
+                case 2:
+                    std::cout << russianWord[localN2];
+                    break;
+            }
         } else if(n == 33) {
         std::cout << "Введите число\n";
         std::cout << "[0] Закрыть программу\n";
         std::cout << "[1] Внести числа\n";
 
-        // Числа 0 или 1 для закрытия программы и вноски чисел коответственно
+        // Числа 0 или 1 для закрытия программы и вноски чисел cоответственно
         std::string localNString;
         short localN;
         std::cin >> localNString;
@@ -521,7 +664,6 @@ int main() {
         } else if(localN == 1) {
             system("clear");
             std::cout << "[#] Заполнение вектора\n\n";
-            short i = 0;
             res = pushNumbers();
 
             // TEST
@@ -602,67 +744,4 @@ int main() {
     };
 
     return 0;
-};
-
-/* 
-int main() {
-    class Animals {
-        private:
-        short age;
-        
-        public:
-        Animals(short a) {
-            age = a;
-        };
-        
-        void getAnimals() {
-            std::cout << "AGE: " << age << "\n\n";
-        };
-        
-        short getAge() {
-            return age;
-        };
-    };
-    
-    class Cat : public Animals {
-        private:
-        std::string name;
-        
-        public:
-        Cat(std::string n) {
-            name = n;
-        };
-        
-        void getCat() {
-            std::cout << "AGE: " << Animals::getAge() << ", NAME: " << name << "\n\n";
-        };
-    };
-    
-    Cat I(19);
-    I.getAnimals();
-    return 0;
-};
-
-*/
-
-
-/*
-int main() {
-    short number;
-    std::cin >> number;
-    
-    switch(number) {
-        case -1:
-            std::cout << "NEGATIVE";
-            break;
-        case 0:
-            std::cout << "ZERO";
-            break;
-        case 1:
-            std::cout << "POSITIVe;";
-            break;
-        default:
-            std::cout << "{{}{}";
-    };
-};
-*/
+}
