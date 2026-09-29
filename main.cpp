@@ -215,6 +215,15 @@ void initializationAgain() {
     printVector(result);
 };
 
+bool isCorrectNumber(short numberDay, short maxNumberDay) {
+    if(numberDay > maxNumberDay || numberDay < 0) {
+        std::cout << "Вы ввели не корректное число.\n";
+        std::exit(0);
+    };
+    
+    return true;
+};
+
 
 int main() {
     std::cout << "Выберите номер задания: ";
@@ -528,40 +537,64 @@ int main() {
 
             switch(numberMounth) {
                 case 1:
-                    std::cout << numberDay << " февраля.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " января.\n";
+                    };
                     break;
                 case 2:
-                    std::cout << numberDay << " января.\n";
+                    if(isCorrectNumber(numberDay, 29) == true) {
+                        std::cout << numberDay << " февраля.\n";
+                    };
                     break;
                 case 3:
-                    std::cout << numberDay << " марта.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " марта.\n";
+                    };
                     break;
                 case 4:
-                    std::cout << numberDay << " апреля.\n";
+                    if(isCorrectNumber(numberDay, 30) == true) {
+                        std::cout << numberDay << " апреля.\n";
+                    };
                     break;
                 case 5:
-                    std::cout << numberDay << " майя.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " майя.\n";
+                    };
                     break;
                 case 6:
-                    std::cout << numberDay << " июня.\n";
+                    if(isCorrectNumber(numberDay, 30) == true) {
+                        std::cout << numberDay << " июня.\n";
+                    };
                     break;
                 case 7:
-                    std::cout << numberDay << " июля.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " июля.\n";
+                    };
                     break;
                 case 8:
-                    std::cout << numberDay << " августа.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " августа.\n";
+                    };
                     break;
                 case 9:
-                    std::cout << numberDay << " cентября.\n";
+                    if(isCorrectNumber(numberDay, 30) == true) {
+                        std::cout << numberDay << " cентября.\n";
+                    };
                     break;
                 case 10:
-                    std::cout << numberDay << " октября.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " октября.\n";
+                    };
                     break;
                 case 11:
-                    std::cout << numberDay << " ноября.\n";
+                    if(isCorrectNumber(numberDay, 30) == true) {
+                        std::cout << numberDay << " ноября.\n";
+                    };
                     break;
                 case 12:
-                    std::cout << numberDay << " декабря.\n";
+                    if(isCorrectNumber(numberDay, 31) == true) {
+                        std::cout << numberDay << " декабря.\n";
+                    };
                     break;
                 default:
                     std::cout << "UNKNOWN NUMBER";
