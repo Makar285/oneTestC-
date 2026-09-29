@@ -569,14 +569,17 @@ int main() {
         } else if(n == 8) {
             const std::vector<std::string> russianWord = {"один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять", "десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятьнадцать"};
             const std::vector<std::string> englishWord = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "pyatnadtsat"};
+            
             std::cout << "[1] Русские слова.\n";
             std::cout << "[2] Английские слова.\n\n";
-            std::cout << "[3] Выйти.\n";
+            std::cout << "[3] Выйти.\n\n";
             
             // Выбор русского или английского
+            std::cout << "Выберите пункт меню: ";
             std::string localNString1;
             short localN1;
             std::cin >> localNString1;
+            std::cout << std::endl;
             try {
                 localN1 = std::stoi(localNString1);
             } catch(const std::invalid_argument& e) {
@@ -593,12 +596,14 @@ int main() {
                     for(short i=0; i<15; i++) {
                         std::cout << "[" << i+1 << "]" << " " << russianWord[i] << "\n";
                     };
+                    std::cout << std::endl;
                     break;
                 case 2:
                     // Пользователь выбрал английские слова, 16 это длина englishWord, что бы не было обращения к переменной и очень микро оптимизация
                     for(short i=0; i<15; i++) {
                         std::cout << "[" << i+1 << "]" << " " << englishWord[i] << "\n";
                     };
+                    std::cout << std::endl;
                     break;
                 case 3:
                     std::cout << "Вы вышли.\n";
@@ -611,9 +616,11 @@ int main() {
             };
             
             //  Выбор номера слова
+            std::cout << "Выберите номер слова для перевода: ";
             std::string localNString2;
             short localN2;
             std::cin >> localNString2;
+            std::cout << std::endl;
             try {
                 localN2 = std::stoi(localNString2);
             } catch(const std::invalid_argument& e) {
@@ -623,16 +630,14 @@ int main() {
                 std::cout << "Вы ввели слишком большое или слишком маленькое число.\n";
                 std::exit(0);
             };
-        
-        std::cout << localN2;
             
             std::cout << "Перевод: ";
             switch(localN1) {
                 case 1:
-                    std::cout << englishWord[localN2];
+                    std::cout << englishWord[localN2-1];
                     break;
                 case 2:
-                    std::cout << russianWord[localN2];
+                    std::cout << russianWord[localN2-1];
                     break;
             }
         } else if(n == 33) {
