@@ -239,7 +239,7 @@ int main() {
         std::cout << "Вы ввели слишком большое число.";
         return 0;
     };
-    std::cout << "\n";
+    std::cout << n << "\n";
 
     if(n == 1) {
         for(short i=0;i<5;i++) {
@@ -705,10 +705,11 @@ int main() {
             res = pushNumbers();
 
             // TEST
-            std::cout << "TEST START\n\n";
+            /* std::cout << "TEST START\n\n";
             printVector(res);
             std::cout << "\n";
             std::cout << "TEST END\n\n";
+            */
             
             if(res.size() == 0) {
                 std::cout << "Произошла ошибка или вы не ввели ни одного числа.";
