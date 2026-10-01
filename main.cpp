@@ -6,6 +6,30 @@
 #include <cmath>
 #include <format>
 #include <cstdlib>
+#include <algorithm>
+#include <random>
+
+// Обшая функция проверяющая что число int есть в векторе
+bool contains(const std::vector<int>& vec, int value) {
+    return std::find(vec.begin(), vec.end(), value) != vec.end();
+};
+
+// Общая функция для получения числа, так как нету легкого преобразования из std::string в short, будуиспользуеться только int
+int getNumber() {
+    int number;
+    std::string string;
+    std::cin >> string;
+    try {
+        number = std::stoi(string);
+    } catch(const std::invalid_argument& e) {
+        std::cout << "Вы введи не число.\n";
+        std::exit(0);
+    } catch(const std::out_of_range& e) {
+        std::cout << "Вы ввели слишком большое или слишком маленькое число.\n";
+    };
+    
+    return number;
+};
 
 // Функции для n = 33
 // Добавление элементов в вектор и возвращение этого заполеного вектора
@@ -215,6 +239,7 @@ void initializationAgain() {
     printVector(result);
 };
 
+// Функция для n = 7
 bool isCorrectNumber(short numberDay, short maxNumberDay) {
     if(numberDay > maxNumberDay || numberDay < 0) {
         std::cout << "Вы ввели не корректное число.\n";
@@ -222,6 +247,12 @@ bool isCorrectNumber(short numberDay, short maxNumberDay) {
     };
     
     return true;
+};
+
+// Вывод текущего состояние игры для n = 10
+void printInterface(short countCurrentNumber, short countAttempt) {
+    std::cout << "[+] Угаданных чисел: [" << countCurrentNumber << "/3]\n";
+    std::cout << "[+] Попыток: [" << countAttempt << "]\n";
 };
 
 
@@ -239,7 +270,7 @@ int main() {
         std::cout << "Вы ввели слишком большое число.";
         return 0;
     };
-    std::cout << n << "\n";
+    std::cout << "\n";
 
     if(n == 1) {
         for(short i=0;i<5;i++) {
@@ -673,7 +704,140 @@ int main() {
                     std::cout << russianWord[localN2-1];
                     break;
             }
-        } else if(n == 33) {
+        } else if(n == 9) {
+            while (true) {
+                std::cout << "Введите количество итераций от 1 до 15: ";
+                int count;
+                std::string countString;
+                std::cin >> countString;
+                try {
+                    count = std::stoi(countString);
+                } catch(const std::invalid_argument& e) {
+                    std::cout << "Вы ввели не число.\n";
+                    std::exit(0);
+                } catch(const std::out_of_range& e) {
+                    std::cout << "Вы ввели слишком большое или слишком маленькое число.\n";
+                    std::exit(0);
+                };
+                
+                if(count == 0) {
+                    std::cout << "END\n";
+                    std::exit(0);
+                } else if(count < 0 || count > 15) {
+                    std::cout << "Можно только количество итераци в диапазоне [1, 15]\n";
+                    std::exit(0);
+                };
+                
+                int i = 1;
+                while(i <= count) {
+                    std::cout << "[+] Цикл отработал. Круг: " << i << ".\n";
+                    i++;
+                };
+            };
+        } else if(n == 10)  {
+            std::cout << "[0] START GAME\n";
+            std::cout << "[1] EXIT\n\n";
+            
+            int localN = getNumber();
+            
+            if(localN != 0 && localN != 1) {
+                std::cout << "Можно вводить только 0 и 1.\n";
+                std::exit(0);
+            };
+            
+            if(localN == 0) {
+                // Начальное значение переменных
+                short countCurrentNumber = 0;
+                short countAttempt = 5;
+                std::vector<int> randomNumbers = {};
+                
+                // 1. Инициализируем генератор случайных чисел случайным сидом (зерном)
+                std::random_device rd;
+                std::mt19937 gen(rd());
+            
+                // 2. Задаем диапазон [min, max] (включительно с обеих сторон)
+                int min = 1;
+                int max = 10;
+                std::uniform_int_distribution<int> distrib(min, max);
+                
+                // Три итерации для трех генераций рандомного числа
+                short i = 0;
+                
+                while(i < 3) {
+                    // 3. Генерируем случайное число
+                    int randomNumber = distrib(gen);
+                    
+                    if(!contains(randomNumbers, randomNumber)) {
+                        // Такого числа нету в векторе randomNumbers
+                        // увеличивать i и добавлять число в randomNumbers, а если бы число было в векторе пройти это на один раз больше предустановленого три раза
+                        i++;
+                        randomNumbers.push_back(randomNumber);
+                    };
+                };
+                
+                // TEST /(
+                std::cout << "\n\n\n";
+                for(int number : randomNumbers) {
+                    std::cout << number << "\n";
+                };
+                
+                std::cout << "\n\n\n";
+                // )/
+                
+                // Цикл пока не закончаться попытки или пользователь не найдет все числа
+                while (true) {
+                    printInterface(countCurrentNumber, countAttempt);
+                    
+                    std::cout << "Введите число: ";
+                    int number = getNumber();
+                    
+                    // Если число не из заданного диапазона уведомить об этом пользователя и не снимать попытку
+                    if(number < 0 || number > 10) {
+                        std::cout << "Число может быть только в диапазоне [1, 10].\n";
+                        continue;
+                    };
+                    
+                    // Очистить консоль
+                    system("clear");
+                    
+                    // Если число есть в массиве удалить его из массива, увеличить количество отгадонных числе на 1 и уменьшить количество попыток на 1
+                    if(contains(randomNumbers, number)) {
+                        std::erase(randomNumbers, number);
+                        countCurrentNumber++;
+                        
+                        std::cout << "Верно.\n";
+                    } else {
+                        std::cout << "Неверно.\n";
+                    };
+                    
+                    
+                    // Уменьшить количество попыток пользователя на 1
+                    countAttempt--;
+                    
+                    // Если количество попыток пользователя стало 0 или количество угаданных пользователем чисел стало 3
+                    if(countAttempt == 0 || countCurrentNumber == 3) {
+                        break;
+                    };
+                };
+                
+                if(countCurrentNumber == 3) {
+                    std::cout << "YOU WIN.\n";
+                } else if(countAttempt == 0) {
+                    std::cout << "YOU LOSE.\n";
+                    
+                    // Вывод чисел которые не угадал пользователь
+                    std::cout << "Числа которое вы не угадали: \n";
+                    for(int number : randomNumbers) {
+                        std::cout << number << "\n";
+                    };
+                };
+                
+                std::exit(0);
+            } else {
+                std::cout << "END.\n";
+                std::exit(0);
+            };
+        } else if (n == 33) {
         std::cout << "Введите число\n";
         std::cout << "[0] Закрыть программу\n";
         std::cout << "[1] Внести числа\n";
@@ -705,11 +869,10 @@ int main() {
             res = pushNumbers();
 
             // TEST
-            /* std::cout << "TEST START\n\n";
+            std::cout << "TEST START\n\n";
             printVector(res);
             std::cout << "\n";
             std::cout << "TEST END\n\n";
-            */
             
             if(res.size() == 0) {
                 std::cout << "Произошла ошибка или вы не ввели ни одного числа.";
