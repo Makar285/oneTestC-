@@ -255,6 +255,20 @@ void printInterface(short countCurrentNumber, short countAttempt) {
     std::cout << "[+] Попыток: [" << countAttempt << "]\n";
 };
 
+// Вывод меню игры и вопроса для n = 12
+void printMenuAndQuestionGame(short nQuestion, std::string userName, short countLife, short glasses, std::string question, std::vector<std::string> answerOptions) {
+    std::cout << "[+] Игрок: " << userName << "| жизни: " << countLife << " | очки: " << glasses << "\n";
+    std::cout << "[" << nQuestion << "]  Вопрос: " << question << "?\n";
+    for(short i = 1; i < answerOptions.size(); i++) {
+        std::cout << "[" << i << "] " << answerOptions[i-1];
+        if(i % 2 == 0) {
+            std::cout << "\n";
+        } else {
+            std::cout << "\t";
+        };
+    };
+};
+
 
 int main() {
     std::cout << "Выберите номер задания: ";
@@ -775,14 +789,12 @@ int main() {
                     };
                 };
                 
-                // TEST /(
                 std::cout << "\n\n\n";
                 for(int number : randomNumbers) {
                     std::cout << number << "\n";
                 };
                 
                 std::cout << "\n\n\n";
-                // )/
                 
                 // Цикл пока не закончаться попытки или пользователь не найдет все числа
                 while (true) {
@@ -836,6 +848,225 @@ int main() {
             } else {
                 std::cout << "END.\n";
                 std::exit(0);
+            };
+        } else if(n == 11) {
+            std::cout << "[+] Программа - \"Геометрические фигуры\".\n";
+            std::cout << "[1] Линия.\n";
+            std::cout << "[+] Выберите фигуру: ";
+
+            int localN = getNumber();
+            
+            if(localN == 1) {
+                system("clear");
+                
+                std::cout << "[ + ] Фигура: \"Линия\".\n\n";
+                std::cout << "[1] Горизонтальная.\n";
+                std::cout << "[2] Вертикальная.\n\n";
+                std::cout << "[+] Выберите тип: ";
+                
+                int localLocalN = getNumber();
+                
+                std::cout << "[length] Длина линии: ";
+                int lengthLine = getNumber();
+                std::cout << "\n";
+                std::cout << "[value] Текстура линии: ";
+                char submol;
+                std::cin >> submol;
+                std::cout << "\n";
+                
+                int i = 0;
+                
+                if(localLocalN == 1) {
+                    // Вывод горизонтально
+                    while(i < lengthLine) {
+                        std::cout << submol;
+                        if(i - 1 != lengthLine) {
+                            std::cout << " ";
+                        };
+                        i++;
+                    };
+                } else if(localLocalN == 2) {
+                    // Вывод вертикально
+                    while(i < lengthLine) {
+                        std::cout << submol;
+                        if(i - 1 != lengthLine) {
+                            std::cout << "\n";
+                        };
+                        i++;
+                    };
+                } else {
+                    std::cout << "Такого пункта нету.\n";
+                    std::exit(0);
+                };
+            } else {
+                std::cout << "Такого пункта нету.\n";
+                std::exit(0);
+            };
+        } else if(n == 101) {
+            std::cout << "Введите число: ";
+            int localN = getNumber();
+            
+            // Значение общей суммы всех вводимых чисел в начале будет равна localN
+            int result = localN;
+                while(localN != 0) {
+                std::cout << "Введите число: ";
+                localN = getNumber();
+                result += localN;
+            };
+            
+            
+            std::cout << "Сумма: " << result << "\n";
+            
+        } else if(n == 102) {
+            std::cout << "Введите число до которого будет производиться обратный отсчет: ";
+            int number = getNumber();
+            if(number < 1) {
+                std::cout << "Вы ввели число от которого нельзя произвести отсчет до нуля.\n";
+                std::exit(0);
+            };
+            
+            while(number != 0) {
+                std::cout << number << "\n";
+                number--;
+            };
+            
+            std::cout << "START";
+        } else if(n == 103) {
+            std::cout << "[+] Введите число: ";
+            int number = getNumber();
+            
+            int count = 0;
+            int sum = number;
+            while(number != 0) {
+                std::cout << "[+] Введите число: ";
+                number = getNumber();
+                
+                count++;
+                sum += number;
+            };
+            
+            std::cout << "Количество чисел: " << count << "\n";
+            std::cout << "Сумма: " << sum << "\n";
+        } else if(n == 104) {
+            std::cout << "[+] Введите число: ";
+            int number = getNumber();
+            
+            /* std::string string = std::to_string(number);
+            std::cout << "[+] Количество цифр: " << string.size() << "\n"; */
+            
+            int count = 0;
+            while(number != 0) {
+                number /= 10;
+                count ++;
+            };
+            
+            std::cout << "[+] Количество цифр: " << count << "\n";
+        } else if(n == 105) {
+            std::cout << "[+] Введите число: ";
+            int number = getNumber();
+            
+            int i = 1;
+            while(i != 11) {
+                std::cout << number << " * " << i << " = " << number * i << "\n";
+                i++;
+            };
+        } else if(n == 106) {
+            std::cout << "[+] Введите число: ";
+            int number = getNumber();
+            
+            int sum = number;
+            int count = 1;
+            
+            while(true) {
+                std::cout << "[+] Введите число: ";
+                number = getNumber();
+                
+                if(number == 0) {
+                    break;
+                };
+                
+                count++;
+                sum += number;
+            };
+            
+            std::cout << "[+] Среднее арифметическое: " << sum / count << "\n";
+        } else if(n == 107) {
+            std::string PASSWORD = "12345";
+            
+            std::cout << "Введите пароль: ";
+            std::string value;
+            std::cin >> value;
+            while(value != PASSWORD) {
+                std::cout << "Неверный пароль.\n\n";
+                std::cout << "Введите пароль: ";
+                std::cin >> value;
+            };
+            
+            std::cout << "WELCOME\n";
+        } else if(n == 12) {
+            // Перменнные содаржищие значение по умолчанию
+            std::string userName = "user";
+            short countQuestions = 10;
+            
+            while(true) {
+                std::cout << "[0] Начать игру.\n";
+                std::cout << "[1] Настройки.\n";
+                std::cout << "[2] Правила.\n";
+                std::cout << "[3] Выйти.\n";
+                
+                std::cout << "Выберите пункт: ";
+                int number = getNumber();
+                
+                std::cout << "\n";
+                
+                if(number == 0) {
+                    // игра
+                    
+                    break;
+                } else if(number == 1) {
+                    std::cout << "[0] Редактирование имя игрока.\n";
+                    std::cout << "[1] Редактирование вопросов в игре. Можно изменить на 8 - 10 - 12.\n";
+                    std::cout << "[2] EXIT.\n";
+                    
+                    std::cout << "Выберите пункт для изменения или выхода: ";
+                    int localNumber = getNumber();
+                    std::cout << "\n";
+                    
+                    
+                    if(localNumber == 0) {
+                        std::cout << "Введите новое имя: ";
+                        std::string newUserName;
+                        std::cin >> newUserName;
+                        
+                        userName = newUserName;
+                    } else if(localNumber == 1) {
+                        short newCountQuestions;
+                        std::cout << "Введите новое количество вопросов: ";
+                        std::cin >> newCountQuestions;
+                        
+                        countQuestions = newCountQuestions;
+                    } else if(localNumber == 2) {
+                        
+                    } else {
+                        std::cout << "Такого пункта нету.\n";
+                    };
+                    
+                    // очистка консоли что бы меню n-1 не накладывалось на n из за того что заново выводиться меню выбора
+                    system("clear");
+                    
+                    // потому что не работает system("clear"); просто выводить переводить стркоу на два вперед
+                    std::cout << "\n\n";
+                } else if(number == 2) {
+                    std::cout << "Игрок получает очки за правильный ответ на вопрос.\n";
+                    std::cout << "Игрок проходит дальше за правильный ответ.\n";
+                    std::cout << "Игрок теряет жизнь при неправильном ответе.\n\n";
+                } else if(number == 3) {
+                    std::cout << "EXIT.\n";
+                    std::exit(0);
+                } else {
+                    std::cout << "Такого пункта нету.\n";
+                    std::exit(0);
+                };
             };
         } else if (n == 33) {
         std::cout << "Введите число\n";
