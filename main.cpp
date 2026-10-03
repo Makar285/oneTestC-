@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <random>
+#include <clocale>
 
 // Обшая функция проверяющая что число int есть в векторе
 bool contains(const std::vector<int>& vec, int value) {
@@ -17,19 +18,17 @@ bool contains(const std::vector<int>& vec, int value) {
 // Общая функция для получения числа, так как нету легкого преобразования из std::string в short, будуиспользуеться только int
 int getNumber() {
     int number;
-    std::string string;
-    std::cin >> string;
-    try {
-        number = std::stoi(string);
-    } catch(const std::invalid_argument& e) {
-        std::cout << "Вы введи не число.\n";
-        std::exit(0);
-    } catch(const std::out_of_range& e) {
-        std::cout << "Вы ввели слишком большое или слишком маленькое число.\n";
+    
+    // Цикл работает до тех пор, пока пользователь не введет корректное число
+    while (!(std::cin >> number)) {
+        std::cout << "Вы ввели не число. Попробуйте еще раз: ";
+        
+        std::cin.clear(); // Сбрасываем ошибочное состояние cin
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Очищаем буфер ввода
     };
     
     return number;
-};
+}
 
 // Функции для n = 33
 // Добавление элементов в вектор и возвращение этого заполеного вектора
@@ -258,8 +257,8 @@ void printInterface(short countCurrentNumber, short countAttempt) {
 // Вывод меню игры и вопроса для n = 12
 void printMenuAndQuestionGame(short nQuestion, std::string userName, short countLife, short glasses, std::string question, std::vector<std::string> answerOptions) {
     std::cout << "[+] Игрок: " << userName << "| жизни: " << countLife << " | очки: " << glasses << "\n";
-    std::cout << "[" << nQuestion << "]  Вопрос: " << question << "?\n";
-    for(short i = 1; i < answerOptions.size(); i++) {
+    std::cout << "[" << nQuestion << "]  Вопрос: " << question << "\n";
+    for(short i = 1; i <= answerOptions.size(); i++) {
         std::cout << "[" << i << "] " << answerOptions[i-1];
         if(i % 2 == 0) {
             std::cout << "\n";
@@ -267,24 +266,18 @@ void printMenuAndQuestionGame(short nQuestion, std::string userName, short count
             std::cout << "\t";
         };
     };
+    std::cout << "Выберите вариант ответа: ";
 };
 
 
 int main() {
+    std::setlocale(LC_ALL, "");
+    
+    
     std::cout << "Выберите номер задания: ";
     std::string nString{};
-    short n{};
-    std::cin >> nString;
-    try {
-        n = std::stoi(nString);
-    } catch(const std::invalid_argument& e) {
-        std::cout << "Вы ввели не число";
-        return 0;
-    } catch(const std::out_of_range& e) {
-        std::cout << "Вы ввели слишком большое число.";
-        return 0;
-    };
-    std::cout << "\n";
+    int n;
+    n = getNumber();
 
     if(n == 1) {
         for(short i=0;i<5;i++) {
@@ -1004,11 +997,36 @@ int main() {
             
             std::cout << "WELCOME\n";
         } else if(n == 12) {
-            // Перменнные содаржищие значение по умолчанию
+            // Перeменнные содаржищие значение по умолчанию
             std::string userName = "user";
-            short countQuestions = 10;
+            int countQuestions = 10;
+            short currentAnswer = 0;
+            short countLife = 5;
+            short glasses = 0;
             
+            std::vector<std::string> vectorQuestions = {"Что такое переменная в программировании?", "Как расшифровывается аббревиатура HTML?", "Какой принцип работы у структуры данных «Стек» (Stack)?", "Какой оператор в большинстве языков программирования используется для проверки равенства двух значений?", "Что делает цикл while?", "акой тип данных лучше всего подходит для хранения логического значения (истина / ложь)?", "Что такое рекурсия?", "Какая система контроля версий является самой популярной в мире?", "Что такое синтаксическая ошибка (Syntax Error)?", "Что такое массив (Array)?", "Какой язык запросов используется реляционными базами данных?", "Что означает комментарий в коде программы?"};
+            std::vector<std::vector<std::string>> vectorAnswerOptions = {
+                {"Именованная область памяти для хранения данных", "Часть кода, которая всегда выполняется один раз", "Математическая формула без результата", "Ошибка компиляции"},
+                {"High Transfer Machine Language", "HyperText Markup Language", "Home Tool Multi Language", "Hyperlink Text Modern Logic"},
+                {"FIFO (First In, First Out — первым вошел, первым вышел)", "LIFO (Last In, First Out — последним вошел, первым вышел)", "Случайный порядок извлечения", "Строгая сортировка по возрастанию"},
+                {"=", ":=", "==", "<>"},
+                {"Выполняет блок кода один раз, если условие истинно", "Повторяет блок кода до тех пор, пока проверяемое условие истинно", "Всегда выполняется бесконечное число раз", "Создает новую функцию"},
+                {"String (строка)", "Integer (целое число)", "Boolean (булев тип)", "Float (число с плавающей точкой)"},
+                {"Вызов функции самой себя", "Зацикливание программы из-за ошибки в синтаксисе", "Удаление переменной из памяти", "Способ компиляции кода в машинный язык"},
+                {"SVN", "Mercurial", "Git", "CVS"},
+                {"Ошибка в логике работы алгоритма, когда программа выдает неверный результат", "Нарушение правил написания кода языка программирования, из-за чего он не может быть скомпилирован", "Сбой программы во время работы из-за деления на ноль", "Вирус в исходном коде"},
+                {"Неупорядоченный список любых файлов на жестком диске", "Структура данных, хранящая набор элементов в непрерывном участке памяти", "Функция для математических расчетов", "База данных SQL"},
+                {"HTML", "Python", "SQL", "CSS"},
+                {"Инструкцию для процессора по оптимизации скорости", "Текст, который игнорируется компилятором/интерпретатором и служит для пояснения кода людям", "Команду вывода текста на экран", "Секретный пароль доступа к базе данных"}
+            };
+            std::vector<int> vectorCorrectAnswers = {1, 2, 2, 3, 2, 3, 1, 3, 2, 2, 3, 2};
+            
+            bool isBreak = false;
+            // Бесконечный цикл, нужен что бы можно было настроить и продолжить играть, а не только настройка, после программа завершаеться и данные нигде не сохраняються
             while(true) {
+                if(isBreak) {
+                    break;
+                };
                 std::cout << "[0] Начать игру.\n";
                 std::cout << "[1] Настройки.\n";
                 std::cout << "[2] Правила.\n";
@@ -1021,8 +1039,41 @@ int main() {
                 
                 if(number == 0) {
                     // игра
-                    
-                    break;
+                    while(true) {
+                        printMenuAndQuestionGame(currentAnswer+1, userName, countLife, glasses, vectorQuestions[currentAnswer], vectorAnswerOptions[currentAnswer]);
+                        std::string value;
+                        std::cin >> value;
+                        
+                        if(std::stoi(value) == vectorCorrectAnswers[currentAnswer]) {
+                            // Пользователь ввел правильный ответ, увеличить количество очков на 1
+                            glasses++;
+                            std::cout << "Верно\n\n";
+                        } else {
+                            // Пользователь ввел неправильный ответ, уменьшить количество жизней на 1
+                            std::cout << "Неверно.\n";
+                            countLife--;
+                        };
+                        
+                        // Увеличить текущий номер вопроса на 1
+                        currentAnswer++;
+                        
+                        if(countLife == 0) {
+                            // Количество жизней 0, пользователь проиграл
+                            std::cout << "Вы проиграли.\n";
+                            
+                            // Выйти из текущего цикла while а так же сделать значение флага isBreak равным true что бы в начале следующего глобального цикла проверилось isBreak и выполнилось break
+                            isBreak = true;
+                            break;
+                        } else if(currentAnswer == countQuestions) {
+                            // Текущий вопрос был последний, вывести оставшее количесвто жизней и количество очков
+                            std::cout << "Вопросы закончились.\n";
+                            std::cout << "У вас осталось: " << countLife << " жизней и вы набрали: " << glasses << " очков.\n";
+                            
+                            // Выйти из текущего цикла while а так же сделать значение флага isBreak равным true что бы в начале следующего глобального цикла проверилось isBreak и выполнилось break
+                            isBreak = true;
+                            break;
+                        };
+                    };
                 } else if(number == 1) {
                     std::cout << "[0] Редактирование имя игрока.\n";
                     std::cout << "[1] Редактирование вопросов в игре. Можно изменить на 8 - 10 - 12.\n";
@@ -1040,13 +1091,14 @@ int main() {
                         
                         userName = newUserName;
                     } else if(localNumber == 1) {
-                        short newCountQuestions;
+                        int newCountQuestions;
                         std::cout << "Введите новое количество вопросов: ";
-                        std::cin >> newCountQuestions;
-                        
+                        newCountQuestions = getNumber();
+                         
                         countQuestions = newCountQuestions;
                     } else if(localNumber == 2) {
-                        
+                        // Перейти к следующей итарации, что бы заново выбрать пункт игры, настроек и тд
+                        continue;
                     } else {
                         std::cout << "Такого пункта нету.\n";
                     };
