@@ -10,6 +10,8 @@
 #include <random>
 #include <clocale>
 
+
+
 // Обшая функция проверяющая что число int есть в векторе
 bool contains(const std::vector<int>& vec, int value) {
     return std::find(vec.begin(), vec.end(), value) != vec.end();
@@ -269,9 +271,212 @@ void printMenuAndQuestionGame(short nQuestion, std::string userName, short count
     std::cout << "Выберите вариант ответа: ";
 };
 
+// Получение нужных даннных и вывод линии, для n принадлежащее [11, 22]
+void line() {
+    std::cout << "[ + ] Фигура: \"Линия\".\n\n";
+    std::cout << "[1] Горизонтальная.\n";
+    std::cout << "[2] Вертикальная.\n\n";
+    std::cout << "[+] Выберите тип: ";
+    int localLocalN = getNumber();
+    
+    std::cout << "[length] Длина линии: ";
+    int lengthLine = getNumber();
+    std::cout << "\n";
+    std::cout << "[value] Текстура линии: ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+    
+    int i = 0;
+    if(localLocalN == 1) {
+        // Вывод горизонтально
+        while(i < lengthLine) {
+            std::cout << submol;
+            if(i - 1 != lengthLine) {
+                std::cout << " ";
+            };
+            i++;
+        };
+    } else if(localLocalN == 2) {
+        // Вывод вертикально
+        while(i < lengthLine) {
+            std::cout << submol;
+            if(i - 1 != lengthLine) {
+                std::cout << "\n";
+            };
+            i++;
+        };
+    } else {
+        std::cout << "Такого пункта нету.\n";
+        std::exit(0);
+    };
+};
+
+// Получение нужных даннных и вывод квадрата, для n принадлежащее [11, 22]
+void square() {
+    std::cout << "[+] Фигура: \"Квадрат\".\n\n";
+    std::cout << "[1] Заполненный.\n";
+    std::cout << "[2] Пустой.\n\n";
+    std::cout << "[+] Выберите тип: ";
+    
+    int type;
+    type = getNumber();
+    
+    std::cout << "[length] Размер: ";
+    int lengthLine = getNumber();
+    std::cout << "\n";
+    std::cout << "[value] Текстура: ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+    
+    if(type == 1) {
+        // Квадрат lengthLine x lengthLine заполненый submol
+        for(short i=0; i<lengthLine; i++) {
+            for(short j=0; j<lengthLine; j++) {
+                std::cout << submol;
+                if(j != lengthLine-1) {
+                    std::cout << " ";
+                };
+            };
+            
+            std::cout << "\n";
+        };
+    } else if(type == 2) {
+        // Квадрат lengthLine x lengthLine с окантовкой submol, а внутри пустой
+        for(short i=0; i<lengthLine; i++) {
+            if(i == 0 || i == lengthLine-1) {
+                // Первая или последняя строка квадрата, заполнять полностью
+                for(short j=0; j<lengthLine; j++) {
+                    std::cout << submol;
+                    if(j != lengthLine-1) {
+                        std::cout << " ";
+                    };
+                };
+            } else {
+                // Строка которую по бокам заполнять одним submol, а все остальное место внутри пустое
+                std::cout << submol;
+                short countSpace = (lengthLine-2)*2+1; // -2 так как с боковом должны выбь символы а не пробелы, *2+1 так как между пробелами должны быть пробелы
+                for(short i=0; i<countSpace; i++) {
+                    std::cout << " ";
+                };
+                std::cout << submol;
+            };
+            
+            std::cout << "\n";
+        };
+    } else {
+        std::cout << "Такого пункта нету.\n";
+        std::exit(0);
+    };
+};
+
+// Получение нужных даннных и вывод прямоугольника, для n принадлежащее [11, 22]
+void rectangle() {
+    std::cout << "[+] Фигура: \"Прямоугольник\".\n\n";
+    std::cout << "[1] Заполненный.\n";
+    std::cout << "[2] Пустой.\n\n";
+    std::cout << "[+] Выберите тип: ";
+    
+    int type = getNumber();
+    
+    std::cout << "[+] Ширина: ";
+    int width = getNumber();
+    std::cout << "\n";
+    
+    std::cout << "[+] Высота: ";
+    int height = getNumber();
+    std::cout << "\n";
+    
+    std::cout << "[+] Текстура: ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+    
+    if(type == 1) {
+        // Заполненный
+        for(int i=0; i<height; i++) {
+            for(int j=0; j<width; j++) {
+                std::cout << submol;
+                if(j != width-1) {
+                    std::cout << " ";
+                };
+            };
+            std::cout << "\n";
+        };
+    } else if(type == 2) {
+        // Пустой
+        for(int i=0; i<height; i++) {
+            if(i == 0 || i == height-1) {
+                // Первая или последняя строка прямоугольника, заполненая символом submol
+                for(int j=0; j<width; j++) {
+                    std::cout << submol;
+                        if(j != width-1) {
+                            std::cout << " ";
+                        };
+                };
+            } else {
+                std::cout << submol << " ";
+                int countSpaceOrDot = (width-2)*2-1; // -2 так как с боковом должны выбь символы а не пробелы, *2+1 так как между пробелами должны быть пробелы
+                for(int j=1; j<=countSpaceOrDot; j++) {
+                    if(j % 2 == 0) {
+                        std::cout << " ";
+                    } else {
+                        std::cout << ".";
+                    };
+                };
+                std::cout << " " << submol;
+            };
+            std::cout << "\n";
+        };
+    } else {
+        std::cout << "Такого пункта нету.\n";
+        std::exit(0);
+    };
+};
+
+// Получение нужных даннных и вывод треугольника, для n принадлежащее [11, 22]
+void triangle() {
+    std::cout << "[+] Фигура: \"Треугольник\".\n\n";
+    std::cout << "[1] Заполненный.\n";
+    std::cout << "[2] Пустой.\n\n";
+    std::cout << "[+] Выберите тип: ";
+    int type = getNumber();
+    std::cout << "\n";
+    
+    std::cout << "[+] Размер: ";
+    int size = getNumber();
+    std::cout << "\n";
+
+    std::cout << "[+] Текстура: ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+    
+    int maxCountSpace = size/2;
+    
+    for(int i=0; i<maxCountSpace; i++) {
+        std::cout << ". ";
+    };
+    std::cout << submol << " ";
+    for(int i=maxCountSpace+1; i<size-maxCountSpace-1; i++) { // maxCountSpace+1 это начало точек в самом треугольнике, size-maxCountSpace-1 это конец точек в самом треугольнике
+        std::cout << ". ";
+    };
+    std::cout << submol << " ";
+    for(int i=size-maxCountSpace-1; i<size-1; i++) {
+        std::cout << ".";
+        if(i != size-1) {
+            std::cout << " ";
+        };
+    };
+    
+    // TEST
+    std::cout << "\n\n\n\n";
+};
+
 
 int main() {
-    std::setlocale(LC_ALL, "");
+    triangle();
     
     
     std::cout << "Выберите номер задания: ";
@@ -846,51 +1051,12 @@ int main() {
             std::cout << "[+] Программа - \"Геометрические фигуры\".\n";
             std::cout << "[1] Линия.\n";
             std::cout << "[+] Выберите фигуру: ";
-
             int localN = getNumber();
             
             if(localN == 1) {
                 system("clear");
                 
-                std::cout << "[ + ] Фигура: \"Линия\".\n\n";
-                std::cout << "[1] Горизонтальная.\n";
-                std::cout << "[2] Вертикальная.\n\n";
-                std::cout << "[+] Выберите тип: ";
-                
-                int localLocalN = getNumber();
-                
-                std::cout << "[length] Длина линии: ";
-                int lengthLine = getNumber();
-                std::cout << "\n";
-                std::cout << "[value] Текстура линии: ";
-                char submol;
-                std::cin >> submol;
-                std::cout << "\n";
-                
-                int i = 0;
-                
-                if(localLocalN == 1) {
-                    // Вывод горизонтально
-                    while(i < lengthLine) {
-                        std::cout << submol;
-                        if(i - 1 != lengthLine) {
-                            std::cout << " ";
-                        };
-                        i++;
-                    };
-                } else if(localLocalN == 2) {
-                    // Вывод вертикально
-                    while(i < lengthLine) {
-                        std::cout << submol;
-                        if(i - 1 != lengthLine) {
-                            std::cout << "\n";
-                        };
-                        i++;
-                    };
-                } else {
-                    std::cout << "Такого пункта нету.\n";
-                    std::exit(0);
-                };
+                line();
             } else {
                 std::cout << "Такого пункта нету.\n";
                 std::exit(0);
@@ -1097,7 +1263,7 @@ int main() {
                          
                         countQuestions = newCountQuestions;
                     } else if(localNumber == 2) {
-                        // Перейти к следующей итарации, что бы заново выбрать пункт игры, настроек и тд
+                        // Перейти к следующей итeрации, что бы заново выбрать пункт игры, настроек и тд
                         continue;
                     } else {
                         std::cout << "Такого пункта нету.\n";
@@ -1119,6 +1285,78 @@ int main() {
                     std::cout << "Такого пункта нету.\n";
                     std::exit(0);
                 };
+            };
+        } else if(n == 13) {
+            std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+            std::cout << "[1] Линия.\n";
+            std::cout << "[2] Квадрат.\n\n";
+            std::cout << "[+] Выберите фигуру: ";
+
+            int localN = getNumber();
+            
+            if(localN == 1) {
+                system("clear");
+                
+                line();
+            } else if(localN == 2) {
+                system("clear");
+                square();
+            } else {
+                std::cout << "Такого пункта нету.\n";
+                std::exit(0);
+            };
+        } else if(n == 14) {
+            std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+            std::cout << "[1] Линия.\n";
+            std::cout << "[2] Квадрат.\n";
+            std::cout << "[3] Прямоугольник.\n\n";
+            std::cout << "[+] Выберите фигуру: ";
+
+            int localN = getNumber();
+            
+            if(localN == 1) {
+                system("clear");
+                
+                line();
+            } else if(localN == 2) {
+                system("clear");
+                
+                square();
+            } else if(localN == 3) {
+                system("clear");
+                
+                rectangle();
+            } else {
+                std::cout << "Такого пункта нету.\n";
+                std::exit(0);
+            };
+        } else if(n == 15) {
+            std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+            std::cout << "[1] Линия.\n";
+            std::cout << "[2] Квадрат.\n";
+            std::cout << "[3] Прямоугольник.\n";
+            std::cout << "[4] Треугольник.\n\n";
+            std::cout << "[+] Выберите фигуру: ";
+
+            int localN = getNumber();
+            
+            if(localN == 1) {
+                system("clear");
+                
+                line();
+            } else if(localN == 2) {
+                system("clear");
+                
+                square();
+            } else if(localN == 3) {
+                system("clear");
+                
+                rectangle();
+            } else if(n == 4) {
+                triangle();
+            } else {
+                std::cout << "Такого пункта нету.\n";
+                std::exit(0);
             };
         } else if (n == 33) {
         std::cout << "Введите число\n";
