@@ -619,6 +619,9 @@ void cross() {
     std::cin >> submol;
     std::cout << "\n";
 
+    // Количество строк которое напечаталось, нужно что бы прекратить выполнение итераций в последнем цикле, когда нужно количество строк вывелось
+    int countString = 0;
+
     // Количесвто точек между началом строки и первым символом, и вторым символом и концом строки
     int countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd = 0;
 
@@ -660,6 +663,8 @@ void cross() {
         // Уменьшить количество точек между первым символом и вторым символом на 2, потому что в строке два символа, они идут от углов к центру, тем самым уменьшая количесвто точек между ними на 2
         countDotBetweenOneSubmolAndTwoSubmol -= 2;
 
+        countString++;
+
         // Если количество точек которое нужно вывести отрицательное, то выйти из цикла, равно потому что если size четный, то countDotBetweenOneSubmolAndTwoSubmol будет ..., 2, 0, -2, ...
         if (countDotBetweenOneSubmolAndTwoSubmol <= 0) {
             break;
@@ -692,10 +697,70 @@ void cross() {
     // Что бы перейти на новую строку
     std::cout << "\n";
 
+    countString++;
+
 
     // Вторая часть после середины
+    if (size % 2 == 0) {
+        countDotBetweenOneSubmolAndTwoSubmol = 2;
+    }
+    else {
+        countDotBetweenOneSubmolAndTwoSubmol = 1;
+    };
+
+    countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd = (size - 2) / 2; // size - 2, потому что два в строке все точки кроме двух символом, а / 2 потому что два одинаковых кколичества точек между началом и первым символом, и вторым символом и концом
+
+    // Если число четное, то количество символом между началом и первым символом, и вторым символом и концом должно быть на 1 меньше, потому что, если не уменьшить, то все сдвинеться на элемента вправо
+    if (size % 2 == 0) {
+        countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd--;
+    }
+
     for (int i = 0; i < size; i++) {
-        
+        // Точки до первого символа
+        for (int j = 0; j < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; j++) {
+            std::cout << ". ";
+        };
+
+        // Первый символ
+        std::cout << submol << " ";
+
+        // Точки между первым и вторым символом
+        for (int j = 0; j < countDotBetweenOneSubmolAndTwoSubmol; j++) {
+            std::cout << ". ";
+        };
+
+        // Второй символ
+        std::cout << submol << " ";
+
+        // Точки после второго символа
+        for (int j = 0; j < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; j++) {
+            std::cout << ".";
+            if (j + 1 != countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd) {
+                std::cout << " ";
+            };
+        };
+
+        // Что бы перейти на новую строку
+        std::cout << "\n";
+
+        // Увеличение количесвто точек между началом строки и первым символом, и вторым символом и концом строки на 1
+        countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd--;
+
+        // Уменьшить количество точек между первым символом и вторым символом на 2, потому что в строке два символа, они идут от углов к центру, тем самым уменьшая количесвто точек между ними на 2
+        countDotBetweenOneSubmolAndTwoSubmol += 2;
+
+        countString++;
+
+        if (size % 2 == 0) {
+            if (countString >= size - 1) {
+                break;
+            }
+        }
+        else {
+            if (countString >= size ) {
+                break;
+            }
+        }
     };
 };
 
