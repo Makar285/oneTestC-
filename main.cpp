@@ -583,29 +583,119 @@ void lattice() {
 
     for (int i = 1; i <= size; i++) {
         if (i % 2 == 0) {
-            for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 std::cout << submol;
-                if (i + 1 != size) {
+                if (j + 1 != size) {
                     std::cout << " ";
                 };
             };
         }
         else {
-            for (int i = 1; i <= size; i++) {
-                if (i % 2 == 0) {
-                    std::cout << ".";
+            for (int j = 1; j <= size; j++) {
+                if (j % 2 == 0) {
+                    std::cout << submol;
                 }
                 else {
-                    std::cout << submol;
+                    std::cout << ".";
                 };
 
-                if (i + 1 != size) {
+                if (j != size) {
                     std::cout << " ";
                 };
             };
         };
 
         std::cout << "\n";
+    };
+};
+
+void cross() {
+    std::cout << "[ + ] Фигура: \"Крестик\".\n";
+    std::cout << "[+] Размер : ";
+    int size = getNumber();
+
+    std::cout << "[+] Текстура : ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    // Количесвто точек между началом строки и первым символом, и вторым символом и концом строки
+    int countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd = 0;
+
+    // Количество точек между первым символом и вторым символом
+    int countDotBetweenOneSubmolAndTwoSubmol = size - 2; // Потому что в строке всегда все точки кроме двух символов, в начале символы будут в углах и поэтому количесвто точек будет максимально возвожным для строки, т. е. size - 2
+
+    // Первая часть до середины
+    for (int i = 0; i < size; i++) {
+        // Точки до первого символа
+        for (int j = 0; j < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; j++) {
+            std::cout << ". ";
+        };
+
+        // Первый символ
+        std::cout << submol << " ";
+
+        // Точки между первым и вторым символом
+        for (int j = 0; j < countDotBetweenOneSubmolAndTwoSubmol; j++) {
+            std::cout << ". ";
+        };
+
+        // Второй символ
+        std::cout << submol << " ";
+
+        // Точки после второго символа
+        for (int j = 0; j < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; j++) {
+            std::cout << ".";
+            if (j + 1 != countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd) {
+                std::cout << " ";
+            };
+        };
+
+        // Что бы перейти на новую строку
+        std::cout << "\n";
+
+        // Увеличение количесвто точек между началом строки и первым символом, и вторым символом и концом строки на 1
+        countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd++;
+
+        // Уменьшить количество точек между первым символом и вторым символом на 2, потому что в строке два символа, они идут от углов к центру, тем самым уменьшая количесвто точек между ними на 2
+        countDotBetweenOneSubmolAndTwoSubmol -= 2;
+
+        // Если количество точек которое нужно вывести отрицательное, то выйти из цикла, равно потому что если size четный, то countDotBetweenOneSubmolAndTwoSubmol будет ..., 2, 0, -2, ...
+        if (countDotBetweenOneSubmolAndTwoSubmol <= 0) {
+            break;
+        };
+    };
+
+
+    // Середина
+    // От начало до первого символа
+    // countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd потому что если перешло сюда, значит итерация была на середине, а там countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd = максимальное количесвто точек от начала до первого символа, и от второго символа до конца, т. е. countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd = size/2; if(size % 2 == 0) { countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd-- };
+    for (int i = 0; i < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; i++) {
+        std::cout << ". ";
+    };
+    
+    // Символ(ы)
+    // Один символ если число четное, и два символа если число нечетное
+    std::cout << submol << " ";
+    if (size % 2 == 0) {
+        std::cout << submol << " ";
+    };
+
+    // От второго символа до конца
+    for (int i = 0; i < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; i++) {
+        std::cout << ".";
+        if (i + 1 != countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd) {
+            std::cout << " ";
+        };
+    };
+
+    // Что бы перейти на новую строку
+    std::cout << "\n";
+
+
+    // Вторая часть после середины
+    for (int i = 0; i < size; i++) {
+        
     };
 };
 
@@ -1604,6 +1694,52 @@ int main() {
 
             lattice();
         } else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+    } else if(n == 17) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else {
             std::cout << "Такого пункта нету.\n";
             std::exit(0);
         };
