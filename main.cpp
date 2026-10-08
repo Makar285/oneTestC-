@@ -764,6 +764,57 @@ void cross() {
     };
 };
 
+void plus() {
+    std::cout << "[ + ] Фигура: \"Плюс\".\n";
+    std::cout << "[+] Размер : ";
+    int size = getNumber();
+
+    std::cout << "[+] Текстура : ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    // Если число четное, то убавлять размер на 1
+    if (size % 2 == 0) {
+        size--;
+    };
+
+    int countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd = (size - 1) / 2;
+
+    for (int i = 0; i < size; i++) {
+        if (i == size / 2) {
+            // Это та строка которая содержит только символы
+            for (int j = 0; j < size; j++) {
+                std::cout << submol;
+                if (j + 1 != size) {
+                    std::cout << " ";
+                }
+            }
+        }
+        else {
+            // Все остальные строки
+            // Точки до символа
+            for (int j = 0; j < countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+
+            // Символ
+            std::cout << submol << " ";
+
+            // Точки после симола
+            for (int j = 0; j < countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd; j++) {
+                std::cout << ".";
+                if (j + 1 != countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd) {
+                    std::cout << " ";
+                }
+            }
+        };
+
+        // Переход на новую строку
+        std::cout << "\n";
+    };
+};
+
 
 int main() {
     std::cout << "Выберите номер задания: ";
@@ -1769,7 +1820,7 @@ int main() {
         std::cout << "[3] Прямоугольник.\n";
         std::cout << "[4] Треугольник.\n";
         std::cout << "[5] Решетка.\n";
-        std::cout << "[6] Крестик.\n";
+        std::cout << "[6] Крестик.\n\n";
         std::cout << "[+] Выберите фигуру: ";
 
         int localN = getNumber();
@@ -1808,7 +1859,61 @@ int main() {
             std::cout << "Такого пункта нету.\n";
             std::exit(0);
         };
-    } else if (n == 33) {
+    }
+    else if (n == 18) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[7] Плюс.\n\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else if (localN == 7) {
+            std::cout << "\n\n\n";
+
+            plus();
+        }
+        else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+    }
+    else if (n == 33) {
         std::cout << "Введите число\n";
         std::cout << "[0] Закрыть программу\n";
         std::cout << "[1] Внести числа\n";
