@@ -1043,8 +1043,74 @@ void snake() {
     };
 };
 
+/*
+* n = 13
+# # # # # # # # # # # # #
+# . . . . . . . . . . . #
+# . # # # # # # # # # . #
+# . # . . . . . . . # . #
+# . # . . . . . . . # . #
+# . # . . . . . . . # . #
+# . # . . . # . . . # . #
+# . # . . . . . . . # . #
+# . # . . . . . . . # . #
+# . # . . . . . . . # . #
+# . # # # # # # # # # . #
+# . . . . . . . . . . . #
+# # # # # # # # # # # # #
+
+n = 12
+# # # # # # # # # # # #
+# . . . . . . . . . . #
+# . # # # # # # # # . #
+# . # . . . . . . # . #
+# . # . . . . . . # . #
+# . # . . # # . . # . #
+# . # . . # # . . # . #
+# . # . . . . . . # . #
+# . # . . . . . . # . #
+# . # # # # # # # # . #
+# . . . . . . . . . . #
+# # # # # # # # # # # #
+
+n = 11
+# # # # # # # # # # #
+# . . . . . . . . . #
+# . # # # # # # # . #
+# . # . . . . . # . #
+# . # . . . . . # . #
+# . # . . # . . # . #
+# . # . . . . . # . #
+# . # . . . . . # . #
+# . # # # # # # # . #
+# . . . . . . . . . #
+# # # # # # # # # # #
+
+n = 10
+# # # # # # # # # #
+# . . . . . . . . #
+# . # # # # # # . #
+# . # . . . . # . #
+# . # . # # . # . #
+# . # . # # . # . #
+# . # . . . . # . #
+# . # # # # # # . #
+# . . . . . . . . #
+# # # # # # # # # #
+
+n == 9
+# # # # # # # # #
+# . . . . . . . #
+# . # # # # # . #
+# . # . . . # . #
+# . # . # . # . #
+# . # . . . # . #
+# . # # # # # . #
+# . . . . . . . #
+# # # # # # # # #
+*/
 void recursiveSquare() {
-    std::cout << "[ + ] Фигура: \"Змейка\".\n";
+    std::cout << "[ + ] Фигура: \"Рекурсивный квадрат\".\n";
     std::cout << "[+] Размер : ";
     int size = getNumber();
 
@@ -1081,31 +1147,149 @@ void recursiveSquare() {
             for (int j = 0; j < size - 4; j++) {
                 std::cout << submol << " ";
             };
-            std::cout << submol << ". " << submol;
+            std::cout << ". " << submol;
         }
-        else if (size/2 == i) {
+        else if (size/2 == i || isEven && size/2-1==i) {
             // Середина
             std::cout << submol << " . " << submol << " ";
             if (isEven) {
                 // Размер четный, значит 2 символа по середине
+                for (int j = 0; j < (size - 8) / 2; j++) {
+                    std::cout << ". ";
+                };
+                std::cout << submol << " " << submol << " ";
+                for (int j = 0; j < (size - 8) / 2; j++) {
+                    std::cout << ". ";
+                }
             }
             else {
-                // Размер четный, значит 1 символ по середине
-            }
-            /*
-            for (int j = 0; j < size - 6; j++) {
-                std::cout << ". ";
+                // Размер не четный, значит 1 символ по середине
+                for (int j = 0; j < (size - 7) / 2; j++) {
+                    std::cout << ". ";
+                }
+                std::cout << submol << " ";
+                for (int j = 0; j < (size - 7) / 2; j++) {
+                    std::cout << ". ";
+                };
             };
-            std::cout << submol << ". " << submol;
-            */
+            std::cout << submol << " . " << submol;
         } else {
             // Четвертая с начала и четвертая с конца строки
             std::cout << submol << " . " << submol << " ";
             for (int j = 0; j < size - 6; j++) {
                 std::cout << ". ";
             };
-            std::cout << submol << ". " << submol;
+            std::cout << submol << " . " << submol;
         };
+
+        // Переход на новую строку
+        std::cout << "\n";
+    };
+};
+
+void quarterOfSquare() {
+    std::cout << "[+] Фигура: \"Четверть квадрата\".\n\n";
+    std::cout << "[1] Заполненный.\n";
+    std::cout << "[2] Пустой.\n\n";
+    std::cout << "[+] Выберите тип: ";
+    int type = getNumber();
+    std::cout << "\n";
+
+    if (type > 2 || type < 1) {
+        std::cout << "Вы ввели не валидный номер типа.\n";
+        std::exit(0);
+    };
+
+    std::cout << "[+] Размер: ";
+    int size = getNumber();
+    std::cout << "\n";
+
+    std::cout << "[+] Текстура: ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    if (!(size % 2 == 0)) {
+        size--;
+    };
+
+    for (int i = 1; i <= size; i++) {
+        for (int j = 1; j <= size; j++) {
+            // Элементы четверти
+            if ((i >= size / 2 + 1) && (j >= size / 2 + 1)) {
+                /*if (type == 1) {
+                    std::cout << "#";
+                }
+                else {
+                    if ((size / 2 + 1 == i || size == i) && (size / 2 + 1 == j || size == j)) {
+                        std::cout << submol;
+                    };
+                }; */
+
+                if (type == 1) {
+                    // Значит заполненая четверть, нужно добавлять только символы
+                    std::cout << submol;
+                }
+                else {
+                    // Значит пустая четверть, нужна проверка на то добавлять точку или символ
+                    if ((i == size / 2 + 1) || (i == size) || (j == size / 2 + 1) || (j == size)) {
+                        std::cout << submol;
+                    }
+                    else {
+                        std::cout << ".";
+                    };
+                };
+            }
+            else {
+                std::cout << ".";
+            };
+
+            // Должно быть после каждого символа, независимо от i и j
+            if (j != size) {
+                std::cout << " ";
+            };
+        };
+
+        // Переход на новую строку
+        std::cout << "\n";
+    };
+};
+
+void fourQuarters() {
+    std::cout << "[+] Фигура: \"Четыре четверти\".\n\n";
+    std::cout << "[1] Заполненный.\n";
+    std::cout << "[2] Пустой.\n\n";
+    std::cout << "[+] Выберите тип: ";
+    int type = getNumber();
+    std::cout << "\n";
+
+    if (type > 2 || type < 1) {
+        std::cout << "Вы ввели не валидный номер типа.\n";
+        std::exit(0);
+    };
+
+    std::cout << "[+] Размер: ";
+    int size = getNumber();
+    std::cout << "\n";
+
+    std::cout << "[+] Текстура: ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if ((((i == 0) || (i == size / 2)) && (j <= size / 2)) || ((j == 0) || ((j == size / 2)) && (i <= size / 2))) {
+                // Первая или последняя строка, или первый или второй столбец первого квадрата
+                std::cout << submol << " ";
+            }
+            else {
+                std::cout << ". ";
+            };
+        };
+
+        // Переход на новую строку
+        std::cout << "\n";
     };
 };
 
@@ -2341,7 +2525,8 @@ int main() {
         std::cout << "[6] Крестик.\n";
         std::cout << "[7] Плюс.\n";
         std::cout << "[8] Ромб.\n";
-        std::cout << "[9] Змейка.\n\n";
+        std::cout << "[9] Змейка.\n";
+        std::cout << "[10] Рекурсивный квадрат.\n\n";
         std::cout << "[+] Выберите фигуру: ";
 
         int localN = getNumber();
@@ -2391,10 +2576,170 @@ int main() {
 
             snake();
         }
-        else if (localN == 21) {
+        else if (localN == 10) {
             std::cout << "\n\n\n";
 
             recursiveSquare();
+        }
+        else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+    }
+    else if (n == 201) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[7] Плюс.\n";
+        std::cout << "[8] Ромб.\n";
+        std::cout << "[9] Змейка.\n";
+        std::cout << "[10] Рекурсивный квадрат.\n";
+        std::cout << "[11] Четверть квадрата.\n\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else if (localN == 7) {
+            std::cout << "\n\n\n";
+
+            plus();
+        }
+        else if (localN == 8) {
+            std::cout << "\n\n\n";
+
+            rhombus();
+        }
+        else if (localN == 9) {
+            std::cout << "\n\n\n";
+
+            snake();
+        }
+        else if (localN == 10) {
+            std::cout << "\n\n\n";
+
+            recursiveSquare();
+        }
+        else if (localN == 11) {
+            std::cout << "\n\n\n";
+
+            quarterOfSquare();
+        }
+        else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+    }
+    else if (n == 202) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[7] Плюс.\n";
+        std::cout << "[8] Ромб.\n";
+        std::cout << "[9] Змейка.\n";
+        std::cout << "[10] Рекурсивный квадрат.\n";
+        std::cout << "[11] Четверть квадрата.\n";
+        std::cout << "[12] Четыре четверти.\n\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else if (localN == 7) {
+            std::cout << "\n\n\n";
+
+            plus();
+        }
+        else if (localN == 8) {
+            std::cout << "\n\n\n";
+
+            rhombus();
+        }
+        else if (localN == 9) {
+            std::cout << "\n\n\n";
+
+            snake();
+        }
+        else if (localN == 10) {
+            std::cout << "\n\n\n";
+
+            recursiveSquare();
+        }
+        else if (localN == 11) {
+            std::cout << "\n\n\n";
+
+            quarterOfSquare();
+        }
+        else if (localN == 12) {
+            std::cout << "\n\n\n";
+
+            fourQuarters();
         }
         else {
             std::cout << "Такого пункта нету.\n";
