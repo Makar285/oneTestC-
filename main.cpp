@@ -779,7 +779,7 @@ void plus() {
         size--;
     };
 
-    int countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd = (size - 1) / 2;
+    int countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd = (size - 1) / 2;
 
     for (int i = 0; i < size; i++) {
         if (i == size / 2) {
@@ -794,7 +794,7 @@ void plus() {
         else {
             // Все остальные строки
             // Точки до символа
-            for (int j = 0; j < countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd; j++) {
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
                 std::cout << ". ";
             };
 
@@ -802,9 +802,9 @@ void plus() {
             std::cout << submol << " ";
 
             // Точки после симола
-            for (int j = 0; j < countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd; j++) {
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
                 std::cout << ".";
-                if (j + 1 != countDotBetweenStartAndSubmolAndNetweenSubmolAndEnd) {
+                if (j + 1 != countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd) {
                     std::cout << " ";
                 }
             }
@@ -812,6 +812,300 @@ void plus() {
 
         // Переход на новую строку
         std::cout << "\n";
+    };
+};
+
+void rhombus() {
+    std::cout << "[ + ] Фигура: \"Ромб\".\n";
+    std::cout << "[+] Размер : ";
+    int size = getNumber();
+
+    std::cout << "[+] Текстура : ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    bool isEven = size % 2 == 0;
+
+    std::cout << "\n\n\n   " << isEven << "   \n\n\n";
+
+    // Количествоточек между началом строки и символом, и символом и концом строки
+    int countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd = size / 2;
+
+    // Количество точек между первым и вторым символами, по умолчанию -1, а если размер четный, то изменить на 0, потому после первой итерации countDotBetweenOneSubmolAndTwoSubmol увеличится на 2
+    int countDotBetweenOneSubmolAndTwoSubmol = -1;
+    if (isEven) {
+        countDotBetweenOneSubmolAndTwoSubmol = 0;
+    };
+
+    if (isEven) {
+        // Если размер четный убавить один из countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd
+        countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd--;
+    };
+
+    // Первая верхняя часть до середины не включительно
+    for (int i = 0; i < size / 2; i++) {
+        if (i == 0 || i + 1 == size) {
+            // Первая строка
+            // Точки между началом строки и cимволом
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+
+            // Символ
+            std::cout << submol << " ";
+            // Если размер четный добавить еще один символ
+            if (isEven) {
+                std::cout << submol << " ";
+            };
+
+            // Точки между чисволом и концом строки
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ".";
+                if (j + 1 != countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd) {
+                    std::cout << " ";
+                };
+            };
+        }
+        else {
+            // Все остальные строки
+            // Точки между начаоом строки и первым символом
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+
+            // Первый символ
+            std::cout << submol << " ";
+
+            // Точки между первым символом и вторым символом
+            for (int j = 0; j < countDotBetweenOneSubmolAndTwoSubmol; j++) {
+                std::cout << ". ";
+            };
+
+            // Второй символ
+            std::cout << submol << " ";
+
+            // точки между вторым символом и концом строки
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+        }
+
+        // Изменение переменных, что бы ромб менялся, а не был задан програмно
+        countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd--;
+        countDotBetweenOneSubmolAndTwoSubmol += 2;
+
+        // Переход на новую строку
+        std::cout << "\n";
+
+        // Если количесвто точек между началом строки и первым, и вторым символом или концом строки меньше 1 ИЛИ количество точек между первым символом и вторым символом равно размер - 2, потому что два символа в строке не первой и последней это символы
+        if (countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd < 1 || countDotBetweenOneSubmolAndTwoSubmol == size - 2) {
+            break;
+        };
+    };
+
+    // Середин(ы)
+    // Первая середина
+    std::cout << submol << " ";
+
+    for (int j = 0; j < countDotBetweenOneSubmolAndTwoSubmol; j++) {
+        std::cout << ". ";
+    };
+
+    std::cout << submol;
+    std::cout << "\n";
+
+    // Если размер четный, то выводить середину второй раз
+    if (isEven) {
+        std::cout << submol << " ";
+
+        for (int j = 0; j < countDotBetweenOneSubmolAndTwoSubmol; j++) {
+            std::cout << ". ";
+        };
+
+        std::cout << submol;
+        std::cout << "\n";
+    };
+
+    // Изменение переменных, что бы не было два для нечетных и три для четных середин
+    countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd++;
+    countDotBetweenOneSubmolAndTwoSubmol -= 2;
+
+    // Нижняя часть начиная со середины не включительно до конца фигуры
+    for (int i = size/2+1; i < size; i++) {
+        if (i + 1 == size) {
+            // Последняя строка
+            // Точки между началом строки и cимволом
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+
+            // Символ
+            std::cout << submol << " ";
+            // Если размер четный добавить еще один символ
+            if (isEven) {
+                std::cout << submol << " ";
+            };
+
+            // Точки между чисволом и концом строки
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ".";
+                if (j + 1 != countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd) {
+                    std::cout << " ";
+                };
+            };
+        }
+        else {
+            // Все остальные строки
+            // Точки между начаоом строки и первым символом
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+
+            // Первый символ
+            std::cout << submol << " ";
+
+            // Точки между первым символом и вторым символом
+            for (int j = 0; j < countDotBetweenOneSubmolAndTwoSubmol; j++) {
+                std::cout << ". ";
+            };
+
+            // Второй символ
+            std::cout << submol << " ";
+
+            // точки между вторым символом и концом строки
+            for (int j = 0; j < countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd; j++) {
+                std::cout << ". ";
+            };
+        }
+
+        // Изменение переменных, что бы ромб менялся, а не был задан програмно
+        countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd++;
+        countDotBetweenOneSubmolAndTwoSubmol -= 2;
+
+        // Переход на новую строку
+        std::cout << "\n";
+
+        // Если количесвто точек между началом строки и первым, и вторым символом или концом строки меньше 1 ИЛИ количество точек между первым символом и вторым символом равно размер - 2, потому что два символа в строке не первой и последней это символы
+        if (countDotBetweenStartAndOneSubmolAndBetweenTwoSubmolAndEnd < 1 || countDotBetweenOneSubmolAndTwoSubmol == size - 2) {
+            break;
+        };
+    };
+};
+
+void snake() {
+    std::cout << "[ + ] Фигура: \"Змейка\".\n";
+    std::cout << "[+] Размер : ";
+    int size = getNumber();
+
+    std::cout << "[+] Текстура : ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    bool isFirstSubmol = false;
+
+    // size итераций
+    for (int i = 1; i <= size; i++) {
+        if (i % 2 == 0) {
+            //  Строка которая не полностью состоит из символов
+            if (isFirstSubmol) {
+                // Символ это первый элемент строки
+                std::cout << submol << " ";
+                for (int j = 0; j < size-1; j++) { // - 1 потому что один элемент это символ
+                    std::cout << ".";
+                    if (j + 1 != size) {
+                        std::cout << " ";
+                    };
+                };
+            }
+            else {
+                // Символ это последний элемент строки
+                for (int j = 0; j < size-1; j++) { // - 1 потому что один элемент это символ
+                    std::cout << ". ";
+                };
+                std::cout << submol;
+            };
+
+            isFirstSubmol = !isFirstSubmol;
+        }
+        else {
+            for (int j = 0; j < size; j++) {
+                std::cout << submol;
+                if (j + 1 != size) {
+                    std::cout << " ";
+                };
+            };
+        };
+
+        // Переход на новую строку
+        std::cout << "\n";
+    };
+};
+
+void recursiveSquare() {
+    std::cout << "[ + ] Фигура: \"Змейка\".\n";
+    std::cout << "[+] Размер : ";
+    int size = getNumber();
+
+    std::cout << "[+] Текстура : ";
+    char submol;
+    std::cin >> submol;
+    std::cout << "\n";
+
+    bool isEven = size % 2 == 0;
+
+    for (int i = 0; i < size; i++) {
+        if (i == 0 || i + 1 == size) {
+            // Первая и последняя строки
+            for (int j = 0; j < size; j++) {
+                std::cout << submol;
+                if (j + 1 != size) {
+                    std::cout << " ";
+                };
+            };
+        }
+        else if ((i - 1) == 0 || (i + 2) == size) {
+            // Вторая с начала и вторая с конца строки
+            std::cout << submol << " ";
+
+            for (int j = 0; j < size - 2; j++) {
+                std::cout << ". ";
+            };
+
+            std::cout << submol;
+        }
+        else if ((i - 2) == 0 || (i + 3) == size) {
+            // Третия с начала и третия с конца строки
+            std::cout << submol << " . ";
+            for (int j = 0; j < size - 4; j++) {
+                std::cout << submol << " ";
+            };
+            std::cout << submol << ". " << submol;
+        }
+        else if (size/2 == i) {
+            // Середина
+            std::cout << submol << " . " << submol << " ";
+            if (isEven) {
+                // Размер четный, значит 2 символа по середине
+            }
+            else {
+                // Размер четный, значит 1 символ по середине
+            }
+            /*
+            for (int j = 0; j < size - 6; j++) {
+                std::cout << ". ";
+            };
+            std::cout << submol << ". " << submol;
+            */
+        } else {
+            // Четвертая с начала и четвертая с конца строки
+            std::cout << submol << " . " << submol << " ";
+            for (int j = 0; j < size - 6; j++) {
+                std::cout << ". ";
+            };
+            std::cout << submol << ". " << submol;
+        };
     };
 };
 
@@ -1907,6 +2201,200 @@ int main() {
             std::cout << "\n\n\n";
 
             plus();
+        }
+        else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+        }
+    else if (n == 19) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[7] Плюс.\n";
+        std::cout << "[8] Ромб.\n\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else if (localN == 7) {
+            std::cout << "\n\n\n";
+
+            plus();
+        }
+        else if (localN == 8) {
+            std::cout << "\n\n\n";
+
+            rhombus();
+        }
+        else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+    }
+    else if (n == 20) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[7] Плюс.\n";
+        std::cout << "[8] Ромб.\n";
+        std::cout << "[9] Змейка.\n\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else if (localN == 7) {
+            std::cout << "\n\n\n";
+
+            plus();
+        }
+        else if (localN == 8) {
+            std::cout << "\n\n\n";
+
+            rhombus();
+        }
+        else if (localN == 9) {
+            std::cout << "\n\n\n";
+
+            snake();
+        }
+        else {
+            std::cout << "Такого пункта нету.\n";
+            std::exit(0);
+        };
+    }
+    else if (n == 21) {
+        std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
+        std::cout << "[1] Линия.\n";
+        std::cout << "[2] Квадрат.\n";
+        std::cout << "[3] Прямоугольник.\n";
+        std::cout << "[4] Треугольник.\n";
+        std::cout << "[5] Решетка.\n";
+        std::cout << "[6] Крестик.\n";
+        std::cout << "[7] Плюс.\n";
+        std::cout << "[8] Ромб.\n";
+        std::cout << "[9] Змейка.\n\n";
+        std::cout << "[+] Выберите фигуру: ";
+
+        int localN = getNumber();
+
+        if (localN == 1) {
+            std::cout << "\n\n\n";
+
+            line();
+        }
+        else if (localN == 2) {
+            std::cout << "\n\n\n";
+
+            square();
+        }
+        else if (localN == 3) {
+            std::cout << "\n\n\n";
+
+            rectangle();
+        }
+        else if (localN == 4) {
+            std::cout << "\n\n\n";
+
+            triangle();
+        }
+        else if (localN == 5) {
+            std::cout << "\n\n\n";
+
+            lattice();
+        }
+        else if (localN == 6) {
+            std::cout << "\n\n\n";
+
+            cross();
+        }
+        else if (localN == 7) {
+            std::cout << "\n\n\n";
+
+            plus();
+        }
+        else if (localN == 8) {
+            std::cout << "\n\n\n";
+
+            rhombus();
+        }
+        else if (localN == 9) {
+            std::cout << "\n\n\n";
+
+            snake();
+        }
+        else if (localN == 21) {
+            std::cout << "\n\n\n";
+
+            recursiveSquare();
         }
         else {
             std::cout << "Такого пункта нету.\n";
