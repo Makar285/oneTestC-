@@ -10,6 +10,9 @@
 #include <random>
 #include <clocale>
 
+#include <stdlib.h>
+#include <ctime>
+
 
 
 // Обшая функция проверяющая что число int есть в векторе
@@ -678,7 +681,7 @@ void cross() {
     for (int i = 0; i < countDotStartAndOneSubmolAndCountDotTwoSubmolAndEnd; i++) {
         std::cout << ". ";
     };
-    
+
     // Символ(ы)
     // Один символ если число четное, и два символа если число нечетное
     std::cout << submol << " ";
@@ -757,7 +760,7 @@ void cross() {
             }
         }
         else {
-            if (countString >= size ) {
+            if (countString >= size) {
                 break;
             }
         }
@@ -932,7 +935,7 @@ void rhombus() {
     countDotBetweenOneSubmolAndTwoSubmol -= 2;
 
     // Нижняя часть начиная со середины не включительно до конца фигуры
-    for (int i = size/2+1; i < size; i++) {
+    for (int i = size / 2 + 1; i < size; i++) {
         if (i + 1 == size) {
             // Последняя строка
             // Точки между началом строки и cимволом
@@ -1012,7 +1015,7 @@ void snake() {
             if (isFirstSubmol) {
                 // Символ это первый элемент строки
                 std::cout << submol << " ";
-                for (int j = 0; j < size-1; j++) { // - 1 потому что один элемент это символ
+                for (int j = 0; j < size - 1; j++) { // - 1 потому что один элемент это символ
                     std::cout << ".";
                     if (j + 1 != size) {
                         std::cout << " ";
@@ -1021,7 +1024,7 @@ void snake() {
             }
             else {
                 // Символ это последний элемент строки
-                for (int j = 0; j < size-1; j++) { // - 1 потому что один элемент это символ
+                for (int j = 0; j < size - 1; j++) { // - 1 потому что один элемент это символ
                     std::cout << ". ";
                 };
                 std::cout << submol;
@@ -1149,7 +1152,7 @@ void recursiveSquare() {
             };
             std::cout << ". " << submol;
         }
-        else if (size/2 == i || isEven && size/2-1==i) {
+        else if (size / 2 == i || isEven && size / 2 - 1 == i) {
             // Середина
             std::cout << submol << " . " << submol << " ";
             if (isEven) {
@@ -1173,7 +1176,8 @@ void recursiveSquare() {
                 };
             };
             std::cout << submol << " . " << submol;
-        } else {
+        }
+        else {
             // Четвертая с начала и четвертая с конца строки
             std::cout << submol << " . " << submol << " ";
             for (int j = 0; j < size - 6; j++) {
@@ -1279,12 +1283,54 @@ void fourQuarters() {
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if ((((i == 0) || (i == size / 2)) && (j <= size / 2)) || ((j == 0) || ((j == size / 2)) && (i <= size / 2))) {
-                // Первая или последняя строка, или первый или второй столбец первого квадрата
-                std::cout << submol << " ";
+            //if ((((i == 0) || (i == size / 2)) && (j <= size / 2)) || ((j == 0) || ((j == size / 2)) && (i <= size / 2))) 
+            if ((size / 2 > i) && (size / 2 > j)) {
+                // Элементы первого квадрата
+                if ((i == 0) || (i + 1 == size / 2) || (j == 0) || (j + 1 == size / 2) || (type == 1)) {
+                    // (Первая или последняя строка, или первый или второй столбец первого квадрата) ИЛИ (выбран заполненый квадрат)
+                    std::cout << "\033[92m" << submol << "\033[0m ";
+                }
+                else {
+                    std::cout << ". ";
+                };
             }
-            else {
-                std::cout << ". ";
+            else if ((i < size / 2) && (j >= size / 2)) {
+                // Элементы второго квадрата
+                if ((i == 0) || (i + 1 == size / 2) || (j + 1 == size) || (j == size / 2) || (type == 1)) {
+                    // (Первая или последняя строка, или первый или второй столбец второго квадрата) ИЛИ (выбран заполненый квадрат)
+                    std::cout << "\033[34m" << submol << "\033[0m";
+                }
+                else {
+                    std::cout << ".";
+                };
+
+                if (j + 1 != size) {
+                    std::cout << " ";
+                }
+            }
+            else if ((i >= size / 2) && (size / 2 > j)) {
+                // Элементы третего квадрата
+                if ((j == 0) || (j + 1 == size / 2) || (i + 1 == size) || (i == size / 2) || (type == 1)) {
+                    // (Первая или последняя строка, или первый или второй столбец третьего квадрата) ИЛИ (выбран заполненый квадрат)
+                    std::cout << "\033[31m" << submol << "\033[0m ";
+                }
+                else {
+                    std::cout << ". ";
+                };
+            }
+            else if ((i >= size / 2) && (j >= size / 2)) {
+                // Элементы четвертого квадрата
+                if ((j + 1 == size) || (j == size / 2) || (i + 1 == size) || (i == size / 2) || (type == 1)) {
+                    // (Первая или последняя строка, или первый или второй столбец четвертого квадрата) ИЛИ (выбран заполненый квадрат)
+                    std::cout << "\033[35m" << submol << "\033[0m";
+                }
+                else {
+                    std::cout << ".";
+                };
+
+                if (j + 1 != size) {
+                    std::cout << " ";
+                };
             };
         };
 
@@ -2287,11 +2333,13 @@ int main() {
             std::cout << "\n\n\n";
 
             lattice();
-        } else {
+        }
+        else {
             std::cout << "Такого пункта нету.\n";
             std::exit(0);
         };
-    } else if(n == 17) {
+    }
+    else if (n == 17) {
         std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
         std::cout << "[1] Линия.\n";
         std::cout << "[2] Квадрат.\n";
@@ -2390,7 +2438,7 @@ int main() {
             std::cout << "Такого пункта нету.\n";
             std::exit(0);
         };
-        }
+    }
     else if (n == 19) {
         std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
         std::cout << "[1] Линия.\n";
@@ -2746,6 +2794,75 @@ int main() {
             std::exit(0);
         };
     }
+    else if (n == 22) {
+        int arrInt[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        short arrShort[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        long arrLong[10] = { 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1, 10.1 };
+        float arrFloat[10] = { 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1, 10.1 };
+        double arrDouble[10] = { 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1, 10.1 };
+        char arrChar[10] = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+        bool arrBool[10] = { true, true, true, true, true, true, true, true, true, true };
+        std::string arrString[10] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+
+        std::cout << "Массив INT: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+
+        std::cout << "Массив Short: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+
+        std::cout << "Массив Long: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+
+        std::cout << "Массив Float: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+
+        std::cout << "Массив Double: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+
+        std::cout << "Массив Char: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+
+        std::cout << "Массив Bool: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+
+        std::cout << "Массив String: \n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << "arrInt[" << i << "] Значение: " << arrInt[i] << "\n";
+        };
+        std::cout << "\n";
+    }
+    else if (n == 23) {
+        std::cout << "Вводите числа, если хотите закончить введите 0: ";
+        std::vector<double> numbers = pushNumbers();
+
+        short sizeOneColumn = 11;
+        short sizeTwoColumn = 26;
+        short sizeThreeColumn = 16;
+
+        for (int i = 0; i < numbers.size(); i++) {
+
+        }
+    }
     else if (n == 33) {
         std::cout << "Введите число\n";
         std::cout << "[0] Закрыть программу\n";
@@ -2865,6 +2982,45 @@ int main() {
             return 0;
         };
 
+    }
+    else if (n == 1000) {
+        srand(std::time(nullptr));
+
+        std::cout << "Введите начало диапазона: ";
+        int start = getNumber();
+        std::cout << "\n";
+
+        std::cout << "Введите конец диапазона: ";
+        int end = getNumber();
+        std::cout << "\n";
+
+        // 1
+        std::cout << "1):\n";
+        std::cout << "RES:    " << rand() % 11 << "\n";
+        std::cout << "\n\n";
+
+        // 2
+        std::cout << "2):\n";
+        std::cout << "RES:    " << rand() % (end + 1);
+        std::cout << "\n\n";
+
+        // 3
+        std::cout << "3):\n";
+        std::cout << "RES:    " << (rand() % 6) + 5;
+        std::cout << "\n\n";
+
+        // 4
+        std::cout << "4):\n";
+        std::cout << "RES:    " << (rand() % 61) + 50;
+        std::cout << "\n\n";
+
+        // 5
+        std::cout << "5):\n";
+        std::cout << "RES:    " << (rand() % ((end + 1)-start)) + start;
+        std::cout << "\n\n\n\n";
+    }
+    else {
+        std::cout << "Неизвестный нмоер задания.\n";
     };
 
     return 0;
