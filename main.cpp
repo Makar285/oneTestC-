@@ -1339,6 +1339,17 @@ void fourQuarters() {
     };
 };
 
+int getRandomNumber(int start, int end) {
+    // Регулятор случайных чисел (статический, чтобы не переинициализировать)
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
+    // Задаем диапазон
+    std::uniform_int_distribution<> distr(start, end);
+
+    return distr(gen);
+}
+
 
 int main() {
     std::cout << "Выберите номер задания: ";
@@ -2212,6 +2223,94 @@ int main() {
                 std::exit(0);
             };
         };
+    }
+    else if (n == 301) {
+        // Количество очков нужное для победы
+        int countGlassesForWin = 3;
+
+        int computerGlasses = 0;
+        int userGlasses = 0;
+
+        std::cout << "[1] Начать игру.\n";
+        std::cout << "[2] Выйти.\n\n";
+
+        std::cout << "Введите номер: ";
+        int choice = getNumber();
+
+        // Очистить буфер ввода, для того что бы можно было ждать нажатия Enter, а не сразу перескакивать на следующую строку
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        
+        if (choice == 1) {
+            while (true) {
+                std::cout << "Счет: Игрок: " << userGlasses << ", Компьютер: " << computerGlasses << "\n";
+                std::cout << "Нажмите Enter, чтобы бросить кубики";
+
+                // Ждать нажатия Enter
+                std::cin.get();
+
+                // Рандомные числа пользователя
+                int oneUserNumber = getRandomNumber(1, 6);
+                int twoUserNumber = getRandomNumber(1, 6);
+
+                // Рандомные числа компьютера
+                int oneComputerNumber = getRandomNumber(1, 6);
+                int twoComputerNumber = getRandomNumber(1, 6);
+
+                // Результаты партии
+                int resultUser = oneUserNumber + twoUserNumber;
+                if (oneUserNumber == twoUserNumber) {
+                    resultUser *= 2;
+                };
+
+                int resultComputer = oneComputerNumber + twoComputerNumber;
+                if (oneComputerNumber == twoComputerNumber) {
+                    resultComputer *= 2;
+                };
+
+                std::cout << "Ваш бросок: " << oneUserNumber << " + " << twoUserNumber << " = " << resultUser << "\n";
+                std::cout << "Бросок компьютера: " << oneComputerNumber << " + " << twoComputerNumber << " = " << resultComputer << "\n";
+
+                // Если одинаковая сумма, то переигрывать
+                if (resultUser == resultComputer) {
+                    std::cout << "Сумма одинаковая, переигрываем.\n\n\n\n";
+                    continue;
+                };
+
+                if (resultUser > resultComputer) {
+                    std::cout << "YOU.\n";
+                    userGlasses++;
+                }
+                else {
+                    std::cout << "NOT YOU.\n";
+                    computerGlasses++;
+                };
+
+                // Что бы отделить раунды дргу от друга визуально
+                std::cout << "\n\n\n";
+
+                // Если кто то уже набрал нужно количество очков, то завершать цикл
+                if (userGlasses == countGlassesForWin || computerGlasses == countGlassesForWin) {
+                    break;
+                };
+            };
+
+            if (userGlasses > computerGlasses) {
+                std::cout << "YOU WIN.\n";
+            }
+            else {
+                std::cout << "NOT YOU WIN.\n";
+            };
+
+            std::exit(0);
+        }
+        else if (choice == 2) {
+            std::cout << "ВСЕ.\n";
+        }
+        else {
+            std::cout << "Неизвестное число.\n";
+        };
+        
+        std::exit(0);
     }
     else if (n == 13) {
         std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
