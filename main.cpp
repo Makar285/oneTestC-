@@ -2285,7 +2285,7 @@ int main() {
                     computerGlasses++;
                 };
 
-                // Что бы отделить раунды дргу от друга визуально
+                // Что бы отделить раунды друг от друга визуально
                 std::cout << "\n\n\n";
 
                 // Если кто то уже набрал нужно количество очков, то завершать цикл
@@ -2311,6 +2311,258 @@ int main() {
         };
         
         std::exit(0);
+    }
+    else if (n == 302) {
+        // По умолчанию 100 монет
+        int balance = 100;
+
+        while (true) {
+            std::cout << "YPUR BALANCE: " << balance << "\n";
+
+            // Получение ставки 
+            std::cout << "Enter your bid: ";
+            int bid = getNumber();
+
+            // Проверка ставик на вылидность и может ли пользователь постаивть столько 
+            if (bid < 1 || bid > balance) {
+                std::cout << "Вы ввели недопустимую ставку.\n";
+                continue;
+            };
+
+            // Получение стороны которую выбирает пользователь
+            std::cout << "Выберите сторону (1 - Орел, 2 - Решка): ";
+            int side = getNumber();
+
+            // Проверка введeного пользователем числа на корректность
+            if (side > 2 || side < 1) {
+                std::cout << "Вы ввели недопустимое сторону.\n";
+            };
+
+
+            // Получение рандомного числа
+            int randomNumber = getRandomNumber(0, 1);
+
+            // Проверка выиграл ли пользователь или нет
+            if (randomNumber == 0) {
+                std::cout << "Выпал орел.\n";
+
+                if (side == 1) {
+                    // Выпал орел и пользователь поставил на орла, пользователь победил
+                    std::cout << "Вы выиграли раунд.\n";
+                    balance += bid;
+                }
+                else {
+                    // Выпал орел и пользователь поставил на решку, пользователь проиграл
+                    std::cout << "Вы проиграли раунд.\n";
+                    balance -= bid;
+                }
+            }
+            else {
+                std::cout << "Выпала решка.\n";
+
+                if (side == 1) {
+                    // Выпала решка и пользователь поставил на орла, пользователь проиграл
+                    std::cout << "Вы проиграли раунд.\n";
+                    balance -= bid;
+                }
+                else {
+                    // Выпала решка и пользователь поставил на решку, пользователь выиграл
+                    std::cout << "Вы выиграли раунд.\n";
+                    balance += bid;
+                };
+            };
+
+            if (balance == 0) {
+                std::cout << "Вы проиграли игру.\n";
+                break;
+            }
+            else if (balance >= 200) {
+                std::cout << "Вы выиграли игру.\n";
+                break;
+            };
+
+            // Длявизуального отличения раундов
+            std::cout << "\n\n\n";
+        };
+    }
+    else if (n == 303) {
+        // У пользователя 7 попыток
+        int attempts = 7;
+
+        // Загадывание рандомного числа
+        int computerRandomNumber = getRandomNumber(1, 100);
+
+
+        while (true) {
+            std::cout << "Попыток: " << attempts << "\n";
+            std::cout << "Введите число: ";
+            int userNumber = getNumber();
+
+            std::cout << "\n";
+
+            if (userNumber < 0 || userNumber > 100) {
+                std::cout << "Введите число из диапазона [0, 100].\n";
+                continue;
+            };
+
+            if (computerRandomNumber == userNumber) {
+                std::cout << "Вы угадали.";
+                break;
+            }
+            else if (std::abs(computerRandomNumber - userNumber) > 30) {
+                std::cout << "Холодно! (разница больше 30)";
+            }
+            else if (std::abs(computerRandomNumber - userNumber) > 10 && std::abs(computerRandomNumber - userNumber) < 31) {
+                std::cout << "Прохладно! (разница от 11 до 30)";
+            }
+            else if (std::abs(computerRandomNumber - userNumber) > 5 && std::abs(computerRandomNumber - userNumber) < 11) {
+                std::cout << "Тепло! (разница от 6 до 10) ";
+            }
+            else if (std::abs(computerRandomNumber - userNumber) > 0 && std::abs(computerRandomNumber - userNumber) < 6) {
+                std::cout << "Тепло! (разница от 1 до 5)";
+            };
+
+            // Добавление больше или меньше введеное число загаданого для каждой записи кроме если число угадано потому что там будет break и до сюда не дойдет выполнение
+            std::cout << ", введеное число " << ((computerRandomNumber > userNumber) ? ("меньше") : ("больше")) << " загаданого числа.\n";
+
+            // Уменьшение количества попыток на 1
+            attempts--;
+
+            if (attempts == 0) {
+                std::cout << "Вы проиграли, загаданое число было " << computerRandomNumber;
+                break;
+            };
+        };
+    }
+    else if (n == 304) {
+        while (true) {
+            std::cout << "Введите длину пароля в дииапазоне [4, 20]: ";
+            int lengthPassword = getNumber();
+
+            // Проверка длины пароля
+            if (lengthPassword < 4 && lengthPassword > 20) {
+                std::cout << "Невалидная длина пароля.\n";
+            };
+
+            // Получение сколько цифр будет в пароле
+            std::cout << "Введите сколько в пароле будет чисел: ";
+            int countNumber = getNumber();
+
+            // Получение сколько строчных букв будет в пароле
+            std::cout << "Введите сколько в пароле будет строчных букв: ";
+            int countSmallLetter = getNumber();
+
+            // Получение сколько заглавных букв будет в пароле
+            std::cout << "Введите сколько в пароле будет заглавных букв.\n";
+            int countBigLetter = getNumber();
+
+            // Проверка на то что сумма введеных количество цифр, строчных и заглавных букв будет равна lengthPassword
+            if ((countNumber + countSmallLetter + countBigLetter) != lengthPassword) {
+                std::cout << "Введите количество цифр, строчных и заглавных букв так, что бы их общая сумма была длиной пароля которую вы ввели.\n\n\n\n";
+                continue;
+            };
+
+            // Переменная для счетчика в while цикле
+            int i = 0;
+
+
+            // Переменная которая обозначает что такого количества цифр в генерируемом пароле еще нету
+            bool correctCountNumber = true;
+
+            // Переменная которая обозначает текущее количество цифр в генерируемом пароле, нужно что бы изменять countNumberInGeneratedPassword = false, когда в генерируемом пароле станет столько цифр сколько нужно, тоесть когда countNumberInGeneratedPassword станет равно countNumber
+            int countNumberInGeneratedPassword = 0;
+
+
+            // Переменная которая обозначает что такого количества строчных букв в генерируемом пароле еще нету
+            bool correctCountSmallLetter = true;
+
+            // Переменная которая обозначает текущее количество строчных букв в генерируемом пароле, нужно что бы изменять correctCountSmallLetter = false, когда в генерируемом пароле станет столько цифр сколько нужно, тоесть когда countSmallLetterInGeneratedPassword станет равно countSmallLetter
+            int countSmallLetterInGeneratedPassword = 0;
+
+
+            // Переменная которая обозначает что такого количества заглавных букв в генерируемом пароле еще нету
+            bool correctCountBigLetter = true;
+
+            // Переменная которая обозначает текущее количество заглавных букв в генерируемом пароле, нужно что бы изменять correctCountBigLetter = false, когда в генерируемом пароле станет столько цифр сколько нужно, тоесть когда countBigLetterInGeneratedPassword станет равно countBigLetter
+            int countBigLetterInGeneratedPassword = 0;
+
+
+            // Переменная содержащая генерируемый пароль
+            std::string password = "";
+
+
+            while(true) {
+                // Генерация рандомного числа, что бы не было заданого програмно порядка добавления цифр, строчных и заглавных букв в пароль
+                int randomNumber = getRandomNumber(1, 3);
+
+                if (randomNumber == 1) {
+                    // Добавить в пароль число
+                    if (correctCountNumber) {
+                        // В пароле еще не countNumber цифр
+                        int randomNomerNumberInASKII = getRandomNumber(48, 57); // 48 это номер цифры "0", 57 номер цифры "9"
+                        char number = randomNomerNumberInASKII;
+                        password.push_back(number);
+                        countNumberInGeneratedPassword++;
+                        i++;
+                    };
+
+                    // Если количество цифр в генерируемом пароле станет столько сколь нужно, тоесть countNumber, то изменить correctCountNumber на false, тоесть больше не добавлять в генерируемый пароль цифры
+                    if (countNumberInGeneratedPassword == countNumber) {
+                        correctCountNumber = false;
+                    };
+                }
+                else if (randomNumber == 2) {
+                    // Добавить в пароль строчную букву
+                    if (correctCountSmallLetter) {
+                        // В пароле еще не countNumber цифр
+                        int randomNomerNumberInASKII = getRandomNumber(97, 122); // 97 это номер строчной буквы "a", 122 номер строчной буквы "z"
+                        char number = randomNomerNumberInASKII;
+                        password.push_back(number);
+                        countSmallLetterInGeneratedPassword++;
+                        i++;
+                    };
+
+                    // Если количество цифр в генерируемом пароле станет столько сколь нужно, тоесть countNumber, то изменить correctCountNumber на false, тоесть больше не добавлять в генерируемый пароль цифры
+                    if (countSmallLetterInGeneratedPassword == countSmallLetter) {
+                        correctCountSmallLetter = false;
+                    };
+                }
+                else {
+                    // Добавить в пароль заглавную букву
+                    if (correctCountBigLetter) {
+                        // В пароле еще не countNumber цифр
+                        int randomNomerNumberInASKII = getRandomNumber(65, 90); // 65 это номер строчной буквы "A", 90 номер строчной буквы "Z"
+                        char number = randomNomerNumberInASKII;
+                        password.push_back(number);
+                        countBigLetterInGeneratedPassword++;
+                        i++;
+                    };
+
+                    // Если количество цифр в генерируемом пароле станет столько сколь нужно, тоесть countNumber, то изменить correctCountNumber на false, тоесть больше не добавлять в генерируемый пароль цифры
+                    if (countBigLetterInGeneratedPassword == countBigLetter) {
+                        correctCountBigLetter = false;
+                    };
+                };
+
+                if (password.size() == lengthPassword) {
+                    break;
+                };
+            };
+            
+            std::cout << "Ваш пароль: " << password << "\n";
+
+            // Вывод надежности пароля взависимости от его длины
+            std::cout << "Надежность: ";
+            if (lengthPassword < 7) {
+                std::cout << "Низкая.\n";
+            }
+            else if (lengthPassword > 7 && lengthPassword < 13) {
+                std::cout << "Средняя.\n";
+            }
+            else if (lengthPassword > 12) {
+                std::cout << "Высокая.\n";
+            };
+        }
     }
     else if (n == 13) {
         std::cout << "[+] Программа - \"Геометрические фигуры\".\n\n";
