@@ -3226,82 +3226,200 @@ int main() {
 
         // Проверка на что каждое число в векторе двузначное или однозначное
         for (int i : numbers) {
+            std::cout << "\n\n" << i << "\n\n";
             if (!(i > -100 || i < 100)) {
                 std::cout << "Вы ввели не одно или двузначное.  " << i << "  \n";
                 std::exit(0);
             };
-        };
+        }
 
-        // Количество пробелом в первом столбце
-        // Слева в любом случае 5, а спрва зависит от длины строки
-        short leftSizeOneColumnForNumber = 5;
-        short rightSizeOneColumnForNumber;
-
-        // Количество пробелом вo втором столбце
-        short leftSizeTwoColumnForNumber;
-        short rightSizeTwoColumnForNumber;
-
-
-        // Количество пробелом вo втором столбце
-        short leftSizeThreeColumnForNumber = 7;
-        short rightSizeThreeColumnForNumber;
-
-        // Первая строка
-        for (int _ = 0; _ < 11 + 26 + 16 + 4; _++) {
-            std::cout << "-";
-        };
-        std::cout << "|   Число   |           Пример         |   Результат    |";
+        std::cout << "\n\n" << numbers.size() << "\n\n";
 
         // Все остальные строки
-        for (int i = -1; i < numbers.size(); i++) {
+        for (int i =0; i < numbers.size(); i++) {
+            // Количество символов "-" между результатами вычисления
+            int countSeparator = 0;
+
+            // Количество пробелом в первом столбце
+            short oneColumnForNumber = 5; // потому что leftSizeOneColumnForNumber по умолчанию равен 5
+            // Слева в любом случае 5, а спрва зависит от длины строки
+            short leftSizeOneColumnForNumber = 5;
+            short rightSizeOneColumnForNumber;
+
+            // Количество пробелом вo втором столбце
+            short twoColumnForNumber = 0;
+            short leftSizeTwoColumnForNumber;
+            short rightSizeTwoColumnForNumber;
+
+
+            // Количество пробелом в третем столбце
+            short threeColumnForNumber = 0;
+            short leftSizeThreeColumnForNumber = 7;
+            short rightSizeThreeColumnForNumber;
+
+
             if (numbers[i] == 0) {
                 std::cout << "Нельзя делить на 0.\n";
                 std::exit(0);
             };
 
-            std::cout << "Таблица " << i + 1 << "\n";
-
             if (numbers[i] > -10 && numbers[i] < 10) {
                 // Число однозначное
                 rightSizeOneColumnForNumber = 5;
+                oneColumnForNumber += 5; // 5 это rightSizeOneColumnForNumber
 
-                // Если число отрицаительное размер примера на 4 больше из за минусов и скобок
+                // Если число отрицаительное, то размер примера на 4 больше из за минусов и скобок
                 if (std::to_string(numbers[i])[0] == '-') {
                     leftSizeTwoColumnForNumber = 9;
                     rightSizeTwoColumnForNumber = 8;
+
+                    twoColumnForNumber += 9 + 8 + 6; // 9 это leftSizeTwoColumnForNumber, 8 это rightSizeTwoColumnForNumber, 6 это однозначные отрицательные числа со скобками, два таких числа
+
+                    oneColumnForNumber += 2; // 2 это длина однозначного отрицательного числа
+
+                    // Первое число это насколько символов сумма длины первого и второго столбцов будет больше чем количество пробелов, сохраненое в переменных left..., right..., второе это насколько символов длина третего столбцов будет больше чем количество пробелов в этом третем столбце
+                    countSeparator += (6 + std::to_string(numbers[i] * numbers[i]).size()); // 6 это два раза (однозначеное число с минусов) и скобки вокруг второго раза, std::to_string(numbers[i] * numbers[i]).size() это максимальная длина числа которую можно быть получить и она будет получена в результате умножения, весь третий столбец таблицы постраиваеться под это значение максималтьной длины
                 }
                 else {
                     leftSizeTwoColumnForNumber = 11;
                     rightSizeTwoColumnForNumber = 10;
+
+                    oneColumnForNumber += 1; // 1 это длина однозначного положительного числа
+
+                    twoColumnForNumber += 11 + 10 + 2; // 11 это leftSizeTwoColumnForNumber, 10 это rightSizeTwoColumnForNumber, 2 это однозначные положительные числа, два таких числа
+
+                    // Первое число это насколько символов сумма длины первого и второго столбцов будет больше чем количество пробелов, сохраненое в переменных left..., right..., второе это насколько символов длина третего столбцов будет больше чем количество пробелов в этом третем столбце
+                    countSeparator += (2 + std::to_string(numbers[i] * numbers[i]).size()); // 2 это два однозначных числа, всего 2 потому что число положительно значит нету минусов, а значит и скобок, std::to_string(numbers[i] * numbers[i]).size() это максимальная длина числа которую можно быть получить и она будет получена в результате умножения, весь третий столбец таблицы постраиваеться под это значение максималтьной длины
                 }
 
                 rightSizeThreeColumnForNumber = 8;
+                threeColumnForNumber += 8 + std::to_string(numbers[i] * numbers[i]).size(); // 8 это rightSizeThreeColumnForNumber, отальное это длина максимальной строки которая может получиться в третем столбце, тооесть умножения
             }
             else if (numbers[i] > -100 && numbers[i] < 100) {
                 // Число двузначное
                 rightSizeOneColumnForNumber = 4;
+                oneColumnForNumber += 4;
 
                 // Если число отрицаительное, то размер примера на 4 больше из за минусов и скобок
                 if (std::to_string(numbers[i])[0] == '-') {
                     leftSizeTwoColumnForNumber = 8;
                     rightSizeTwoColumnForNumber = 7;
+
+                    oneColumnForNumber += 3; // 3 это длина двузначного положительного числа
+
+                    twoColumnForNumber += 8 + 7 + 6; // 8 это leftSizeTwoColumnForNumber, 7 это rightSizeTwoColumnForNumber, 8 это двузначные отрицательные числа со скобками, два таких числа
+
+                    // Первое число это насколько символов сумма длины первого и второго столбцов будет больше чем количество пробелов, сохраненое в переменных left..., right..., второе это насколько символов длина третего столбцов будет больше чем количество пробелов в этом третем столбце
+                    countSeparator += (8 + std::to_string(numbers[i] * numbers[i]).size()); // 8 это два раза (двузначеное число с минусов) и скобки вокруг второго раза, std::to_string(numbers[i] * numbers[i]).size() это максимальная длина числа которую можно быть получить и она будет получена в результате умножения, весь третий столбец таблицы постраиваеться под это значение максималтьной длины
                 }
                 else {
                     leftSizeTwoColumnForNumber = 10;
                     rightSizeTwoColumnForNumber = 9;
+
+                    oneColumnForNumber += 2; // 2 это длина двузначного отрицательного числа
+
+                    twoColumnForNumber += 10 + 9 + 4; // 10 это leftSizeTwoColumnForNumber, 9 это rightSizeTwoColumnForNumber, 4 это двузначные положительные числа, два таких числа
+
+                    // Первое число это насколько символов сумма длины первого и второго столбцов будет больше чем количество пробелов, сохраненое в переменных left..., right..., второе это насколько символов длина третего столбцов будет больше чем количество пробелов в этом третем столбце
+                    countSeparator += (2 + std::to_string(numbers[i] * numbers[i]).size()); // 4 это два двузначных числа, всего 4 потому что число положительно значит нету минусов, а значит и скобок, std::to_string(numbers[i] * numbers[i]).size() это максимальная длина числа которую можно быть получить и она будет получена в результате умножения, весь третий столбец таблицы постраиваеться под это значение максималтьной длины
                 }
 
                 rightSizeThreeColumnForNumber = 7;
+                threeColumnForNumber += 7 + std::to_string(numbers[i] * numbers[i]).size(); // 8 это rightSizeThreeColumnForNumber, оcтальное это длина максимальной строки которая может получиться в третем столбце, тооесть умножения
             };
+
+            // Количество пробелов в трех столбцах
+            countSeparator += (leftSizeOneColumnForNumber + rightSizeOneColumnForNumber + leftSizeTwoColumnForNumber + rightSizeTwoColumnForNumber + leftSizeThreeColumnForNumber + rightSizeThreeColumnForNumber);
+
+            // 4 это количество символов "|" в строке
+            countSeparator += 4;
+
+            // Переменная которая будет содержать "|   Число   |           Пример         |   Результат    |"
+            std::string oneString = "";
+
+            // Если число четное остаивть значения по умолчанию, все красиво разделиться, в противном случае убавить в правого один
+            short leftSizeOneColumnForString = (threeColumnForNumber - std::string("Число").size()) / 2;
+            short rightSizeOneColumnForString = (threeColumnForNumber - std::string("Число").size()) / 2;
+            short leftSizeTwoColumnForString = (threeColumnForNumber - std::string("Пример").size()) / 2;
+            short rightSizeTwoColumnForString = (threeColumnForNumber - std::string("Пример").size()) / 2;
+            short leftSizeThreeColumnForString = (threeColumnForNumber - std::string("Результат").size()) / 2;
+            short rightSizeThreeColumnForString = (threeColumnForNumber - std::string("Результат").size()) / 2;
+
+            if ((oneColumnForNumber - std::string("Число").size()) % 2 != 0) {
+                rightSizeOneColumnForString -= 1; // тут левый потому что в остальных строках, если в первых двух столбцах не четный размер, то у левого будет на 1 меньше чем у правого, а в третем столбце в при таком же условии у левого будет на 1 меньше
+            };
+
+            if ((twoColumnForNumber - std::string("Пример").size()) % 2 != 0) {
+                rightSizeTwoColumnForString -= 1; // тут левый потому что в остальных строках, если в первых двух столбцах не четный размер, то у левого будет на 1 меньше чем у правого, а в третем столбце в при таком же условии у левого будет на 1 меньше
+            };
+
+            if ((threeColumnForNumber - std::string("Результат").size()) % 2 != 0) {
+                leftSizeThreeColumnForString -= 1; // тут правый потому что в остальных строках, если в первых двух столбцах не четный размер, то у левого будет на 1 меньше чем у правого, а в третем столбце в при таком же условии у левого будет на 1 меньше
+            };
+
+            oneString.push_back('|');
+
+            for (int _ = 0; _ < leftSizeOneColumnForString; _++) {
+               oneString.push_back(' ');
+            };
+
+            oneString += "Число";
+
+            for (int _ = 0; _ < rightSizeOneColumnForString; _++) {
+                oneString.push_back(' ');
+            };
+
+            oneString.push_back('|');
+
+
+            for (int _ = 0; _ < leftSizeTwoColumnForString; _++) {
+                oneString.push_back(' ');
+            };
+
+            oneString += "Пример";
+
+
+            for (int _ = 0; _ < rightSizeTwoColumnForString; _++) {
+                oneString.push_back(' ');
+            };
+
+            oneString.push_back('|');
+
+            for (int _ = 0; _ < leftSizeThreeColumnForString; _++) {
+                oneString.push_back(' ');
+            };
+
+            oneString += "Результат";
+
+            for (int _ = 0; _ < rightSizeThreeColumnForString; _++) {
+                oneString.push_back(' ');
+            };
+
+            oneString.push_back('|');
+
+
+
+            if (oneString.size() > countSeparator) {
+
+                countSeparator = oneString.size();
+            };
+
+
+            std::cout << "Таблица " << i + 1 << "\n";
+
+            // Первая строка каждой таблицы
+            for (int _ = 0; _ < countSeparator; _++) {
+                std::cout << "-";
+            };
+            std::cout << "\n";
+
+            std::cout << oneString << "\n";
+
 
             // Таблица
             for (int j = 0; j < 4; j++) {
                 // Разделитель 
-                for (int _ = 0; _ < 11 + 26 + 16 + 4; _++) {
-                    std::cout << "-";
-                };
-
-                for (int _ = 0; _ < 11 + 26 + 16 + 4; _++) {
+                for (int _ = 0; _ < countSeparator; _++) {
                     std::cout << "-";
                 };
 
@@ -3338,24 +3456,24 @@ int main() {
                         std::cout << numbers[i] << " - (" << numbers[i] << ")";
                     }
                     else {
-                        std::cout << numbers[i] << " 0 " << numbers[i];
+                        std::cout << numbers[i] << " - " << numbers[i];
                     }
                 }
                 else if (j == 2) {
-                    if (std::to_string(numbers[i])[0] == '-') {
-                        std::cout << numbers[i] << " * (" << numbers[i] << ")";
-                    }
-                    else {
-                        std::cout << numbers[i] << " * " << numbers[i];
-                    }
-                }
-                else {
                     if (std::to_string(numbers[i])[0] == '-') {
                         std::cout << numbers[i] << " / (" << numbers[i] << ")";
                     }
                     else {
                         std::cout << numbers[i] << " / " << numbers[i];
                     };
+                }
+                else {
+                    if (std::to_string(numbers[i])[0] == '-') {
+                        std::cout << numbers[i] << " * (" << numbers[i] << ")";
+                    }
+                    else {
+                        std::cout << numbers[i] << " * " << numbers[i];
+                    }
                 };
 
                 for (int _ = 0; _ < rightSizeTwoColumnForNumber; _++) {
@@ -3375,10 +3493,10 @@ int main() {
                     std::cout << numbers[i] -  numbers[i];
                 }
                 else if (j == 2) {
-                    std::cout << numbers[i] * numbers[i];
+                    std::cout << numbers[i] / numbers[i];
                 }
                 else {
-                    std::cout << numbers[i] / numbers[i];
+                    std::cout << numbers[i] * numbers[i];
                 };
 
                 for (int _ = 0; _ < rightSizeThreeColumnForNumber; _++) {
@@ -3388,7 +3506,7 @@ int main() {
                 std::cout << "|\n";
             };
 
-            for (int _ = 0; _ < 11 + 26 + 16 + 4; _++) {
+            for (int _ = 0; _ < countSeparator; _++) {
                 std::cout << "-";
             };
 
