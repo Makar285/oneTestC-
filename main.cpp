@@ -3944,12 +3944,18 @@ int main() {
         // Количество ничей первым игроком, вторым игроков и компьютером
         short countDrawOnePlayer = 0;
         short countDrawTwoPlayer = 0;
-        short countDrawConputer = 0;
+        short countDrawComputer = 0;
 
         // Количество очков первым игроком, вторым игроков и компьютером
         short countGlassesOnePlayer = 0;
         short countGlassesTwoPlayer = 0;
         short countGlassesComputer = 0;
+
+        // Количество пробелов между началом строки и началом раздела информация о текущей игре, в саомй игре
+        short countSubmolBetweenStartStringAndStartInformation = 18;
+
+        // Количество пробелов между двумя столбцами в статистке
+        short countSpaceBetweenTwoColumns = 15;
 
         while (true) {
             std::cout << "[0] Начать игру.\n";
@@ -3963,12 +3969,87 @@ int main() {
             if (nomer == 0) {
                 // Начало игры
                 
-                // Выбор игрок будет играть с компьютером или с чековеком который находиться рядом с ним
+                while (true) {
+                    // Выбор игрок будет играть с компьютером или с чековеком который находиться рядом с ним
+                    std::cout << "[0] Одиночная игра(с компьютером).\n";
+                    std::cout << "[1] Два игрока(с другом).\n";
+                    std::cout << "[2] В главное меню.\n";
+                    std::cout << "Введите номер пункта.\n";
+                    int nomerPola = getNumber();
+
+                    // Вектор содержащий то что вводят игроки, по умолчанию просто числа что бы игроки понимали какую цифру вводить что бы поставить на нужное место свою фигуру
+                    std::vector<char> table = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+                    // Переменная нужная что бы числа и свою символы ставили разные игроки, а не один
+                    short i = 2;
+
+                    // Вектор, содержащий то что ввели игроки
+                    std::vector<short> inputs = {};
+
+                    if (nomerPola == 0) {
+                        // Игрок будет играть с компьютером
+
+                        while (true) {
+                            std::cout << table[0] << " | " << table[1] << " | " << table[2] << "\n";
+                            std::cout << "- - - - -\n";
+                            std::cout << table[3] << " | " << table[4] << " | " << table[5] << "\n";
+                            std::cout << "- - - - -\n";
+                            std::cout << table[6] << " | " << table[7] << " | " << table[8] << "\n\n";
+
+                            if (i % 2 == 0) {
+                                // Ходит первый игрок
+                            }
+                            else {
+                                // Ходит компьютер
+                            }
+                            // std::cout << "Ходит (имя первого или второго игрока)";
+                        }
+                    }
+                    else if (nomerPola == 1) {
+                        // Игрок будет играть с другом
+
+                        while (true) {
+                            std::cout << table[0] << " | " << table[1] << " | " << table[2] << "\n";
+                            std::cout << "- - - - -\n";
+                            std::cout << table[3] << " | " << table[4] << " | " << table[5] << "\n";
+                            std::cout << "- - - - -\n";
+                            std::cout << table[6] << " | " << table[7] << " | " << table[8] << "\n\n";
+
+                            std::cout << "Информация:";
+                            for (int j = 0; j < inputs.size(); j++) {
+                                // Это аналог кода:
+                                // if(j % 2 == 0) {
+                                //   std::cout << nameOnePlayer << " ход на клетку " << inputs[j] << "\n";
+                                // else {
+                                //   std::cout << nameTwoPlayer << " ход на клетку " << inputs[j] << "\n";
+                                // };
+                                // [&nameOnePlayer, &nameTwoPlayer, &j] обязательно потому что [] всегда обязательный для такого кода, и если написать просто [], то переменные nameOnePlayer, nameTwoPlayer и j не будут обьявлены и будет ошибка
+                                std::cout << ([&nameOnePlayer, &nameTwoPlayer, &j]() { if (j % 2 == 0) { return nameOnePlayer; } else { return nameTwoPlayer; } }()) << " ход на клетку " << inputs[j] << "\n";
+                            };
+
+                            if (i % 2 == 0) {
+                                // Ходит первый игрок
+                                std::cout << nameOnePlayer << ": ";
+                            }
+                            else {
+                                // Ходит второй игрок
+                            }
+                            // std::cout << "Ходит (имя первого или второго игрока)";
+                        }
+                    }
+                    else if (nomerPola == 2) {
+                        // Выйти в главное меню
+                        std::cout << "Вы вышли из режима игры.\n";
+                        break;
+                    }
+                    else {
+                        std::cout << "Неизвестный пункт.\n";
+                        continue;
+                    }
+                };
             }
             else if (nomer == 1) {
                 // Статистика игры
-
-                short countSpaceBetweenTwoColumns = 15;
 
                 int maxLengthName = 0;
                 if (nameOnePlayer.size() > nameTwoPlayer.size()) {
@@ -4021,7 +4102,7 @@ int main() {
                 std::string twoString = "";
                 twoString += "1 | ";
                 twoString += nameOnePlayer;
-                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - nameOnePlayer.size())) {
+                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - nameOnePlayer.size()); i++) {
                     twoString += " ";
                 };
                 twoString += countWinOnePLayer;
@@ -4033,55 +4114,118 @@ int main() {
                     twoString += " ";
                 };
                 twoString += countDrawOnePlayer;
-                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
-                    oneString += " ";
-                };
-                twoString += "|";
-                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2 - 1; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
-                    oneString += " ";
-                };
-                twoString += countGlassesOnePlayer;
-
-                // Создание третей строки
-                std::string twoString = "";
-                twoString += "1 | ";
-                twoString += nameOnePlayer;
-                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - nameOnePlayer.size())) {
-                    twoString += " ";
-                };
-                twoString += countWinOnePLayer;
-                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countWinOnePLayer).size(); i++) {
-                    twoString += " ";
-                };
-                twoString += countLoseOnePlayer;
-                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countLoseOnePlayer).size(); i++) {
-                    twoString += " ";
-                };
-                twoString += countDrawOnePlayer;
-
-
                 if ((countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) % 2 != 0) {
-                    // Количество пробелов после вывода количеста ничей первого игрока до символа | не четное
-                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size() + 1) / 2; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), +1 что бы число стало четным, нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                    // Количество пробелов после вывода количеста матчей закончившихся ничья первого игрока до символа | не четное, значит до символа будет на один пробел меньше чем после
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), +1 что бы число стало четным, нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                    twoString += "|";
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size() + 1) / 2; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                }
+                else {
+                    // Количество пробелов после вывода количеста матчей закончившихся ничья первого игрока до символа | четное, значит до символа и после будет одинаковое количество пробелов
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
                         oneString += " ";
                     };
                     twoString += "|";
                     for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2 - 1; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
                         oneString += " ";
                     };
-                    twoString += countGlassesOnePlayer;
-                }
-
-
-                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
-                    oneString += " ";
-                };
-                twoString += "|";
-                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2 - 1; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
-                    oneString += " ";
                 };
                 twoString += countGlassesOnePlayer;
 
+
+                // Создание третей строки
+                std::string threeString = "";
+                threeString += "2 | ";
+                threeString += nameTwoPlayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - nameTwoPlayer.size()); i++) {
+                    threeString += " ";
+                };
+                threeString += countWinTwoPLayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countWinTwoPLayer).size(); i++) {
+                    threeString += " ";
+                };
+                threeString += countLoseTwoPlayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countLoseTwoPlayer).size(); i++) {
+                    threeString += " ";
+                };
+                threeString += countDrawTwoPlayer;
+                if ((countSpaceBetweenTwoColumns - std::to_string(countDrawTwoPlayer).size()) % 2 != 0) {
+                    // Количество пробелов после вывода количеста матчей закончившихся ничья первого игрока до символа | не четное, значит до символа будет на один пробел меньше чем после
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawTwoPlayer).size()) / 2; i++) { // - std::to_string(countDrawTwoPlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), +1 что бы число стало четным, нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        threeString += " ";
+                    };
+                    threeString += "|";
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawTwoPlayer).size() + 1) / 2; i++) { // - std::to_string(countDrawTwoPlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        threeString += " ";
+                    };
+                }
+                else {
+                    // Количество пробелов после вывода количеста матчей закончившихся ничья первого игрока до символа | четное, значит до символа и после будет одинаковое количество пробелов
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawTwoPlayer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                    threeString += "|";
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawTwoPlayer).size()) / 2 - 1; i++) { // - std::to_string(countDrawTwoPlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                };
+                threeString += countGlassesTwoPlayer;
+
+                // Создание четвертой строки
+                std::string fourString = "";
+                fourString += "3 | ";
+                fourString += "Компьютер";
+                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - std::string("Компьютер").size()); i++) {
+                    fourString += " ";
+                };
+                fourString += countWinComputer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countWinComputer).size(); i++) {
+                    fourString += " ";
+                };
+                fourString += countLoseComputer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countLoseComputer).size(); i++) {
+                    fourString += " ";
+                };
+                fourString += countDrawComputer;
+                if ((countSpaceBetweenTwoColumns - std::to_string(countDrawComputer).size()) % 2 != 0) {
+                    // Количество пробелов после вывода количеста матчей закончившихся ничья первого игрока до символа | не четное, значит до символа будет на один пробел меньше чем после
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawComputer).size()) / 2; i++) { // - std::to_string(countDrawTwoPlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), +1 что бы число стало четным, нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        fourString += " ";
+                    };
+                    fourString += "|";
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawComputer).size() + 1) / 2; i++) { // - std::to_string(countDrawTwoPlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        fourString += " ";
+                    };
+                }
+                else {
+                    // Количество пробелов после вывода количеста матчей закончившихся ничья первого игрока до символа | четное, значит до символа и после будет одинаковое количество пробелов
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawComputer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                    fourString += "|";
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawComputer).size()) / 2 - 1; i++) { // - std::to_string(countDrawTwoPlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                };
+                fourString += countGlassesComputer;
+
+
+                std::cout << oneString << "\n";
+                std::cout << twoString << "\n";
+                std::cout << threeString << "\n";
+                std::cout << fourString << "\n\n";
+                std::cout << "0 | Назад в главное меню.\n";
+                std::cout << "Введите что нибудь что бы вернуться в главное меню: ";
+
+                int isZero = getNumber();
+                if (isZero) {
+                    std::cout << "Вы вышли из режима статистики.\n";
+                    continue;
+                };
             }
             else if (nomer == 2) {
                 //  Настройки
