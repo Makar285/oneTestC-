@@ -3922,6 +3922,283 @@ int main() {
         std::cout << "RES:    " << (rand() % ((end + 1) - start)) + start;
         std::cout << "\n\n\n\n";
     }
+    else if (n == 1000) {
+        // Имена игроков по умолчанию
+        std::string nameOnePlayer = "Игрок 1.";
+        std::string nameTwoPlayer = "Игрок 2.";
+
+        // Фигуры игроков по умолчанию
+        char figureOnePlayer = 'X';
+        char figureTwoPlayer = '0';
+
+        // Количество побед первым игроком, вторым игроков и компьютером
+        short countWinOnePLayer = 0;
+        short countWinTwoPLayer = 0;
+        short countWinComputer = 0;
+
+        // Количество поражений первым игроком, вторым игроков и компьютером
+        short countLoseOnePlayer = 0;
+        short countLoseTwoPlayer = 0;
+        short countLoseComputer = 0;
+
+        // Количество ничей первым игроком, вторым игроков и компьютером
+        short countDrawOnePlayer = 0;
+        short countDrawTwoPlayer = 0;
+        short countDrawConputer = 0;
+
+        // Количество очков первым игроком, вторым игроков и компьютером
+        short countGlassesOnePlayer = 0;
+        short countGlassesTwoPlayer = 0;
+        short countGlassesComputer = 0;
+
+        while (true) {
+            std::cout << "[0] Начать игру.\n";
+            std::cout << "[1] Статистика.\n";
+            std::cout << "[2] Настройки.\n";
+            std::cout << "[3] Выйти.\n";
+
+            std::cout << "Enter nomer: ";
+            int nomer = getNumber();
+
+            if (nomer == 0) {
+                // Начало игры
+                
+                // Выбор игрок будет играть с компьютером или с чековеком который находиться рядом с ним
+            }
+            else if (nomer == 1) {
+                // Статистика игры
+
+                short countSpaceBetweenTwoColumns = 15;
+
+                int maxLengthName = 0;
+                if (nameOnePlayer.size() > nameTwoPlayer.size()) {
+                    // Имя первого игрок длинее второго
+                    if (nameOnePlayer.size() > std::string("Компьютер").size()) {
+                        // Имя первого игрока длинее имя компьютера
+                        maxLengthName = nameOnePlayer.size();
+                    }
+                    else {
+                        // Имя компьютера длинее имени первого игрока 
+                        maxLengthName = std::string("Компьютер").size();
+                    }
+                }
+                else {
+                    // Имя второго игрока длинее имени первого игрока
+                    if (nameTwoPlayer.size() > std::string("Компьютер").size()) {
+                        // Имя второго игрока длинее имя компьютера
+                        maxLengthName = nameTwoPlayer.size();
+                    }
+                    else {
+                        // Имя компьютера длинее имени второго игрока 
+                        maxLengthName = std::string("Компьютер").size();
+                    }
+                }
+
+                // Создание первой строки
+                std::string oneString = "";
+                for (int i = 0; i < 4 + maxLengthName + countSpaceBetweenTwoColumns; i++) { // 4 это "1 | ", "2 | " и "3 | "
+                    oneString += " ";
+                };
+                oneString += "W";
+                for (int i = 0; i < countSpaceBetweenTwoColumns - 1; i++) { // -1 потому что один символ это "W"
+                    oneString += " ";
+                }
+                oneString += "L";
+                for (int i = 0; i < countSpaceBetweenTwoColumns - 1; i++) { // -1 потому что один символ это "L"
+                    oneString += " ";
+                }
+                oneString += "D";
+                for (int i = 0; i < (countSpaceBetweenTwoColumns -1) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число
+                    oneString += " ";
+                }
+                oneString += "|";
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - 1) / 2-1; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                    oneString += " ";
+                }
+                oneString += "Очки";
+
+                // Создание второй строки
+                std::string twoString = "";
+                twoString += "1 | ";
+                twoString += nameOnePlayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - nameOnePlayer.size())) {
+                    twoString += " ";
+                };
+                twoString += countWinOnePLayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countWinOnePLayer).size(); i++) {
+                    twoString += " ";
+                };
+                twoString += countLoseOnePlayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countLoseOnePlayer).size(); i++) {
+                    twoString += " ";
+                };
+                twoString += countDrawOnePlayer;
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                    oneString += " ";
+                };
+                twoString += "|";
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2 - 1; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                    oneString += " ";
+                };
+                twoString += countGlassesOnePlayer;
+
+                // Создание третей строки
+                std::string twoString = "";
+                twoString += "1 | ";
+                twoString += nameOnePlayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns + (maxLengthName - nameOnePlayer.size())) {
+                    twoString += " ";
+                };
+                twoString += countWinOnePLayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countWinOnePLayer).size(); i++) {
+                    twoString += " ";
+                };
+                twoString += countLoseOnePlayer;
+                for (int i = 0; i < countSpaceBetweenTwoColumns - std::to_string(countLoseOnePlayer).size(); i++) {
+                    twoString += " ";
+                };
+                twoString += countDrawOnePlayer;
+
+
+                if ((countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) % 2 != 0) {
+                    // Количество пробелов после вывода количеста ничей первого игрока до символа | не четное
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size() + 1) / 2; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), +1 что бы число стало четным, нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                    twoString += "|";
+                    for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2 - 1; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                        oneString += " ";
+                    };
+                    twoString += countGlassesOnePlayer;
+                }
+
+
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                    oneString += " ";
+                };
+                twoString += "|";
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - std::to_string(countDrawOnePlayer).size()) / 2 - 1; i++) { // - std::to_string(countDrawOnePlayer).size() потому что число не должно добавляться к количесву пробелов меджу вдумя столбцами(переменная countSpaceBetweenTwoColumns со значением 15 всегда), нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                    oneString += " ";
+                };
+                twoString += countGlassesOnePlayer;
+
+            }
+            else if (nomer == 2) {
+                //  Настройки
+
+                // Цикл что бы можно было возвращать к выбору игроку для его настройки
+                while (true) {
+                    std::cout << "[0] Игрок 1.\n";
+                    std::cout << "[1] Игрок 2.\n";
+                    std::cout << "[2] Вернуться в главноe меню.\n";
+
+                    std::cout << "Введите номер игрока: ";
+                    int nomerPlayer = getNumber();
+
+                    std::cout << "\n\n\n";
+
+                    if (nomerPlayer == 0) {
+                        std::cout << "Настройки игрока 1.\n";
+
+                        // Тут бесконечный цикл нужен что бы изменять значения и каждый раз не входить сюда из главного меню
+                        while (true) {
+                            std::cout << "[0] Ник: " << nameOnePlayer << "\n";
+                            std::cout << "[1] Фигура: " << figureOnePlayer << "\n";
+                            std::cout << "[2] Вернуться к выбору игрока для его последующей настройки.\n";
+                            std::cout << "Введите номер поля для изменения: ";
+
+                            int nomerPola = getNumber();
+
+                            if (nomerPola == 0) {
+                                // Изменения ника первого игрока
+                                std::string newOneNamePlayer = "";
+                                std::cout << "Введите новое имя первого игрока(БЕЗ ПРОБЕЛОВ): ";
+                                std::cin >> newOneNamePlayer;
+                                nameOnePlayer = newOneNamePlayer;
+                                std::cout << "Имя первого игрока изменено на: " << newOneNamePlayer << "\n";
+                            }
+                            else if (nomerPola == 1) {
+                                // Изменение фигуры первого игрока
+                                char newFigureOnePlayer;
+                                std::cout << "Введите новую фигуру которой будет играть первый игрок: ";
+                                std::cin >> newFigureOnePlayer;
+                                figureOnePlayer = newFigureOnePlayer;
+                                std::cout << "Фигура первого игрока изменена на: " << newFigureOnePlayer << "\n";
+                            }
+                            else if (nomerPola == 2) {
+                                // Выход из режима редактирования в главное меню
+                                std::cout << "Вы вышли из режима настройки первого игрока.\n";
+                                break;
+                            };
+
+                            // Что бы визуально отделить итерации самого внутреннего цикла while
+                            std::cout << "\n\n";
+                        }
+                    }
+                    else if (nomerPlayer == 1) {
+                        std::cout << "Настройки игрока 2.\n";
+
+                        // Тут бесконечный цикл нужен что бы изменять значения и каждый раз не входить сюда из главного меню
+                        while (true) {
+                            std::cout << "[0] Ник: " << nameTwoPlayer << "\n";
+                            std::cout << "[1] Фигура: " << figureTwoPlayer << "\n";
+                            std::cout << "[2] Вернуться к выбору игрока для его последующей настройки.\n";
+                            std::cout << "Введите номер поля для изменения: ";
+
+                            int nomerPola = getNumber();
+
+                            if (nomerPola == 0) {
+                                // Изменения ника вторного игрока
+                                std::string newTwoNamePlayer = "";
+                                std::cout << "Введите новое имя вторного игрока(БЕЗ ПРОБЕЛОВ): ";
+                                std::cin >> newTwoNamePlayer;
+                                nameTwoPlayer = newTwoNamePlayer;
+                                std::cout << "Имя вторного игрока изменено на: " << newTwoNamePlayer << "\n";
+                            }
+                            else if (nomerPola == 1) {
+                                // Изменение фигуры м игрока
+                                char newFigureTwoPlayer;
+                                std::cout << "Введите новую фигуру которой будет играть первый игрок: ";
+                                std::cin >> newFigureTwoPlayer;
+                                figureTwoPlayer = newFigureTwoPlayer;
+                                std::cout << "Фигура вторного игрока изменена на: " << newFigureTwoPlayer << "\n";
+                            }
+                            else if (nomerPola == 2) {
+                                // Выход из режима редактирования в главное меню
+                                std::cout << "Вы вышли из режима настройки вторного игрока.\n";
+                                break;
+                            };
+
+                            // Что бы визуально отделить итерации самого внутреннего цикла while
+                            std::cout << "\n\n";
+                        }
+                    }
+                    else if (nomerPlayer == 2) {
+                        std::cout << "Вы вышли из режима настройки игроков.\n";
+                        break;
+                    }
+                    else {
+                        std::cout << "Неизветный номер игрока.\n";
+                        continue;
+                    };
+
+                    // Что бы визуально отделить итерации среднего цикла while
+                    std::cout << "\n\n\n\n";
+                }
+            }
+            else if (nomer == 3) {
+                std::cout << "EXIT.\n";
+                break;
+            }
+            else {
+                std::cout << "Неизвестный номер.\n";
+                continue;
+            };
+
+            // Что бы визуально отделить итерации внешнего цикла while
+            std::cout << "\n\n\n\n\n\n";
+        }
+    }
     else {
         std::cout << "Неизвестный нмоер задания.\n";
     };
