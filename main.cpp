@@ -15,7 +15,17 @@
 
 #include <windows.h> // для функций SetConsoleCP и SetConsoleOutputCP
 
+std::size_t utf8_len(const std::string& s) {
+    std::size_t count = 0;
 
+    for (unsigned char c : s) {
+        if ((c & 0xC0) != 0x80) {
+            ++count;
+        }
+    }
+
+    return count;
+}
 
 
 // Обшая функция проверяющая что число int есть в векторе
@@ -1379,6 +1389,7 @@ void fourQuarters() {
     };
 };
 
+// Вернет чилсо из диапазонa [start, end]
 int getRandomNumber(int start, int end) {
     // Регулятор случайных чисел (статический, чтобы не переинициализировать)
     static std::random_device rd;
@@ -1389,6 +1400,66 @@ int getRandomNumber(int start, int end) {
 
     return distr(gen);
 }
+
+// Если кто то выиграл, то вернет кто выиграл, первый игрок или второй(или компьютер)(вернет 1 или 2 соответствено), а если никто не выиграл вернет 0
+short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlayer) {
+    if ((table[0] == table[3] && table[3] == table[6]) || (table[1] == table[4] && table[4] == table[7]) || (table[2] == table[5] && table[5] == table[8])) {
+        // В каком то столбце все три символа совпадают
+
+        if ((table[0] == figureOnePlayer) || (table[1] == figureOnePlayer) || (table[2] == figureOnePlayer)) {
+            // Все три совпадающих символы в каком то столбце, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if ((table[0] == figureTwoPlayer) || (table[1] == figureTwoPlayer) || (table[2] == figureTwoPlayer)) {
+            // Все три совпадающих символы в каком то столбце, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if ((table[0] == table[1] && table[1] == table[2]) || (table[3] == table[4] && table[4] == table[5]) || (table[6] == table[7] && table[7] == table[8])) {
+        // В какой строке все три символа совпадают
+
+        if ((table[0] == figureOnePlayer) || (table[3] == figureOnePlayer) || (table[6] == figureOnePlayer)) {
+            // Все три совпадающих символы в какой то строке, это символы первого первого игрока, значит он победил
+            return 1;
+        }
+        else if ((table[0] == figureTwoPlayer) || (table[3] == figureTwoPlayer) || (table[6] == figureTwoPlayer)) {
+            // Все три совпадающих символы в какой то строке, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if ((table[0] == table[4] && table[4] == table[8]) || (table[2] == table[4] && table[4] == table[6])) {
+        // Все три символы в какой то диагонали совпадает
+
+        if ((table[0] == figureOnePlayer) || (table[2] == figureOnePlayer)) {
+            // Все три символы в какой то диагонали, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if ((table[0] == figureTwoPlayer) || (table[2] == figureTwoPlayer)) {
+            // Все три символы в какой то диагонали, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else {
+        // Если ни одна проверка не сработала, то никто не победил
+        // Цикл который проверят, что в массиве все символы заполены(все символы это какие то фигуры игроков), тоесть никто больше не может добавить числа, и получаеться ничья
+        bool isAllFigure = true;
+        for (int i = 0; i < table.size(); i++) {
+            if (table[i] != figureOnePlayer && table[i] != figureTwoPlayer) {
+                // Какой то символ в массиве, это не одна из фигур игроков
+                isAllFigure = false;
+                break;
+            }
+        };
+
+        if (isAllFigure) {
+            // Все элементы массива фигуры игроков, значит вводить числа больше нельзя, а значит это ничья
+            return -1;
+        };
+
+        // Ни одна проверка не прошла, значит в таблице есть еще места куда можно добавлять фигуры И никто не победил
+        return 0;
+    }
+};
 
 
 int main() {
@@ -3285,7 +3356,7 @@ int main() {
         std::cout << "\n\n" << numbers.size() << "\n\n";
 
         // Все остальные строки
-        for (int i=0; i < numbers.size(); i++) {
+        for (int i = 0; i < numbers.size(); i++) {
             // Количество символов "-" между результатами вычисления
             int countSeparator = 0;
 
@@ -3386,13 +3457,13 @@ int main() {
             // Переменная которая будет содержать "|   Число   |           Пример         |   Результат    |"
             std::string oneString = "";
 
-           /* // Если количество символом в третем столбце для чисел больше чем количество пробелов нужное для третего столбца первой строки
-            if (rightSizeThreeColumnForNumber + leftSizeThreeColumnForNumber + std::to_string(numbers[i]).size() > threeColumnForNumber - 9) {
-                threeColumnForNumber = rightSizeThreeColumnForNumber + leftSizeThreeColumnForNumber + std::to_string(numbers[i]).size();
-            }; */
+            /* // Если количество символом в третем столбце для чисел больше чем количество пробелов нужное для третего столбца первой строки
+             if (rightSizeThreeColumnForNumber + leftSizeThreeColumnForNumber + std::to_string(numbers[i]).size() > threeColumnForNumber - 9) {
+                 threeColumnForNumber = rightSizeThreeColumnForNumber + leftSizeThreeColumnForNumber + std::to_string(numbers[i]).size();
+             }; */
 
 
-            // Если число четное остаивть значения по умолчанию, все красиво разделиться, в противном случае убавить в правого один
+             // Если число четное остаивть значения по умолчанию, все красиво разделиться, в противном случае убавить в правого один
             short leftSizeOneColumnForString = (oneColumnForNumber - 5) / 2; // 5 это количество символов в строке "Число"
             short rightSizeOneColumnForString = (oneColumnForNumber - 5) / 2; // 5 это количество символов в строке "Число"
             short leftSizeTwoColumnForString = (twoColumnForNumber - 6) / 2; // 6 это количество символов в строке "Пример"
@@ -3415,7 +3486,7 @@ int main() {
             oneString.push_back('|');
 
             for (int _ = 0; _ < leftSizeOneColumnForString; _++) {
-               oneString.push_back(' ');
+                oneString.push_back(' ');
             };
 
             oneString += "Число";
@@ -3480,8 +3551,8 @@ int main() {
 
             */
 
-            
-            
+
+
             /*
             // Что бы было одинаковое количество пробелов слева от числа в первом столбце
             if (leftSizeOneColumnForString > leftSizeOneColumnForNumber) {
@@ -3491,7 +3562,7 @@ int main() {
                 leftSizeOneColumnForString = leftSizeOneColumnForNumber;
             };
 
-            
+
             // Что бы было одинаковое количество пробелов справа от числа в первом столбце
             if (rightSizeOneColumnForString > rightSizeOneColumnForNumber) {
                 rightSizeOneColumnForNumber = rightSizeOneColumnForString;
@@ -3629,7 +3700,7 @@ int main() {
                     std::cout << numbers[i] + numbers[i];
                 }
                 else if (j == 1) {
-                    std::cout << numbers[i] -  numbers[i];
+                    std::cout << numbers[i] - numbers[i];
                 }
                 else if (j == 2) {
                     std::cout << numbers[i] / numbers[i];
@@ -3922,7 +3993,7 @@ int main() {
         std::cout << "RES:    " << (rand() % ((end + 1) - start)) + start;
         std::cout << "\n\n\n\n";
     }
-    else if (n == 1000) {
+    else if (n == 10000) {
         // Имена игроков по умолчанию
         std::string nameOnePlayer = "Игрок 1.";
         std::string nameTwoPlayer = "Игрок 2.";
@@ -3930,6 +4001,7 @@ int main() {
         // Фигуры игроков по умолчанию
         char figureOnePlayer = 'X';
         char figureTwoPlayer = '0';
+        char figureComputer = '*';
 
         // Количество побед первым игроком, вторым игроков и компьютером
         short countWinOnePLayer = 0;
@@ -3947,12 +4019,12 @@ int main() {
         short countDrawComputer = 0;
 
         // Количество очков первым игроком, вторым игроков и компьютером
-        short countGlassesOnePlayer = 0;
-        short countGlassesTwoPlayer = 0;
-        short countGlassesComputer = 0;
+        float countGlassesOnePlayer = 0;
+        float countGlassesTwoPlayer = 0;
+        float countGlassesComputer = 0;
 
         // Количество пробелов между началом строки и началом раздела информация о текущей игре, в саомй игре
-        short countSubmolBetweenStartStringAndStartInformation = 18;
+        // short countSubmolBetweenStartStringAndStartInformation = 18;
 
         // Количество пробелов между двумя столбцами в статистке
         short countSpaceBetweenTwoColumns = 15;
@@ -3966,25 +4038,29 @@ int main() {
             std::cout << "Enter nomer: ";
             int nomer = getNumber();
 
+            std::cout << "\n\n";
+
             if (nomer == 0) {
                 // Начало игры
-                
+
                 while (true) {
                     // Выбор игрок будет играть с компьютером или с чековеком который находиться рядом с ним
                     std::cout << "[0] Одиночная игра(с компьютером).\n";
                     std::cout << "[1] Два игрока(с другом).\n";
                     std::cout << "[2] В главное меню.\n";
-                    std::cout << "Введите номер пункта.\n";
+                    std::cout << "Введите номер пункта: ";
                     int nomerPola = getNumber();
 
-                    // Вектор содержащий то что вводят игроки, по умолчанию просто числа что бы игроки понимали какую цифру вводить что бы поставить на нужное место свою фигуру
-                    std::vector<char> table = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+                    std::cout << "\n\n";
 
-                    // Переменная нужная что бы числа и свою символы ставили разные игроки, а не один
+                    // Вектор содержащий то что вводят игроки, по умолчанию просто числа что бы игроки понимали какую цифру вводить что бы поставить на нужное место свою фигуру
+                    std::vector<char> table = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+                    // Переменная нужная что бы играли разные игроки, а не один
                     short i = 2;
 
                     // Вектор, содержащий то что ввели игроки
-                    std::vector<short> inputs = {};
+                    std::vector<int> inputs = {};
 
                     if (nomerPola == 0) {
                         // Игрок будет играть с компьютером
@@ -3996,13 +4072,101 @@ int main() {
                             std::cout << "- - - - -\n";
                             std::cout << table[6] << " | " << table[7] << " | " << table[8] << "\n\n";
 
-                            if (i % 2 == 0) {
-                                // Ходит первый игрок
+
+                            // Проверка на что есть ли уже победитель
+                            short whoWin = whoIsWin(table, figureOnePlayer, figureComputer);
+                            std::cout << "\n\ndsadsad   " << whoWin << "\n\n";
+                            if (whoWin == 1) {
+                                // Выиграл первый игрок
+                                std::cout << "Выиграл " << nameOnePlayer << "\n";
+
+                                // Добавить очки первому игроку, убавить очки второму игроку, добавить первому игроку одну победу и добавить второму игроку одно поражение
+                                countGlassesOnePlayer += 5;
+                                countGlassesComputer -= 6;
+                                countWinOnePLayer++;
+                                countLoseComputer++;
+
+                                // Вернуться к выбору сколько игроков будут играть
+                                break;
+                            }
+                            else if (whoWin == 2) {
+                                // Выиграл компьютер
+                                std::cout << "Выиграл Компьютер\n";
+
+                                // Добавить очки второму игроку, убавить очки первому игроку, добавить второму игроку одну победу и добавить первому игроку одно поражение
+                                countGlassesComputer += 5;
+                                countGlassesOnePlayer -= 6;
+                                countWinComputer++;
+                                countLoseOnePlayer++;
+
+                                // Вернуться к выбору сколько игроков будут играть
+                                break;
+                            }
+                            else if (whoWin == -1) {
+                                // Больше никуда нельзя написать фигуры игрокам, значит ничья
+                                std::cout << "Ничья.\n";
+                                // Увелить первому и второму игрокам количество ничей на один, и уменьшить количество очков и первого и второго игроков на один
+                                countDrawOnePlayer++;
+                                countDrawComputer++;
+                                countGlassesOnePlayer -= 1.2;
+                                countGlassesComputer  -= 1.2;
+
+                                // Вернуться к выбору сколько игроков будут играть
+                                break;
                             }
                             else {
-                                // Ходит компьютер
+                                // Не выиграл никто
+                                // Ничего не делать, потому что если никто не выиграл, то нужно продолжить вывод информации, и получение чисел пользователем
+                            };
+
+
+                            std::cout << "Информация:\n\n";
+                            for (int j = 0; j < inputs.size(); j++) {
+                                // Если ход четный то ходит первый игрок, а если нет - второй игрок
+                                // Это аналог кода:
+                                // if(j % 2 == 0) {
+                                //   std::cout << nameOnePlayer << " ход на клетку " << inputs[j] << "\n";
+                                // else {
+                                //   std::cout << nameTwoPlayer << " ход на клетку " << inputs[j] << "\n";
+                                // };
+                                // [&nameOnePlayer, &nameTwoPlayer, &j] обязательно потому что [] всегда обязательный для такого кода, и если написать просто [], то переменные nameOnePlayer, nameTwoPlayer и j не будут обьявлены и будет ошибка
+                                std::cout << ([&nameOnePlayer, &j]() { if (j % 2 == 0) { return nameOnePlayer; } else { return std::string("Компьютер"); } }()) << " ход на клетку " << inputs[j] << "\n";
+                            };
+
+                            std::cout << "\n\n";
+
+
+                            int move;
+                            if (i % 2 == 0) {
+                                std::cout << "Ходит " << nameOnePlayer << ": ";
+                                move = getNumber();
                             }
-                            // std::cout << "Ходит (имя первого или второго игрока)";
+                            else {
+                                std::cout << "Ходит Компьютер.\n";
+                                while (true) {
+                                    int localMove = getRandomNumber(1, 9);
+                                    if (!contains(inputs, localMove)) {
+                                        // Полученого рандомного числа нету в массиве inputs, значит записать localMove в move и завершить бесконечный цикл
+                                        move = localMove;
+                                        break;
+                                    };
+                                };
+                            };
+
+                            std::cout << "\n";
+
+                            if (move < 1 || move > 9 || contains(inputs, move)) {
+                                std::cout << "Невалидное число.\n\n\n";
+                                continue;
+                            };
+
+                            // Изменить клетке таблицы что бы игроки понимали куда ходить уже нельзя
+                            table[move - 1] = (i % 2 == 0) ? (figureOnePlayer) : (figureComputer);
+
+                            // Добавить ход в массив который используеться для вывода информации5
+                            inputs.push_back(move);
+
+                            i++;
                         }
                     }
                     else if (nomerPola == 1) {
@@ -4015,8 +4179,57 @@ int main() {
                             std::cout << "- - - - -\n";
                             std::cout << table[6] << " | " << table[7] << " | " << table[8] << "\n\n";
 
-                            std::cout << "Информация:";
+
+                            // Проверка на что есть ли уже победитель
+                            short whoWin = whoIsWin(table, figureOnePlayer, figureTwoPlayer);
+                            std::cout << "\n\ndsadsad   " << whoWin << "\n\n";
+                            if (whoWin == 1) {
+                                // Выиграл первый игрок
+                                std::cout << "Выиграл " << nameOnePlayer << "\n";
+
+                                // Добавить очки первому игроку, убавить очки второму игроку, добавить первому игроку одну победу и добавить второму игроку одно поражение
+                                countGlassesOnePlayer += 5;
+                                countGlassesTwoPlayer -= 6;
+                                countWinOnePLayer++;
+                                countLoseTwoPlayer++;
+
+                                // Вернуться к выбору сколько игроков будут играть
+                                break;
+                            }
+                            else if (whoWin == 2) {
+                                // Выиграл второй игрок
+                                std::cout << "Выиграл " << nameTwoPlayer << "\n";
+
+                                // Добавить очки второму игроку, убавить очки первому игроку, добавить второму игроку одну победу и добавить первому игроку одно поражение
+                                countGlassesTwoPlayer += 5;
+                                countGlassesOnePlayer -= 6;
+                                countWinTwoPLayer++;
+                                countLoseOnePlayer++;
+
+                                // Вернуться к выбору сколько игроков будут играть
+                                break;
+                            }
+                            else if (whoWin == -1) {
+                                // Больше никуда нельзя написать фигуры игрокам, значит ничья
+                                std::cout << "Ничья.\n";
+                                // Увелить первому и второму игрокам количество ничей на один, и уменьшить количество очков и первого и второго игроков на один
+                                countDrawOnePlayer++;
+                                countDrawTwoPlayer++;
+                                countGlassesOnePlayer -= 1.2;
+                                countGlassesTwoPlayer -= 1.2;
+
+                                // Вернуться к выбору сколько игроков будут играть
+                                break;
+                            }
+                            else {
+                                // Не выиграл никто
+                                // Ничего не делать, потому что если никто не выиграл, то нужно продолжить вывод информации, и получение чисел пользователем
+                            };
+
+
+                            std::cout << "Информация:\n\n";
                             for (int j = 0; j < inputs.size(); j++) {
+                                // Если ход четный то ходит первый игрок, а если нет - второй игрок
                                 // Это аналог кода:
                                 // if(j % 2 == 0) {
                                 //   std::cout << nameOnePlayer << " ход на клетку " << inputs[j] << "\n";
@@ -4027,14 +4240,24 @@ int main() {
                                 std::cout << ([&nameOnePlayer, &nameTwoPlayer, &j]() { if (j % 2 == 0) { return nameOnePlayer; } else { return nameTwoPlayer; } }()) << " ход на клетку " << inputs[j] << "\n";
                             };
 
-                            if (i % 2 == 0) {
-                                // Ходит первый игрок
-                                std::cout << nameOnePlayer << ": ";
-                            }
-                            else {
-                                // Ходит второй игрок
-                            }
-                            // std::cout << "Ходит (имя первого или второго игрока)";
+                            std::cout << "\n\n";
+
+
+                            std::cout << "Ходит " << ([&i, &nameOnePlayer, &nameTwoPlayer]() { if (i % 2 == 0) { return nameOnePlayer; } else { return nameTwoPlayer; }; }()) << ": ";
+                            int move = getNumber();
+
+                            if (move < 1 || move > 9 || contains(inputs, move)) {
+                                std::cout << "Невалидное число.\n\n\n";
+                                continue;
+                            };
+
+                            // Изменить клетке таблицы что бы игроки понимали куда ходить уже нельзя
+                            table[move - 1] = (i % 2 == 0) ? (figureOnePlayer) : (figureTwoPlayer);
+
+                            // Добавить ход в массив который используеться для вывода информации5
+                            inputs.push_back(move);
+
+                            i++;
                         }
                     }
                     else if (nomerPola == 2) {
@@ -4045,35 +4268,46 @@ int main() {
                     else {
                         std::cout << "Неизвестный пункт.\n";
                         continue;
-                    }
+                    };
+
+
+                    // Что бы отделить каждую итерацию
+                    std::cout << "\n\n\n\n\n\n\n\n";
                 };
             }
             else if (nomer == 1) {
                 // Статистика игры
 
+
+                
                 int maxLengthName = 0;
                 if (nameOnePlayer.size() > nameTwoPlayer.size()) {
                     // Имя первого игрок длинее второго
-                    if (nameOnePlayer.size() > std::string("Компьютер").size()) {
+                    if (nameOnePlayer.size() > utf8_len("Компьютер")) {
                         // Имя первого игрока длинее имя компьютера
                         maxLengthName = nameOnePlayer.size();
                     }
                     else {
                         // Имя компьютера длинее имени первого игрока 
-                        maxLengthName = std::string("Компьютер").size();
+                        maxLengthName = utf8_len("Компьютер");
                     }
                 }
                 else {
                     // Имя второго игрока длинее имени первого игрока
-                    if (nameTwoPlayer.size() > std::string("Компьютер").size()) {
+                    if (nameTwoPlayer.size() > utf8_len("Компьютер")) {
                         // Имя второго игрока длинее имя компьютера
                         maxLengthName = nameTwoPlayer.size();
                     }
                     else {
                         // Имя компьютера длинее имени второго игрока 
-                        maxLengthName = std::string("Компьютер").size();
+                        maxLengthName = utf8_len("Компьютер");
                     }
                 }
+
+                // std::string computer = "КомпьютерABC";
+                // int maxLengthName = utf8_len(computer);
+                std::cout << "\n\n\n\nqwertyytrewq   " << nameOnePlayer.size() << "  " << nameTwoPlayer.size() << "  " << maxLengthName << "\n\n\n\n";
+
 
                 // Создание первой строки
                 std::string oneString = "";
@@ -4089,11 +4323,11 @@ int main() {
                     oneString += " ";
                 }
                 oneString += "D";
-                for (int i = 0; i < (countSpaceBetweenTwoColumns -1) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - 1) / 2; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число
                     oneString += " ";
                 }
                 oneString += "|";
-                for (int i = 0; i < (countSpaceBetweenTwoColumns - 1) / 2-1; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
+                for (int i = 0; i < (countSpaceBetweenTwoColumns - 1) / 2 - 1; i++) { // -1 потому что один символ это "D", нету проверки на то что (countWinComputer-1) это нечетное число, потому что countWinComputer всегда равно 15, а 15-1=14 и 14 четное число, -1 вне скобок нужен потому что один символ это "|"
                     oneString += " ";
                 }
                 oneString += "Очки";
@@ -4218,12 +4452,18 @@ int main() {
                 std::cout << twoString << "\n";
                 std::cout << threeString << "\n";
                 std::cout << fourString << "\n\n";
+
+                
+                std::cout << "            W      L    D    \n";
+                std::cout << nameOnePlayer << "    " << countWinOnePLayer << "    " << countLoseOnePlayer << "    " << countDrawOnePlayer << "    " << countGlassesOnePlayer << "\n";
+                std::cout << nameTwoPlayer << "    " << countWinTwoPLayer << "    " << countLoseTwoPlayer << "    " << countDrawTwoPlayer << "    " << countGlassesTwoPlayer << "\n";
+                std::cout << "Компьютер" << "    " << countWinComputer << "    " << countLoseComputer << "    " << countDrawComputer << "    " << countGlassesComputer << "\n";
                 std::cout << "0 | Назад в главное меню.\n";
-                std::cout << "Введите что нибудь что бы вернуться в главное меню: ";
+                std::cout << "Введите какое нибудь число что бы вернуться в главное меню: ";
 
                 int isZero = getNumber();
                 if (isZero) {
-                    std::cout << "Вы вышли из режима статистики.\n";
+                    std::cout << "Вы вышли из режима статистики.\n\n\n\n";
                     continue;
                 };
             }
@@ -4344,7 +4584,7 @@ int main() {
         }
     }
     else {
-        std::cout << "Неизвестный нмоер задания.\n";
+        std::cout << "Неизвестный номер задания.\n";
     };
 
     return 0;
