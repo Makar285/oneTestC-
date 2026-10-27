@@ -1403,7 +1403,137 @@ int getRandomNumber(int start, int end) {
 
 // Если кто то выиграл, то вернет кто выиграл, первый игрок или второй(или компьютер)(вернет 1 или 2 соответствено), а если никто не выиграл вернет 0
 short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlayer) {
-    if ((table[0] == table[3] && table[3] == table[6]) || (table[1] == table[4] && table[4] == table[7]) || (table[2] == table[5] && table[5] == table[8])) {
+    std::cout << "\n\nSTART TEST\n";
+    for (char e : table) {
+        std::cout << (e - '0') - 1 << "   " << e << "\n";
+    }
+    std::cout << figureOnePlayer << "\n";
+    std::cout << figureTwoPlayer << "\n";
+    std::cout << "END TEST\n\n";
+
+
+
+    if ((table[0] == table[3] && table[3] == table[6])) {
+        // Все три фигуры в первом столбце совпадают
+
+        if (table[0] == figureOnePlayer) {
+            // Все три совпадающих символы в столбце, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[0] == figureTwoPlayer) {
+            // Все три совпадающих символы в столбце, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if (table[1] == table[4] && table[4] == table[7]) {
+        // Все три фигуры во втором столбце совпадают
+
+        if (table[1] == figureOnePlayer) {
+            // Все три совпадающих символы в столбце, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[1] == figureTwoPlayer) {
+            // Все три совпадающих символы в столбце, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if (table[2] == table[5] && table[5] == table[8]) {
+        // Все три фигуры в третем столбце совпадают
+
+        if (table[2] == figureOnePlayer) {
+            // Все три совпадающих символы в столбце, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[2] == figureTwoPlayer) {
+            // Все три совпадающих символы в столбце, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    
+    else if (table[0] == table[1] && table[1] == table[2]) {
+        // Все три фигруы в первой строке совпадают
+
+        if (table[0] == figureOnePlayer) {
+            // Все три совпадающих символы в строке, это символы первого первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[0] == figureTwoPlayer) {
+            // Все три совпадающих символы в строке, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if (table[3] == table[4] && table[4] == table[5]) {
+        // Все три фигруы во второй строке совпадают
+
+        if (table[3] == figureOnePlayer) {
+            // Все три совпадающих символы в строке, это символы первого первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[3] == figureTwoPlayer) {
+            // Все три совпадающих символы в строке, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if (table[6] == table[7] && table[7] == table[8]) {
+        // Все три фигруы в третей строке совпадают
+
+        if (table[6] == figureOnePlayer) {
+            // Все три совпадающих символы в строке, это символы первого первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[6] == figureTwoPlayer) {
+            // Все три совпадающих символы в строке, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+
+    else if (table[0] == table[4] && table[4] == table[8]) {
+        // Все три фигруы в диагонали из левого верхнего угла в правый нижний угол совпадают
+
+        if (table[0] == figureOnePlayer) {
+            // Все три символы в диагонали, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[0] == figureTwoPlayer) {
+            // Все три символы в диагонали, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else if (table[2] == table[4] && table[4] == table[6]) {
+        // Все три фигруы в диагонали из правого верхнего угла в левый нижний угол совпадают
+
+        if (table[2] == figureOnePlayer) {
+            // Все три символы в какой то диагонали, это символы первого игрока, значит он победил
+            return 1;
+        }
+        else if (table[2] == figureTwoPlayer) {
+            // Все три символы в какой то диагонали, это символы второго игрока или компьютера, значит он победил
+            return 2;
+        }
+    }
+    else {
+        // Если ни одна проверка не сработала, то никто не победил
+        // Цикл который проверят, что в массиве все символы заполены(все символы это какие то фигуры игроков), тоесть никто больше не может добавить числа, и получаеться ничья
+        bool isAllFigure = true;
+        for (int i = 0; i < table.size(); i++) {
+            if (table[i] != figureOnePlayer && table[i] != figureTwoPlayer) {
+                // Какой то символ в массиве, это не одна из фигур игроков
+                isAllFigure = false;
+                break;
+            }
+        };
+
+        if (isAllFigure) {
+            // Все элементы массива фигуры игроков, значит вводить числа больше нельзя, а значит это ничья
+            return -1;
+        };
+
+        // Ни одна проверка не прошла, значит в таблице есть еще места куда можно добавлять фигуры И никто не победил
+        return 0;
+    }
+
+
+    /*if ((table[0] == table[3] && table[3] == table[6]) || (table[1] == table[4] && table[4] == table[7]) || (table[2] == table[5] && table[5] == table[8])) {
         // В каком то столбце все три символа совпадают
 
         if ((table[0] == figureOnePlayer) || (table[1] == figureOnePlayer) || (table[2] == figureOnePlayer)) {
@@ -1414,7 +1544,7 @@ short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlay
             // Все три совпадающих символы в каком то столбце, это символы второго игрока или компьютера, значит он победил
             return 2;
         }
-    }
+    } 
     else if ((table[0] == table[1] && table[1] == table[2]) || (table[3] == table[4] && table[4] == table[5]) || (table[6] == table[7] && table[7] == table[8])) {
         // В какой строке все три символа совпадают
 
@@ -1458,7 +1588,7 @@ short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlay
 
         // Ни одна проверка не прошла, значит в таблице есть еще места куда можно добавлять фигуры И никто не победил
         return 0;
-    }
+    }*/
 };
 
 
@@ -4127,7 +4257,7 @@ int main() {
                                 // if(j % 2 == 0) {
                                 //   std::cout << nameOnePlayer << " ход на клетку " << inputs[j] << "\n";
                                 // else {
-                                //   std::cout << nameTwoPlayer << " ход на клетку " << inputs[j] << "\n";
+                                //   std::cout << "Компьютер ход на клетку " << inputs[j] << "\n";
                                 // };
                                 // [&nameOnePlayer, &nameTwoPlayer, &j] обязательно потому что [] всегда обязательный для такого кода, и если написать просто [], то переменные nameOnePlayer, nameTwoPlayer и j не будут обьявлены и будет ошибка
                                 std::cout << ([&nameOnePlayer, &j]() { if (j % 2 == 0) { return nameOnePlayer; } else { return std::string("Компьютер"); } }()) << " ход на клетку " << inputs[j] << "\n";
@@ -4279,7 +4409,7 @@ int main() {
                 // Статистика игры
 
 
-                
+                /*
                 int maxLengthName = 0;
                 if (nameOnePlayer.size() > nameTwoPlayer.size()) {
                     // Имя первого игрок длинее второго
@@ -4452,8 +4582,8 @@ int main() {
                 std::cout << twoString << "\n";
                 std::cout << threeString << "\n";
                 std::cout << fourString << "\n\n";
+                */
 
-                
                 std::cout << "            W      L    D    \n";
                 std::cout << nameOnePlayer << "    " << countWinOnePLayer << "    " << countLoseOnePlayer << "    " << countDrawOnePlayer << "    " << countGlassesOnePlayer << "\n";
                 std::cout << nameTwoPlayer << "    " << countWinTwoPLayer << "    " << countLoseTwoPlayer << "    " << countDrawTwoPlayer << "    " << countGlassesTwoPlayer << "\n";
@@ -4581,6 +4711,173 @@ int main() {
 
             // Что бы визуально отделить итерации внешнего цикла while
             std::cout << "\n\n\n\n\n\n";
+        }
+    }
+    else if (n == 38) {
+
+
+
+
+
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cmath>
+#include <format>
+#include <cstdlib>
+#include <algorithm>
+#include <random>
+#include <clocale>
+
+#include <stdlib.h>
+#include <ctime>
+
+        int main() {
+            std::vector<int> array = { 4, 2, 3, 1, 8, 0, 5, 5 };
+            std::vector<int> currentArray = {};
+
+            // Переменная нужна что бы считать когда нужно закончить вечный цикл
+            int i = 0;
+
+            // Переменная нужна что бы было не n/2 итераций, а n, потому что в ходе работы удаляються элементы и array.size() уменьшаеться, а эта переменная помогает этого избежать
+            int lengthArray = array.size();
+
+            // Бесконечный цикл
+            while (true) {
+                int minNumber = array[0];
+                int indexMinNumber = 0;
+
+                // Найти минимальный элемент в векторе
+                // Пройтись по вектору, столько раз, сколько чисел в векторе
+                for (int j = 0; j < array.size(); j++) {
+                    if (array[j] < minNumber) {
+                        minNumber = array[j];
+                        indexMinNumber = j;
+                    }
+                };
+
+                // Добавить минимальный элемент в отсортированный вектор
+                currentArray.push_back(minNumber);
+
+                // Удалить текущий минимальный элемент, что бы не образовать бесконечный цикл путем брания этого числа всегда
+                array.erase(array.begin() + indexMinNumber);
+
+                // Увелить переменную i на 1
+                i++;
+
+                // Проверить равна ли вспомогательная переменная длине оргинального вектора
+                if (i == lengthArray) {
+                    break;
+                }
+            };
+
+            for (int i = 0; i < currentArray.size(); i++) {
+                std::cout << currentArray[i] << " ";
+            };
+        }
+
+
+
+
+
+        // Получение пользовательских данных насчет размера массива
+        std::cout << "Введите длину строки: ";
+        int length = getNumber();
+        std::cout << "Введите количество строк: ";
+        int height = getNumber();
+        std::cout << "\n";
+
+
+        // Инициалиизация массива рандомных значениями в диапазоне [1, 49]
+        std::vector<std::vector<int>> array = {};
+        for (int i = 0; i < height; i++) {
+            array.push_back({});
+            for (int j = 0; j < length; j++) {
+                array[i].push_back(getRandomNumber(1, 49));
+            };
+        };
+
+
+        // Вывод несортированного массива в консоль
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < length; j++) {
+                std::cout << array[i][j];
+                if (j != length - 1) {
+                    std::cout << " ";
+                };
+            };
+            std::cout << "\n";
+        };
+
+
+        // Получении информации о том как пользовател хочет отсортировать массив, по возрастанию или по убыванию
+        std::cout << "Выберите как хотит отсортировать массив.\n";
+        std::cout << "[0] По убыванию.\n";
+        std::cout << "[1] По возрастанию.\n";
+        std::cout << "Пункт: ";
+        int p = getNumber();
+        
+        // Отсортированный массив
+        std::vector<std::vector<int>> currentArray = {};
+
+        // Сортировка массива взависимости от того как пользователь выбрал его сортировать
+        if (p == 0) {
+            // Сортировка по убыванию
+
+            std::vector<int> localCurrentArray = {};
+
+            // Цикл пройдеться по массиву столько раз, сколько строк было введенно пользователем
+            for (int i = 0; i < array.size();i++) {
+                std::vector<int> arr = {};
+
+                // Цикл пройдеться по массиву столько раз, сколько столбцов в каждой строке
+                for (int j = 0; j < arr.size(); j++) {
+                    // Найти первое минимальное число массива и его индекс
+                    int minNumber = arr[0];
+                    int indexMinNumber = 0;
+                    for (int j = 0; j < arr.size(); j++) {
+                        int localN = arr[j];
+
+                        if (localN < minNumber) {
+                            minNumber = localN;
+                            indexMinNumber = i;
+                        };
+                    };
+
+                    std::cout << "\n\n" << minNumber << "  " << indexMinNumber << "\n\n";
+
+
+                    // Добавить первое минимальное число массива в локальный отсортированный массив
+                    localCurrentArray.push_back(minNumber);
+
+                    // Удалить первое минимальное число массива из оригинального массива
+                    currentArray[i].erase(currentArray[i].begin() + indexMinNumber);
+                };
+
+                currentArray.push_back(localCurrentArray);
+            };
+
+        }
+        else if (p == 1) {
+            // Сортировка по возрастанию
+        }
+        else {
+            // Неизвестный пунтк
+            std::cout << "Вы ввели некорректный пункт.\n";
+            std::exit(0);
+        };
+
+
+        // Вывод отсортированного массива
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < length; j++) {
+                std::cout << currentArray[i][j];
+                if (j != length - 1) {
+                    std::cout << " ";
+                };
+            };
+            std::cout << "\n";
         }
     }
     else {
