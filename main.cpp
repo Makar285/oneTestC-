@@ -4714,79 +4714,17 @@ int main() {
         }
     }
     else if (n == 38) {
-
-
-
-
-
-
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cmath>
-#include <format>
-#include <cstdlib>
-#include <algorithm>
-#include <random>
-#include <clocale>
-
-#include <stdlib.h>
-#include <ctime>
-
-        int main() {
-            std::vector<int> array = { 4, 2, 3, 1, 8, 0, 5, 5 };
-            std::vector<int> currentArray = {};
-
-            // Переменная нужна что бы считать когда нужно закончить вечный цикл
-            int i = 0;
-
-            // Переменная нужна что бы было не n/2 итераций, а n, потому что в ходе работы удаляються элементы и array.size() уменьшаеться, а эта переменная помогает этого избежать
-            int lengthArray = array.size();
-
-            // Бесконечный цикл
-            while (true) {
-                int minNumber = array[0];
-                int indexMinNumber = 0;
-
-                // Найти минимальный элемент в векторе
-                // Пройтись по вектору, столько раз, сколько чисел в векторе
-                for (int j = 0; j < array.size(); j++) {
-                    if (array[j] < minNumber) {
-                        minNumber = array[j];
-                        indexMinNumber = j;
-                    }
-                };
-
-                // Добавить минимальный элемент в отсортированный вектор
-                currentArray.push_back(minNumber);
-
-                // Удалить текущий минимальный элемент, что бы не образовать бесконечный цикл путем брания этого числа всегда
-                array.erase(array.begin() + indexMinNumber);
-
-                // Увелить переменную i на 1
-                i++;
-
-                // Проверить равна ли вспомогательная переменная длине оргинального вектора
-                if (i == lengthArray) {
-                    break;
-                }
-            };
-
-            for (int i = 0; i < currentArray.size(); i++) {
-                std::cout << currentArray[i] << " ";
-            };
-        }
-
-
-
-
-
         // Получение пользовательских данных насчет размера массива
         std::cout << "Введите длину строки: ";
         int length = getNumber();
         std::cout << "Введите количество строк: ";
         int height = getNumber();
         std::cout << "\n";
+
+        if (length == 0 || height == 0) {
+            std::cout << "Вы ввели 0, а это бессмылено.\n";
+            std::exit(0);
+        };
 
 
         // Инициалиизация массива рандомных значениями в диапазоне [1, 49]
@@ -4810,6 +4748,14 @@ int main() {
             std::cout << "\n";
         };
 
+        // Массив который будет содержать все числа всех массивов из array
+        std::vector<int> allNumbersArray = {};
+        for (int i = 0; i < array.size(); i++) {
+            for (int j = 0; j < array[i].size(); j++) {
+                allNumbersArray.push_back(array[i][j]);
+            };
+        };
+
 
         // Получении информации о том как пользовател хочет отсортировать массив, по возрастанию или по убыванию
         std::cout << "Выберите как хотит отсортировать массив.\n";
@@ -4817,68 +4763,170 @@ int main() {
         std::cout << "[1] По возрастанию.\n";
         std::cout << "Пункт: ";
         int p = getNumber();
-        
+
         // Отсортированный массив
-        std::vector<std::vector<int>> currentArray = {};
+        std::vector<int> currentArray = {};
+
+        // Переменная нужна что бы было не n/2 итераций, а было n итераций, потому что в ходе работы удаляються элементы и array.size() уменьшаеться, а эта переменная помогает этого избежать
+        int lengthArray = array.size();
 
         // Сортировка массива взависимости от того как пользователь выбрал его сортировать
         if (p == 0) {
             // Сортировка по убыванию
 
-            std::vector<int> localCurrentArray = {};
+            // Переменная нужна что бы считать когда нужно закончить вечный цикл
+            int i = 0;
 
-            // Цикл пройдеться по массиву столько раз, сколько строк было введенно пользователем
-            for (int i = 0; i < array.size();i++) {
-                std::vector<int> arr = {};
+            // Переменная нужна что бы было не n/2 итераций, а было n итераций, потому что в ходе работы удаляються элементы и array.size() уменьшаеться, а эта переменная помогает этого избежать
+            int lengthArray = allNumbersArray.size();
 
-                // Цикл пройдеться по массиву столько раз, сколько столбцов в каждой строке
-                for (int j = 0; j < arr.size(); j++) {
-                    // Найти первое минимальное число массива и его индекс
-                    int minNumber = arr[0];
-                    int indexMinNumber = 0;
-                    for (int j = 0; j < arr.size(); j++) {
-                        int localN = arr[j];
+            // Бесконечный цикл
+            while (true) {
+                int maxNumber = allNumbersArray[0];
+                int indexMaxNumber = 0;
 
-                        if (localN < minNumber) {
-                            minNumber = localN;
-                            indexMinNumber = i;
-                        };
-                    };
-
-                    std::cout << "\n\n" << minNumber << "  " << indexMinNumber << "\n\n";
-
-
-                    // Добавить первое минимальное число массива в локальный отсортированный массив
-                    localCurrentArray.push_back(minNumber);
-
-                    // Удалить первое минимальное число массива из оригинального массива
-                    currentArray[i].erase(currentArray[i].begin() + indexMinNumber);
+                // Найти максимальный элемент в векторе
+                // Пройтись по вектору, столько раз, сколько чисел в векторе
+                for (int j = 0; j < allNumbersArray.size(); j++) {
+                    if (allNumbersArray[j] > maxNumber) {
+                        maxNumber = allNumbersArray[j];
+                        indexMaxNumber = j;
+                    }
                 };
 
-                currentArray.push_back(localCurrentArray);
-            };
+                // Добавить максимальный элемент в отсортированный вектор
+                currentArray.push_back(maxNumber);
 
+                // Удалить текущий максимальный элемент, что бы не образовать бесконечный цикл путем брания этого числа всегда
+                allNumbersArray.erase(allNumbersArray.begin() + indexMaxNumber);
+
+                // Увелить переменную i на 1
+                i++;
+
+                // Проверить равна ли вспомогательная переменная длине оргинального вектора
+                if (i == lengthArray) {
+                    break;
+                }
+            };
         }
         else if (p == 1) {
             // Сортировка по возрастанию
+
+            // Переменная нужна что бы считать когда нужно закончить вечный цикл
+            int i = 0;
+
+            // Переменная нужна что бы было не n/2 итераций, а n, потому что в ходе работы удаляються элементы и array.size() уменьшаеться, а эта переменная помогает этого избежать
+            int lengthArray = allNumbersArray.size();
+
+            // Бесконечный цикл
+            while (true) {
+                int minNumber = allNumbersArray[0];
+                int indexMinNumber = 0;
+
+                // Найти минимальный элемент в векторе
+                // Пройтись по вектору, столько раз, сколько чисел в векторе
+                for (int j = 0; j < allNumbersArray.size(); j++) {
+                    if (allNumbersArray[j] < minNumber) {
+                        minNumber = allNumbersArray[j];
+                        indexMinNumber = j;
+                    }
+                };
+
+                // Добавить минимальный элемент в отсортированный вектор
+                currentArray.push_back(minNumber);
+
+                // Удалить текущий минимальный элемент, что бы не образовать бесконечный цикл путем брания этого числа всегда
+                allNumbersArray.erase(allNumbersArray.begin() + indexMinNumber);
+
+                // Увелить переменную i на 1
+                i++;
+
+                // Проверить равна ли вспомогательная переменная длине оргинального вектора
+                if (i == lengthArray) {
+                    break;
+                }
+            };
         }
         else {
-            // Неизвестный пунтк
+            // Неизвестный пункт
             std::cout << "Вы ввели некорректный пункт.\n";
             std::exit(0);
+        };
+
+
+        // i - счетчик что бы вовремя завершить цикл и не выйти за его пределы
+        int i = 0;
+
+        // index - индекс текущего вложенного массива куда нужно вставлять элементы из currentArray
+        int index = 0;
+
+        // вектор который будет содержить сортированные векторы
+        std::vector<std::vector<int>> currentSortArray = { {} };
+
+        // создание вектора векторов из одного вектора
+        while (true) {
+            if (i % length == 0 && i != 0) {
+                // добавить новый массив и увеличить индекс на 1 что бы добавлять элементы в новый добавленный массив
+                currentSortArray.push_back({});
+                index++;
+            };
+            
+            currentSortArray[index].push_back(currentArray[i]);
+
+            i++;
+
+            if (i == currentArray.size()) {
+                break;
+            }
         };
 
 
         // Вывод отсортированного массива
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < length; j++) {
-                std::cout << currentArray[i][j];
+                std::cout << currentSortArray[i][j];
                 if (j != length - 1) {
                     std::cout << " ";
                 };
             };
             std::cout << "\n";
         }
+    }
+    else if (n == 39) {
+        // не сработате потому что для каждого нового отдельно созданого файла нужно будет создавать отдельный экземпляр, а как их вместе совмещать непонятно
+        struct structFail {
+            std::string content;
+            std::string name;
+        };
+
+        structFail fails = {};
+
+        while (true) {
+            std::cout << "[0] Создать файл.\n";
+            std::cout << "[1] Открыть файл.\n";
+            std::cout << "[2] Настройки.\n";
+            std::cout << "[3] Выйти.\n";
+            std::cout << "Выберите что хотите сделать: ";
+            int pole = getNumber();
+
+            if (pole == 0) {
+                // Создать файл
+            }
+            else if (pole == 1) {
+                // Открыть файл
+            }
+            else if (pole == 2) {
+                // Настройки
+            }
+            else if (pole == 3) {
+                // Выйти
+                std::cout << "Вы вышли из аналога редактора файла версии -0.1.\n";
+                std::exit(0);
+            }
+            else {
+                std::cout << "Неизвестный пункт.\n";
+            };
+        };
     }
     else {
         std::cout << "Неизвестный номер задания.\n";
