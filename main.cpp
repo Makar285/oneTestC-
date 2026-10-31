@@ -15,6 +15,61 @@
 
 #include <windows.h> // для функций SetConsoleCP и SetConsoleOutputCP
 
+#include <ctime>
+
+#include <limits>
+
+// Нужно что бы из библиотеки строка #define <windows.h> макрос max не изменялся на тот что был в этой библиотеки
+#undef max;
+
+// Функция получения текущей даты
+std::vector<short> getData() {
+    // Получаем текущее время в секундах с эпохи Unix (1 января 1970)
+    std::time_t t = std::time(nullptr);
+
+    // Создаем структуру, куда запишутся данные
+    std::tm now;
+
+    // Безопасно конвертируем в локальное время (для MSVC / Windows)
+    localtime_s(&now, &t);
+
+    int year = now.tm_year + 1900; // теперь обращаемся через точку (.), а не через стрелочку (->)
+    int month = now.tm_mon + 1;
+    int day = now.tm_mday;
+
+    // Создание и заполнение вектора, который вернется из функции
+    std::vector<short> result = {};
+    result.push_back(static_cast<short>(year)); // приводим int к short для избежания предупреждений
+    result.push_back(static_cast<short>(month));
+    result.push_back(static_cast<short>(day));
+
+    return result;
+}
+
+// Функция получения текущего времени
+std::vector<short> getTime() {
+    // 1. Получаем текущее время в секундах
+    std::time_t t = std::time(nullptr);
+
+    // 2. Создаем структуру и безопасно преобразуем в локальное время
+    std::tm localTime;
+    localtime_s(&localTime, &t);
+
+    // 3. Получаем часы, минуты и секунды (обращение также через точку)
+    short hour = static_cast<short>(localTime.tm_hour);
+    short min = static_cast<short>(localTime.tm_min);
+    short sec = static_cast<short>(localTime.tm_sec);
+
+    // Создание и заполнение вектора
+    std::vector<short> result = {};
+    result.push_back(hour);
+    result.push_back(min);
+    result.push_back(sec);
+
+    return result;
+}
+
+
 std::size_t utf8_len(const std::string& s) {
     std::size_t count = 0;
 
@@ -4893,24 +4948,134 @@ int main() {
         }
     }
     else if (n == 39) {
-        // не сработате потому что для каждого нового отдельно созданого файла нужно будет создавать отдельный экземпляр, а как их вместе совмещать непонятно
+        // Создание пользовательсокго типа, содержащего, то что будет содержать файл
         struct structFail {
-            std::string content;
             std::string name;
+            std::string content;
+            std::string data;
+            std::string time;
         };
 
-        structFail fails = {};
+        std::vector<structFail> fails = {};
 
         while (true) {
             std::cout << "[0] Создать файл.\n";
             std::cout << "[1] Открыть файл.\n";
-            std::cout << "[2] Настройки.\n";
-            std::cout << "[3] Выйти.\n";
+            // std::cout << "[2] Настройки.\n";
+            std::cout << "[2] Выйти.\n";
             std::cout << "Выберите что хотите сделать: ";
             int pole = getNumber();
 
+            std::cout << "\n\n";
+
             if (pole == 0) {
                 // Создать файл
+
+                // Сoдержит, то что написал и сохранил пользователь
+                std::string saveContentNewFail = "";
+
+                // Содержит, то что ввел пользователь, НО НЕ СОХРАНИЛ
+                std::string notSaveContentNewFail = "";
+
+                // Имя файла, измениться перед созданием struct самого файла и добавления его в вектор файлов
+                std::string nameNewFail;
+
+                // Переменная которая нужна что бы понимать что пользователь сохранил файл и что бы получить название файла
+                bool isLocalSave = false;
+
+                std::cout << "Вводите текст, БЕЗ ПРОБЕЛОВ, ЕСЛИ ОНИ ПОНАДОБЯТЬСЯ НАЖМИТЕ ENTER И ПРОДОЛЖАЙТЕ ВВОДИТЬ, ТОЕСТЬ ENTER = ПРОБЕЛ, если захотите сохранить файл введите \"s\", а если хотите выйти введите \"q\".\n";
+                while (true) {
+                    std::cout << "> ";
+                    std::string str;
+                    std::cin >> str;
+
+
+                    if (str == "s") {
+                        // Сохранить файл
+
+                        // Изменение всего того что ввел пользователь(переменная notSaveContentNewFail) в то что сохранил пользователь(переменная saveContentNewFail)
+                        saveContentNewFail = notSaveContentNewFail;
+
+                        // Файл сохранен
+                        isLocalSave = true;
+
+                        std::cout << "Файл сохранен.\n";
+                    }
+                    else if (str == "q") {
+                        // Выйти из редактирования файла
+
+                        if (isLocalSave) {
+                            // Файл сохранен
+                            std::cout << "Введите название файла(БЕЗ ПРОБЕЛОВ): ";
+                            std::cin >> nameNewFail;
+
+                            // Выйти из бесконечного цикла заполнения нового файла
+                            break;
+                        }
+                        else {
+                            // Файл не сохранен
+                            std::cout << "Файл  не сохранен, вы хотите выйти и сохранить, то что уже сохранено(y(сохранить и выйти)/n(выйти)): ";
+                            std::string localStr;
+                            std::cin >> localStr;
+                            while (localStr != "y" && localStr != "n") {
+                                std::cout << "Введите только yes или no: ";
+                                std::cin >> localStr;
+                            };
+
+                            if (localStr == "y") {
+                                // Пользователь хочет сохранить файл и выйти
+                                // Изменение всего того что ввел пользователь(переменная notSaveContentNewFail) в то что сохранил пользователь(переменная saveContentNewFail)
+                                saveContentNewFail = notSaveContentNewFail;
+
+                                std::cout << "Файл сохранен.\n";
+                            }
+                            else {
+                                // Пользователь не хочет сохранять файл, но хочет выйти, тогда ничего тут не нужно
+                            };
+
+                            // Выйти из бесконечного цикла заполнения нового файла
+                            break;
+                        }
+                    }
+                    else {
+                        // Добавить то что ввел пользователь в contentNewFile, что бы сохранить, то что ввел пользователь
+                        notSaveContentNewFail += (" " + str);
+
+                        // Очистить в буфере все, то что находиться после первого слова, что бы не было того что пользователь ввел "I am", тогда сначала запишеться I в переменную notSaveContentNewFail, а после сразу выведеться "> " и в переменную notSaveContentNewFail запишеться am
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                        // При добавлении нового содержимого, файл нужно сохранить потому что сейчас он сохранен в состоянии последнего сохранения
+                        isLocalSave = false;
+                    };
+
+
+                    // Переход на новую строку
+                    std::cout << "\n";
+                };
+
+                // Получение текущей даты
+                std::vector<short> data = getData();
+                short year = data[0];
+                short month = data[1];
+                short day = data[2];
+
+                // Получение текущего времени
+                std::vector<short> time = getTime();
+                short hour = time[0];
+                short min = time[1];
+                short sec = time[2];
+
+                // Создание строки в которой будет содержаться текущая дата
+                std::string currentData = std::to_string(day) + "." + std::to_string(month) + "." + std::to_string(year);
+
+                // Создание строки в которой будет содержаться текущее время
+                std::string currentTime = std::to_string(hour) + ":" + std::to_string(min) + ":" + std::to_string(sec);
+
+                // Создание самого нового файла
+                structFail newFail = { nameNewFail, saveContentNewFail,  currentData, currentTime };
+
+                // Добавление этого новго файла в вектор файлов
+                fails.push_back(newFail);
             }
             else if (pole == 1) {
                 // Открыть файл
@@ -4926,6 +5091,17 @@ int main() {
             else {
                 std::cout << "Неизвестный пункт.\n";
             };
+
+
+            //////////// TEST ////////////
+            std::cout << "\n\n\n";
+            for (structFail fail : fails) {
+                std::cout << fail.name << "   " << fail.content << "  " << fail.data << "  " << fail.time << "  \n\n\n";
+            };
+            std::cout << "\n\n\n";
+            //////////// TEST ////////////
+
+
         };
     }
     else {
