@@ -22,6 +22,39 @@
 // Нужно что бы из библиотеки строка #define <windows.h> макрос max не изменялся на тот что был в этой библиотеки
 #undef max;
 
+
+
+
+
+#include <cctype>
+
+// Функции очистки пробелов
+// Очистка слева
+void ltrim(std::string& s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }));
+}
+
+// Очистка справа
+void rtrim(std::string& s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+}
+
+// Очистка с обеих сторон
+void trim_inplace(std::string& s) {
+    rtrim(s);
+    ltrim(s);
+}
+
+
+
+
+
+
+
 // Функция получения текущей даты
 std::vector<short> getData() {
     // Получаем текущее время в секундах с эпохи Unix (1 января 1970)
@@ -4956,6 +4989,7 @@ int main() {
             std::string time;
         };
 
+        // Вектор который будет содержать информацию о файлах
         std::vector<structFail> fails = {};
 
         while (true) {
@@ -5006,8 +5040,18 @@ int main() {
 
                         if (isLocalSave) {
                             // Файл сохранен
-                            std::cout << "Введите название файла(БЕЗ ПРОБЕЛОВ): ";
+                            
+                            // Получение названия файла пользователем
+                            std::cout << "Введите название файла(БЕЗ ПРОБЕЛОВ И ДЛИННОЙ ДО 15 СИМВОЛОВ): ";
                             std::cin >> nameNewFail;
+
+                            // 15 тут это почти все пробелы между началом строки, после номера строки в квадратных скобках, и началом второго столбца, переменная countSpaceBetweenStartAfterNumbersAndData, нужно в пунтке Открыть файл. Если будет больше 15,то будет не красиво, поэтому есть ограничения длины названия файла
+                            if (utf8_len(nameNewFail) > 15) {
+                                std::cout << "Вы ввели название файла длинной более 15 символов.\n\n";
+                                continue;
+                            };
+
+                            std::cout << "Файл сохранен.\n\n";
 
                             // Выйти из бесконечного цикла заполнения нового файла
                             break;
@@ -5024,10 +5068,25 @@ int main() {
 
                             if (localStr == "y") {
                                 // Пользователь хочет сохранить файл и выйти
+                                
+
                                 // Изменение всего того что ввел пользователь(переменная notSaveContentNewFail) в то что сохранил пользователь(переменная saveContentNewFail)
                                 saveContentNewFail = notSaveContentNewFail;
 
-                                std::cout << "Файл сохранен.\n";
+                                // Что бы вне цикла условие сработало и файл был сохранен в вектор файлов
+                                isLocalSave = true;
+
+                                // Получение названия файла пользователем
+                                std::cout << "Введите название файла(БЕЗ ПРОБЕЛОВ И ДЛИННОЙ ДО 15 СИМВОЛОВ): ";
+                                std::cin >> nameNewFail;
+
+                                // 15 тут это почти все пробелы между началом строки, после номера строки в квадратных скобках, и началом второго столбца, переменная countSpaceBetweenStartAfterNumbersAndData, нужно в пунтке Открыть файл. Если будет больше 15,то будет не красиво, поэтому есть ограничения длины названия файла
+                                if (utf8_len(nameNewFail) > 15) {
+                                    std::cout << "Вы ввели название файла длинной более 15 символов.\n\n";
+                                    continue;
+                                };
+
+                                std::cout << "Файл сохранен.\n\n";
                             }
                             else {
                                 // Пользователь не хочет сохранять файл, но хочет выйти, тогда ничего тут не нужно
@@ -5053,37 +5112,104 @@ int main() {
                     std::cout << "\n";
                 };
 
-                // Получение текущей даты
-                std::vector<short> data = getData();
-                short year = data[0];
-                short month = data[1];
-                short day = data[2];
+                // Если пользователь
+                if (isLocalSave && saveContentNewFail.length() > 0 && nameNewFail.size() > 0) {
+                    // Получение текущей даты
+                    std::vector<short> data = getData();
+                    short year = data[0];
+                    short month = data[1];
+                    short day = data[2];
 
-                // Получение текущего времени
-                std::vector<short> time = getTime();
-                short hour = time[0];
-                short min = time[1];
-                short sec = time[2];
+                    // Получение текущего времени
+                    std::vector<short> time = getTime();
+                    short hour = time[0];
+                    short min = time[1];
+                    short sec = time[2];
 
-                // Создание строки в которой будет содержаться текущая дата
-                std::string currentData = std::to_string(day) + "." + std::to_string(month) + "." + std::to_string(year);
+                    // Создание строки в которой будет содержаться текущая дата
+                    std::string currentData = std::to_string(day) + "." + std::to_string(month) + "." + std::to_string(year);
 
-                // Создание строки в которой будет содержаться текущее время
-                std::string currentTime = std::to_string(hour) + ":" + std::to_string(min) + ":" + std::to_string(sec);
+                    // Создание строки в которой будет содержаться текущее время
+                    std::string currentTime = std::to_string(hour) + ":" + std::to_string(min) + ":" + std::to_string(sec);
 
-                // Создание самого нового файла
-                structFail newFail = { nameNewFail, saveContentNewFail,  currentData, currentTime };
+                    // Измиинение строки, удаление пробелов сначала и с конца
+                    trim_inplace(saveContentNewFail);
 
-                // Добавление этого новго файла в вектор файлов
-                fails.push_back(newFail);
+                    // Создание самого нового файла
+                    structFail newFail = { nameNewFail, saveContentNewFail, currentData, currentTime };
+
+                    // Добавление этого новго файла в вектор файлов
+                    fails.push_back(newFail);
+                };
             }
             else if (pole == 1) {
                 // Открыть файл
+
+                // Сколько пробелов между началом строки, после номера этой строки в квадратных скобках, и началом второго столбца(даты сохранения)
+                short countSpaceBetweenStartAfterNumbersAndData = 20;
+
+                // Сколько пробелов между вторым столбцом(дата сохранения файла) и третим столбцом(време сохранения файла)
+                short countSpaceBetweenTwoColumnAndThreeColumn = 5;
+
+
+                std::cout << "Сохраненныe файлы: \n\n";
+
+                // Вывод первой строки с информацией о том, что будет в каждом столбце
+                std::cout << "    Название";
+                for (int i = 0; i < countSpaceBetweenStartAfterNumbersAndData - utf8_len("Название"); i++) {
+                    std::cout << " ";
+                };
+                std::cout << "Дата";
+                for (int i = 0; i < 10 - utf8_len("Дата") + countSpaceBetweenTwoColumnAndThreeColumn; i++) { // 10 это длина второго столбца про дату сохранения файла(типа 01.09.2027)
+                    std::cout << " ";
+                };
+                std::cout << "Время\n";
+
+                // Вывод для каждого файла новой строки
+                for (int i = 1; i <= fails.size(); i++) {
+                    structFail fail = fails[i - 1];
+
+                    std::string str = "";
+                    str += "[";
+                    str += std::to_string(i);
+                    str += "] ";
+                    str += fail.name;
+                    for (int i = 0; i < countSpaceBetweenStartAfterNumbersAndData - utf8_len(fail.name); i++) {
+                        str += " ";
+                    };
+                    str += fail.data;
+                    for (int i = 0; i < countSpaceBetweenTwoColumnAndThreeColumn; i++) {
+                        str += " ";
+                    };
+
+                    str += fail.time;
+                    str += "\n";
+
+                    std::cout << str;
+                };
+
+                std::cout << "\n\n";
+
+                std::cout << "Выберите номер файла какой хотите открыть: ";
+                short nomerFail;
+                std::cin >> nomerFail;
+
+                if (nomerFail > fails.size() || nomerFail <= 0) {
+                    std::cout << "Вы ввели некоректный номер файла.\n\n";
+                    continue;
+                };
+
+                structFail fail = fails[nomerFail - 1];
+
+                std::cout << "Файл: " << fail.name << "\n";
+                std::cout << "Контент: " << fail.content;
+
+                std::cout << "\n\n";
             }
+            // else if (pole == 2) {
+            //     // Настройки
+            // }
             else if (pole == 2) {
-                // Настройки
-            }
-            else if (pole == 3) {
                 // Выйти
                 std::cout << "Вы вышли из аналога редактора файла версии -0.1.\n";
                 std::exit(0);
@@ -5091,17 +5217,6 @@ int main() {
             else {
                 std::cout << "Неизвестный пункт.\n";
             };
-
-
-            //////////// TEST ////////////
-            std::cout << "\n\n\n";
-            for (structFail fail : fails) {
-                std::cout << fail.name << "   " << fail.content << "  " << fail.data << "  " << fail.time << "  \n\n\n";
-            };
-            std::cout << "\n\n\n";
-            //////////// TEST ////////////
-
-
         };
     }
     else {
