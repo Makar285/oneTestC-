@@ -50,7 +50,7 @@ void trim_inplace(std::string& s) {
 }
 
 
-void swap(short &a, short &b) {
+void swap(short& a, short& b) {
     // Сохранить значение переменной b, так как написано short, а не short*, то в c будет значение которое находится в памяти по ссылке, которая находиться в переменной b
     short c = b;
 
@@ -1498,13 +1498,16 @@ int getRandomNumber(int start, int end) {
 
 // Если кто то выиграл, то вернет кто выиграл, первый игрок или второй(или компьютер)(вернет 1 или 2 соответствено), а если никто не выиграл вернет 0
 short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlayer) {
-    std::cout << "\n\nSTART TEST\n";
+
+    // TEST START
+    /* std::cout << "\n\nSTART TEST\n";
     for (char e : table) {
         std::cout << (e - '0') - 1 << "   " << e << "\n";
     }
     std::cout << figureOnePlayer << "\n";
     std::cout << figureTwoPlayer << "\n";
-    std::cout << "END TEST\n\n";
+    std::cout << "END TEST\n\n"; */
+    // TEST END
 
 
 
@@ -1544,7 +1547,7 @@ short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlay
             return 2;
         }
     }
-    
+
     else if (table[0] == table[1] && table[1] == table[2]) {
         // Все три фигруы в первой строке совпадают
 
@@ -1639,7 +1642,7 @@ short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlay
             // Все три совпадающих символы в каком то столбце, это символы второго игрока или компьютера, значит он победил
             return 2;
         }
-    } 
+    }
     else if ((table[0] == table[1] && table[1] == table[2]) || (table[3] == table[4] && table[4] == table[5]) || (table[6] == table[7] && table[7] == table[8])) {
         // В какой строке все три символа совпадают
 
@@ -1689,11 +1692,11 @@ short whoIsWin(std::vector<char> table, char figureOnePlayer, char figureTwoPlay
 
 int main() {
     // Устанавливаем кодировку UTF-8 для ввода и вывода
-    SetConsoleCP(65001);
-    SetConsoleOutputCP(65001);
+    // SetConsoleCP(65001);
+    // SetConsoleOutputCP(65001);
 
     // Обязательно настраиваем вывод std::cout на работу с UTF-8
-    std::setlocale(LC_ALL, ".UTF8");
+    // std::setlocale(LC_ALL, ".UTF8");
 
 
 
@@ -4300,7 +4303,11 @@ int main() {
 
                             // Проверка на что есть ли уже победитель
                             short whoWin = whoIsWin(table, figureOnePlayer, figureComputer);
-                            std::cout << "\n\ndsadsad   " << whoWin << "\n\n";
+
+                            // TEST
+                            // std::cout << "\n\ndsadsad   " << whoWin << "\n\n";
+
+
                             if (whoWin == 1) {
                                 // Выиграл первый игрок
                                 std::cout << "Выиграл " << nameOnePlayer << "\n";
@@ -4334,7 +4341,7 @@ int main() {
                                 countDrawOnePlayer++;
                                 countDrawComputer++;
                                 countGlassesOnePlayer -= 1.2;
-                                countGlassesComputer  -= 1.2;
+                                countGlassesComputer -= 1.2;
 
                                 // Вернуться к выбору сколько игроков будут играть
                                 break;
@@ -4407,7 +4414,12 @@ int main() {
 
                             // Проверка на что есть ли уже победитель
                             short whoWin = whoIsWin(table, figureOnePlayer, figureTwoPlayer);
-                            std::cout << "\n\ndsadsad   " << whoWin << "\n\n";
+
+
+                            // TEST
+                            // std::cout << "\n\ndsadsad   " << whoWin << "\n\n";
+
+
                             if (whoWin == 1) {
                                 // Выиграл первый игрок
                                 std::cout << "Выиграл " << nameOnePlayer << "\n";
@@ -4513,7 +4525,7 @@ int main() {
                         maxLengthName = nameOnePlayer.size();
                     }
                     else {
-                        // Имя компьютера длинее имени первого игрока 
+                        // Имя компьютера длинее имени первого игрока
                         maxLengthName = utf8_len("Компьютер");
                     }
                 }
@@ -4524,7 +4536,7 @@ int main() {
                         maxLengthName = nameTwoPlayer.size();
                     }
                     else {
-                        // Имя компьютера длинее имени второго игрока 
+                        // Имя компьютера длинее имени второго игрока
                         maxLengthName = utf8_len("Компьютер");
                     }
                 }
@@ -4965,7 +4977,7 @@ int main() {
                 currentSortArray.push_back({});
                 index++;
             };
-            
+
             currentSortArray[index].push_back(currentArray[i]);
 
             i++;
@@ -5047,7 +5059,7 @@ int main() {
 
                         if (isLocalSave) {
                             // Файл сохранен
-                            
+
                             // Получение названия файла пользователем
                             std::cout << "Введите название файла(БЕЗ ПРОБЕЛОВ И ДЛИННОЙ ДО 15 СИМВОЛОВ): ";
                             std::cin >> nameNewFail;
@@ -5075,7 +5087,7 @@ int main() {
 
                             if (localStr == "y") {
                                 // Пользователь хочет сохранить файл и выйти
-                                
+
 
                                 // Изменение всего того что ввел пользователь(переменная notSaveContentNewFail) в то что сохранил пользователь(переменная saveContentNewFail)
                                 saveContentNewFail = notSaveContentNewFail;
