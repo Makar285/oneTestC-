@@ -1,4 +1,3 @@
-
 // Задания с https://docs.google.com/document/d/1yzHwap5xYbqxq3509M7aAE5waWRgmNDE5ixxzlQf-Jw/edit?clckid=01128af8&tab=t.0
 
 #include <iostream>
@@ -5459,6 +5458,13 @@ int main() {
 
             // Увеличить количество действий на 1
             actions++;
+
+            if (level >= 20) {
+                // Игрок победил, вывести информацию о его уровне и количестве затраченных действий и выйти из цикла
+                // std::cout << "Поздравляю! Вы достигли " << level << " уровня за " << actions << ([](&actions) { if(actions == 1) { return "действие" }());
+                std::cout << "Поздравляю! Вы достигли " << level << " уровня за " << actions << " действий.\n";
+                break;
+            }
         };
 
     }
