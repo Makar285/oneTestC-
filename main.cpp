@@ -15,8 +15,6 @@
 
 #include <windows.h> // для функций SetConsoleCP и SetConsoleOutputCP
 
-#include <ctime>
-
 #include <limits>
 
 // Нужно что бы из библиотеки строка #define <windows.h> макрос max не изменялся на тот что был в этой библиотеки
@@ -24,9 +22,106 @@
 
 
 
-
-
 #include <cctype>
+
+
+// Очистка буфера ввода
+void clearingInputBuffer() {
+    std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); // Очищаем буфер ввода
+};
+
+
+// Для -19 задания
+void print(int x) {
+    std::cout << "INT " << x << "\n";
+};
+
+// Для -19 задания
+void print(std::string x) {
+    std::cout << "STR " << x << "\n";
+};
+
+// Для -19 задания
+void print(int a, int b) {
+    std::cout << a << ", " << b << "\n";
+};
+
+
+// Для -20
+double add(double a, double b) {
+    return a + b;
+}
+
+// Для -20
+double sub(double a, double b) {
+    return a - b;
+}
+
+// Для -20
+double mul(double a, double b) {
+    return a * b;
+}
+
+// Для -20
+double divide(double a, double b) {
+    return a / b;
+}
+
+// Для -21
+int factorial(short n) {
+    int result = 1;
+    for (short i = 1; i <= n; i++) {
+        result *= i;
+    };
+
+    return result;
+}
+
+// Для -21
+int power(short base, short exp) {
+    int result = 1;
+    for (short i = 0; i < exp; i++) {
+        result *= base;
+    };
+
+    return result;
+};
+
+
+// Для -22
+bool isPrime(int x) {
+    if (x == 2) {
+        // Два единственное простое четное число
+        return true;
+    }
+    else if (x % 2 == 0) {
+        // Если число четное, то оно точно составное
+        return false;
+    }
+    else if (x <= 1) {
+        // Каждое число которое меньше или равно 1, не являеться простым
+        return false;
+    }
+    else {
+        // Число нечетное и больше двух
+
+        // Предположим, что число простое
+        bool localIsPrime = true;
+
+        // Проверим делиться ли x на какое то число в диапазоне [3, корень из x]
+        for (int i = 3; i <= std::sqrt(x); i++) {
+            if (x % i == 0) {
+                // X делиться на какое то число в диапазоне [3, корень из x], значит оно составное
+                localIsPrime = false;
+                break;
+            };
+        };
+
+        return localIsPrime;
+    };
+};
+
+
 
 // Функции очистки пробелов
 // Очистка слева
@@ -5467,6 +5562,223 @@ int main() {
             }
         };
 
+    }
+    else if (n == -19) {
+        std::cout << "[0] Вывести число.\n";
+        std::cout << "[1] Вывести текст.\n";
+        std::cout << "[2] Вывести два числа через запятую.\n";
+        std::cout << "[3] Выйти.\n";
+        std::cout << "Enter nomer: ";
+        short nomer = getNumber();
+
+        std::cout << "\n";
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); // Очищаем буфер ввода
+
+        if (nomer == 0) {
+            // Вывести число
+
+            // Получить пользовательское число
+            std::cout << "Enter your number: ";
+            int number = getNumber();
+
+            // Вывести число
+            print(number);
+        }
+        else if (nomer == 1) {
+            // Вывести строку
+
+            // Получить пользовательскую строку
+            std::cout << "Enter your string: ";
+            std::string str;
+            std::cin >> str;
+
+            // Вывести строку
+            print(str);
+        }
+        else if (nomer == 2) {
+            // Вывести два числа через запятую
+
+            // Получение двух чисел введеных пользователем
+            std::cout << "Введите два числа через пробел: ";
+            int n1;
+            int n2;
+            std::cin >> n1;
+            std::cin >> n2;
+
+            // Вывод двух чисел через запятую
+            print(n1, n2);
+        }
+        else if (nomer == 3) {
+            std::cout << "EXIT.\n";
+            std::exit(0);
+        }
+    }
+    else if (n == -20) {
+        while (true) {
+            std::cout << "[0] Сложение.\n";
+            std::cout << "[1] Вычитание.\n";
+            std::cout << "[2] Умножение.\n";
+            std::cout << "[3] Деление.\n";
+            std::cout << "[4] Выйти.\n";
+            std::cout << "Введите номер: ";
+            short nomer = getNumber();
+
+            if (nomer == 4) {
+                // Выход из калькулятора
+                std::cout << "EXIT.\n";
+                break;
+            };
+
+            // Получение первого числа
+            double n1;
+            std::cout << "\nEnter one number: ";
+            std::cin >> n1;
+
+            // Получение второго числа
+            double n2;
+            std::cout << "\nEnter two number: ";
+            std::cin >> n2;
+
+            if (nomer == 0) {
+                // Сложение
+                std::cout << "Результат: " << n1 << " + " << n2 << " = " << add(n1, n2) << "\n";
+            }
+            else if (nomer == 1) {
+                // Вычитание
+                std::cout << "Результат: " << n1 << " - " << n2 << " = " << sub(n1, n2) << "\n";
+            }
+            else if (nomer == 2) {
+                // Умножение
+                std::cout << "Результат: " << n1 << " * " << n2 << " = " << mul(n1, n2) << "\n";
+            }
+            else if (nomer == 3) {
+                // Деление
+
+                // Проверка на деление на ноль
+                if (n2 == 0) {
+                    std::cout << "Деление на ноль запрешено.\n\n\n";
+                    continue;
+                };
+
+                std::cout << "Результат: " << n1 << " / " << n2 << " = " << divide(n1, n2) << "\n";
+            }
+            else {
+                // Неизвестное число
+                std::cout << "Неизвестное число.\n";
+                continue;
+            };
+
+            // Для визуального разделения итераций
+            std::cout << "\n\n";
+        }
+    }
+    else if (n == -21) {
+        while (true) {
+            std::cout << "[0] Вычислить факториал.\n";
+            std::cout << "[1] Возвести число в степень.\n";
+            std::cout << "[2] Выйти.\n";
+            std::cout << "Enter nomer: ";
+            short nomer = getNumber();
+
+            std::cout << "\n";
+            clearingInputBuffer();
+
+            if (nomer == 0) {
+                // Вычислить факториал
+                
+                // Получение числа, факториал которого нужно найти
+                std::cout << "Enter n: ";
+                short n = getNumber();
+
+                // Проверка числа на валидность
+                if (n > 12 || n < 1) {
+                    std::cout << "Невалидное число.\n";
+                    continue;
+                }
+
+                // Получить результат
+                int result = factorial(n);
+
+                // Вывести результат
+                std::cout << n << "! = " << result << "\n";
+            }
+            else if (nomer == 1) {
+                // Возвести число в степень
+
+                // Получения основания и степени
+                std::cout << "Введите основание и степень через пробел: ";
+                short foundation;
+                short degree;
+                std::cin >> foundation;
+                std::cin >> degree;
+
+                // Проверка степени н валидность
+                if (degree < 1) {
+                    std::cout << "Невалидная степень.\n";
+                    continue;
+                };
+
+                // Получить результат
+                int result = power(foundation, degree);
+
+                // Вывести результат
+                std::cout << foundation << " ^ " << degree << " = " << result << "\n";
+            }
+            else if (nomer == 2) {
+                //exit
+                std::cout << "exit.\n";
+                break;
+            }
+        }
+    }
+    else if (n == -22) {
+        std::cout << "[0] Проверить число на простоту.\n";
+        std::cout << "[1] Вывести все простые числа до N.\n";
+        std::cout << "Введите номер: ";
+        int nomer = getNumber();
+
+        std::cout << "\n";
+
+        if (nomer == 0) {
+            // Проверить число на простоту
+
+            // Получить число пользователя для проверки его на простоту
+            std::cout << "Введите число для проверки его на простоту: ";
+            int number = getNumber();
+
+            // Получение данные о том простое введеное пользователем число или составное
+            bool isPrimeNumber = isPrime(number);
+
+            // Вывод результатa
+            std::cout << "Число " << number << ([isPrimeNumber] { std::cout << " - "; if (isPrimeNumber) { return "простое"; } else { return "составное"; } std::cout << "\n"; }());
+        }
+        else if (nomer == 1) {
+            // Вывести все простые числа до N
+
+            // Получить число до которого нужны все простые числа
+            std::cout << "Введите число до которого нужны все простые числа: ";
+            int number = getNumber();
+
+            // Общее количестов чисел
+            int count = 0;
+
+            std::cout << "Простые числа: ";
+
+            // Цикл который пройдеться по всем числам от 0 до number и каждое проверит на простоту с поомщью функции isPrime
+            for (int i = 2; i < number; i++) {
+                if (isPrime(i)) {
+                    // Число простое
+                    count++;
+                    std::cout << i << " ";
+                };
+            };
+
+            std::cout << "\nОбщее количество простых чисел до " << number << " равно " << count;
+        }
+        else {
+            // Неизвестный пункт
+            std::cout << "Неизветный пунтк.\n";
+        };
     }
     else {
         std::cout << "Неизвестный номер задания.\n";
