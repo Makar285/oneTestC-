@@ -25,6 +25,43 @@
 #include <cctype>
 
 
+
+// Для 10
+void checkWinAndLose(short countCurrentNumber, short countAttempt, std::vector<int> randomNumbers) {
+    if (countCurrentNumber == 3) {
+        std::cout << "YOU WIN.\n";
+    }
+    else if (countAttempt == 0) {
+        std::cout << "YOU LOSE.\n";
+
+        // Вывод чисел которые не угадал пользователь
+        std::cout << "Числа которое вы не угадали: \n";
+        for (int number : randomNumbers) {
+            std::cout << number << "\n";
+        };
+    };
+}
+
+// Для 10
+int generatedRandomNumber() {
+    // 1. Инициализируем генератор случайных чисел случайным сидом (зерном)
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    // 2. Задаем диапазон [min, max] (включительно с обеих сторон)
+    int min = 1;
+    int max = 10;
+    std::uniform_int_distribution<int> distrib(min, max);
+
+    // 3. Генерируем случайное число
+    int randomNumber = distrib(gen);
+
+    return randomNumber;
+};
+
+
+
+
 // Очистка буфера ввода
 void clearingInputBuffer() {
     std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n'); // Очищаем буфер ввода
@@ -119,6 +156,34 @@ bool isPrime(int x) {
 
         return localIsPrime;
     };
+};
+
+// Для -23
+short countDigit(int number) {
+    short localCountNumber = std::to_string(number).size();
+    return localCountNumber;
+};
+
+// Для -23
+short sumDigit(int number) {
+    short localSumDigit = 0;
+
+    for (char c : std::to_string(number)) {
+        localSumDigit += static_cast<short>(c) - 48; // static_cast<short>(c) возвращает индекс c в таблице ASKII, а 48 это индекс 0 в ASKII, поэтому '3' преобразуется в short 3 и тд
+    };
+
+    return localSumDigit;
+};
+
+// Для -23
+int reverseNumber(int number) {
+    std::string localStringReverseNumber = "";
+
+    for (int i = std::to_string(number).size() - 1; i >= 0; i--) {
+        localStringReverseNumber += std::to_string(number)[i];
+    };
+
+    return std::stoi(localStringReverseNumber);
 };
 
 
@@ -2416,6 +2481,7 @@ int main() {
         std::cout << "[0] START GAME\n";
         std::cout << "[1] EXIT\n\n";
 
+        std::cout << "Введите число: ";
         int localN = getNumber();
 
         if (localN != 0 && localN != 1) {
@@ -2429,36 +2495,21 @@ int main() {
             short countAttempt = 5;
             std::vector<int> randomNumbers = {};
 
-            // 1. Инициализируем генератор случайных чисел случайным сидом (зерном)
-            std::random_device rd;
-            std::mt19937 gen(rd());
-
-            // 2. Задаем диапазон [min, max] (включительно с обеих сторон)
-            int min = 1;
-            int max = 10;
-            std::uniform_int_distribution<int> distrib(min, max);
-
             // Три итерации для трех генераций рандомного числа
             short i = 0;
 
             while (i < 3) {
                 // 3. Генерируем случайное число
-                int randomNumber = distrib(gen);
+                int randomNumber = generatedRandomNumber();
 
                 if (!contains(randomNumbers, randomNumber)) {
                     // Такого числа нету в векторе randomNumbers
-                    // увеличивать i и добавлять число в randomNumbers, а если бы число было в векторе пройти это на один раз больше предустановленого три раза
+                    
+                    // увеличивать i и добавлять число в randomNumbers, а если бы число было в векторе пройти это на один раз больше предустановленых три раза
                     i++;
                     randomNumbers.push_back(randomNumber);
                 };
             };
-
-            std::cout << "\n\n\n";
-            for (int number : randomNumbers) {
-                std::cout << number << "\n";
-            };
-
-            std::cout << "\n\n\n";
 
             // Цикл пока не закончаться попытки или пользователь не найдет все числа
             while (true) {
@@ -2497,18 +2548,7 @@ int main() {
                 };
             };
 
-            if (countCurrentNumber == 3) {
-                std::cout << "YOU WIN.\n";
-            }
-            else if (countAttempt == 0) {
-                std::cout << "YOU LOSE.\n";
-
-                // Вывод чисел которые не угадал пользователь
-                std::cout << "Числа которое вы не угадали: \n";
-                for (int number : randomNumbers) {
-                    std::cout << number << "\n";
-                };
-            };
+            checkWinAndLose(countCurrentNumber, countAttempt, randomNumbers);
 
             std::exit(0);
         }
@@ -5778,6 +5818,25 @@ int main() {
         else {
             // Неизвестный пункт
             std::cout << "Неизветный пунтк.\n";
+        };
+    }
+    else if (n == -23) {
+        std::cout << "Введите положительное число: ";
+        int number = getNumber();
+
+        // Получениe числа наоборот, не сразу вывод, а сохранение в переменную, потому что он используеться два раза и лучше вызвать функцию один раз и сохранить результат в переменную, чем два раза вызвать функцию
+        int rNumber = reverseNumber(number);
+
+        // Вывод и получение данных о числе
+        std::cout << "Количестов чисел: " << countDigit(number) << "\n";
+        std::cout << "Сумма чисел: " << sumDigit(number) << "\n";
+        std::cout << "Наоборот: " << rNumber<< "\n";
+        std::cout << "Число палиндром: ";
+        if (number == rNumber) {
+            std::cout << "true\n";
+        }
+        else {
+            std::cout << "false\n";
         };
     }
     else {
